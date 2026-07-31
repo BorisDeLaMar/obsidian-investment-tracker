@@ -1,0 +1,11 @@
+{
+  "id": "obsidian-investment-tracker",
+  "name": "Investment Tracker",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Учёт брокерских отчётов (Т-Банк CSV, СберИнвестиции HTML), консолидированный портфель и график капитала с интеграцией MOEX ISS.",
+  "author": "Your Name",
+  "authorUrl": "https://github.com/your-account",
+  "fundingUrl": "",
+  "isDesktopOnly": true
+}
