@@ -46,34 +46,39 @@ export class CapitalChart {
 	constructor(
 		private readonly container: HTMLElement,
 		private readonly combinedSnapshots: PortfolioSnapshot[],
-		private readonly brokerTimelines?: BrokerTimeline[]
+		private readonly brokerTimelines?: BrokerTimeline[],
+		private readonly currentMarketValue: number | null = null // <--- изменено
 	) {}
 
 	public render(): void {
 		this.destroy();
 		this.clearContainer();
 
-		// Кнопка-переключатель "Единый / По брокерам".
+		// Если брокер всего один, принудительно выключаем режим "По брокерам"
+		if (this.brokerTimelines && this.brokerTimelines.length <= 1) {
+			this.isMerged = false;
+		}
+
+		// Кнопка-переключатель (если > 1 брокер)
 		if (this.brokerTimelines && this.brokerTimelines.length > 1) {
 			this.toggleContainer = this.container.createDiv({ cls: 'investment-chart-toggle' });
 			this.toggleContainer.style.cssText = 'margin-bottom: 8px; display: flex; gap: 8px;';
-
 			const mergedBtn = this.toggleContainer.createEl('button', { text: 'Единый график' });
 			const splitBtn = this.toggleContainer.createEl('button', { text: 'По брокерам' });
-
 			mergedBtn.style.cssText = 'font-size: 11px; padding: 2px 8px;';
 			splitBtn.style.cssText = 'font-size: 11px; padding: 2px 8px;';
-
 			mergedBtn.addEventListener('click', () => { this.isMerged = false; this.render(); });
 			splitBtn.addEventListener('click', () => { this.isMerged = true; this.render(); });
 		}
 
+		// --- ЗАЩИТА ОТ ПУСТЫХ ДАННЫХ ---
 		if ((!this.isMerged && (!this.combinedSnapshots || this.combinedSnapshots.length === 0)) ||
 			(this.isMerged && (!this.brokerTimelines || this.brokerTimelines.length === 0))) {
 			this.renderEmptyState();
 			return;
 		}
 
+		// --- ЗАЩИТА ОТ НУЛЕВОЙ ВЫСОТЫ И КОНТЕКСТА ---
 		if (!this.container.style.height || this.container.clientHeight === 0) {
 			this.container.style.height = '360px';
 		}
@@ -83,7 +88,12 @@ export class CapitalChart {
 		this.container.appendChild(this.canvasEl);
 
 		const context = this.canvasEl.getContext('2d');
-		if (!context) return;
+		if (!context) {
+			// Если контекст не получен - показываем заглушку
+			this.renderEmptyState();
+			return;
+		}
+		// ------------------------------------------
 
 		const textColor = resolveThemeColor('--text-normal', '#dcddde');
 		const mutedTextColor = resolveThemeColor('--text-muted', '#999999');
@@ -143,45 +153,60 @@ export class CapitalChart {
 			const config: ChartConfiguration<'line', number[], string> = {
 				type: 'line',
 				data: { labels, datasets },
-				options: this.buildChartOptions(textColor, mutedTextColor, gridColor, tooltipBg)
+				options: this.buildChartOptions(textColor, mutedTextColor, gridColor, tooltipBg, labels, true)
 			};
 			this.chartInstance = new Chart(context, config);
 		} else {
 			const snapshots = this.combinedSnapshots;
-			const labels = snapshots.map(s => s.date);
-			const capitalData = snapshots.map(s => s.totalCapital);
-			const investedData = snapshots.map(s => s.totalInvested);
+			let labels = snapshots.map(s => s.date);
+			let investedData = snapshots.map(s => s.totalInvested);
+			
+			// Добавляем точку отсчёта с 0 (если есть данные)
+			if (labels.length > 0) {
+				const firstDate = new Date(labels[0]);
+				firstDate.setDate(firstDate.getDate() - 1);
+				const prevDateStr = firstDate.toISOString().split('T')[0];
+				labels = [prevDateStr, ...labels];
+				investedData = [0, ...investedData];
+			}
 
-			datasets = [
+			// Начинаем с обязательного датасета "Сумма внесённых средств"
+			const datasets: ChartConfiguration<'line', number[], string>['data']['datasets'] = [
 				{
-					label: 'Общая стоимость портфеля',
-					data: capitalData,
+					label: 'Сумма внесённых средств',
+					data: investedData,
 					borderColor: '#26a69a',
 					backgroundColor: 'rgba(38, 166, 154, 0.12)',
 					borderWidth: 2,
 					pointRadius: 0,
 					pointHoverRadius: 4,
 					fill: true,
-					tension: 0.15
-				},
-				{
-					label: 'Сумма внесённых средств',
-					data: investedData,
-					borderColor: mutedTextColor,
+					stepped: 'after',
+					tension: 0
+				}
+			];
+
+			// Добавляем пунктирную линию текущей стоимости, только если есть данные
+			if (this.currentMarketValue != null) {
+				const marketValueData = new Array(labels.length).fill(this.currentMarketValue);
+				datasets.push({
+					label: 'Текущая стоимость портфеля',
+					data: marketValueData,
+					borderColor: '#78909c',
 					backgroundColor: 'transparent',
 					borderWidth: 2,
 					borderDash: [6, 4],
 					pointRadius: 0,
 					pointHoverRadius: 4,
 					fill: false,
-					tension: 0.15
-				}
-			];
+					tension: 0
+				});
+			}
 
 			const config: ChartConfiguration<'line', number[], string> = {
 				type: 'line',
 				data: { labels, datasets },
-				options: this.buildChartOptions(textColor, mutedTextColor, gridColor, tooltipBg)
+				options: this.buildChartOptions(textColor, mutedTextColor, gridColor, tooltipBg, labels, false)
 			};
 			this.chartInstance = new Chart(context, config);
 		}
@@ -191,7 +216,9 @@ export class CapitalChart {
 		textColor: string,
 		mutedTextColor: string,
 		gridColor: string,
-		tooltipBg: string
+		tooltipBg: string,
+		labels: string[],
+		stacked: boolean
 	): ChartConfiguration<'line', number[], string>['options'] {
 		return {
 			responsive: true,
@@ -200,14 +227,20 @@ export class CapitalChart {
 				mode: 'index',
 				intersect: false
 			},
+			layout: {
+				padding: {
+					left: 10 // <--- Оставляем небольшой отступ слева, чтобы первая дата не прилипала к краю
+					// Убрали padding: right
+				}
+			},
 			scales: {
 				x: {
 					grid: { color: gridColor },
+					offset: false, // <--- Отключаем смещение крайних точек от краёв оси
 					ticks: {
 						color: mutedTextColor,
 						maxTicksLimit: 10,
 						callback: (_value, index) => {
-							const labels = this.chartInstance?.data?.labels;
 							if (!labels || index >= labels.length) return '';
 							return formatDateLabel(labels[index] as string);
 						}
@@ -215,7 +248,9 @@ export class CapitalChart {
 				},
 				y: {
 					grid: { color: gridColor },
-					stacked: true, // Включает правильное стековое отображение (наложение "плюсом")
+					stacked: stacked,
+					min: 0,
+					beginAtZero: true,
 					ticks: {
 						color: mutedTextColor,
 						callback: (value) => formatCurrency(Number(value))
@@ -240,7 +275,6 @@ export class CapitalChart {
 					borderWidth: 1,
 					padding: 10,
 					cornerRadius: 6,
-					// Располагаем тултип наверху, чтобы не закрывать график.
 					position: 'nearest',
 					yAlign: 'top',
 					xAlign: 'center',

@@ -2,198 +2,171 @@
 
 import { Transaction, Position, PortfolioSnapshot, InstrumentKind, BrokerSource, BrokerSubPosition, BrokerSummary } from '../types';
 import { MoexPriceInfo } from '../api/moex-api';
-import { BrokerTimeline } from '../view/capital-chart'; // добавьте импорт вверху
+import { BrokerTimeline } from '../view/capital-chart';
 
-
-
-/**
- * Внутреннее представление позиции по тикеру, используемое во время
- * пошагового прохода по транзакциям (без привязки к текущей рыночной цене).
- */
 interface InternalPositionState {
-	amount: number;
-	averagePrice: number;
-	shareName: string;
+    amount: number;
+    averagePrice: number;
+    shareName: string;
 }
 
-/**
- * Внутреннее представление денежного состояния портфеля на конкретный момент.
- */
-interface CashState {
-	cashBalance: number;
-	totalInvested: number;
-}
-
-/** Порог, ниже которого количество бумаг считается нулевым (защита от погрешностей float). */
 const AMOUNT_EPSILON = 1e-8;
 
-/**
- * Калькулятор портфеля: строит текущие позиции по тикерам и исторический
- * таймлайн капитала (для линейного графика на дашборде) на основе единого
- * массива Transaction[], полученного из парсеров или T-Invest API.
- */
 export class PortfolioCalculator {
-	/**
-	 * Рассчитывает текущие позиции по всем тикерам на основе истории транзакций
-	 * и словаря актуальных рыночных цен (например, с MOEX ISS).
-	 *
-	 * @param transactions   Полная история транзакций (любых брокеров, любого порядка по дате).
-	 * @param currentPrices  Словарь "тикер -> актуальная цена". Если цена для тикера
-	 *                       отсутствует, используется средняя цена покупки как fallback
-	 *                       (с предупреждением в консоль), чтобы позиция не пропадала
-	 *                       из дашборда из-за временной недоступности котировки.
-	 */
-	public calculateCurrentPositions(
-		transactions: Transaction[],
-		currentPrices: Map<string, MoexPriceInfo>
-	): Position[] {
-		const sorted = [...transactions].sort(
-			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-		);
+    // --- existing methods (generateCapitalTimeline, etc.) remain the same, but we update applyTradeToPositions and calculateCurrentPositions ---
 
-		// Ключ: "ticker|broker" — позиции считаются раздельно по брокерам.
-		const positions = new Map<string, InternalPositionState>();
+    public calculateCurrentPositions(
+        transactions: Transaction[],
+        currentPrices: Map<string, MoexPriceInfo>
+    ): Position[] {
+        const sorted = [...transactions].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-		for (const transaction of sorted) {
-			if (transaction.type === 'BUY' || transaction.type === 'SELL') {
-				this.applyTradeToPositions(positions, transaction);
-			}
-		}
+        const positions = new Map<string, InternalPositionState>();
+        for (const transaction of sorted) {
+            if (transaction.type === 'BUY' || transaction.type === 'SELL') {
+                this.applyTradeToPositions(positions, transaction);
+            }
+        }
 
-		const lastFigiByTicker = new Map<string, string>();
-		for (const transaction of sorted) {
-			if (transaction.figi) {
-				lastFigiByTicker.set(transaction.ticker, transaction.figi);
-			}
-		}
+        const lastFigiByTicker = new Map<string, string>();
+        for (const transaction of sorted) {
+            if (transaction.figi) lastFigiByTicker.set(transaction.ticker, transaction.figi);
+        }
 
-		// Собираем сырые подпозиции (ticker, broker) → данные.
-		type RawSubPos = {
-			ticker: string;
-			broker: BrokerSource;
-			shareName: string;
-			amount: number;
-			averagePrice: number;
-			currentPrice: number;
-			currentTotal: number;
-			figi?: string;
-			faceValue?: number;
-			instrumentKind?: InstrumentKind;
-		};
+        type RawSubPos = {
+            ticker: string;
+            broker: BrokerSource;
+            shareName: string;
+            amount: number;
+            averagePrice: number;
+            currentPrice: number;
+            currentTotal: number;
+            figi?: string;
+            faceValue?: number;
+            instrumentKind?: InstrumentKind;
+            hasMarketPrice: boolean;
+        };
 
-		const rawSubPositions: RawSubPos[] = [];
+        const rawSubPositions: RawSubPos[] = [];
 
-		for (const [key, state] of positions.entries()) {
-			if (state.amount <= AMOUNT_EPSILON) {
-				continue;
-			}
+        for (const [key, state] of positions.entries()) {
+            if (state.amount <= AMOUNT_EPSILON) continue;
 
-			const ticker = key.slice(0, key.lastIndexOf('|'));
-			const priceInfo = currentPrices.get(ticker);
-			let currentPrice: number;
-			let currentTotal: number;
-			let faceValue: number | undefined;
-			let instrumentKind: InstrumentKind | undefined;
+            const ticker = key.slice(0, key.lastIndexOf('|'));
+            const priceInfo = currentPrices.get(ticker);
+			const shareNameFromPrice = priceInfo?.shareName || state.shareName;
+            let currentPrice: number;
+            let currentTotal: number;
+            let faceValue: number | undefined;
+            let instrumentKind: InstrumentKind | undefined;
+            let hasMarketPrice = false;
 
-			if (!priceInfo) {
-				// Если цена не найдена, используем цену покупки
-				currentPrice = state.averagePrice;
-				currentTotal = state.amount * currentPrice;
-			} else if (priceInfo.instrumentKind === 'BOND' && priceInfo.faceValue) {
-				// Облигация с известным номиналом
-				faceValue = priceInfo.faceValue;
-				instrumentKind = 'BOND';
-				
-				// Если номинал НЕ в рублях (квазивалютная облигация), оставляем цену покупки
-				if (priceInfo.faceCurrency && priceInfo.faceCurrency !== 'RUB') {
-					currentPrice = state.averagePrice;
-					currentTotal = state.amount * currentPrice;
-				} else {
-					// Обычные рублёвые облигации — считаем по номиналу и % цене
+            if (!priceInfo) {
+                currentPrice = state.averagePrice;
+                currentTotal = state.amount * currentPrice;
+                hasMarketPrice = false;
+            } else if (priceInfo.instrumentKind === 'BOND' && priceInfo.faceValue) {
+                faceValue = priceInfo.faceValue;
+                instrumentKind = 'BOND';
+
+				// Считаем RUB-облигацией, если валюта RUB или SUR (или пустая)
+				const isRub = !priceInfo.faceCurrency || 
+							priceInfo.faceCurrency === 'RUB' || 
+							priceInfo.faceCurrency === 'SUR';
+				if (isRub) {
+					hasMarketPrice = true;
 					currentPrice = faceValue * (priceInfo.price / 100);
 					currentTotal = state.amount * currentPrice;
+				} else {
+					// Валютная облигация (USD, CNY и т.д.)
+					if (priceInfo.rubRate != null) {
+						const priceInForeign = (priceInfo.price / 100) * faceValue;
+						currentPrice = priceInForeign * priceInfo.rubRate;
+						currentTotal = state.amount * currentPrice;
+						hasMarketPrice = true;
+					} else {
+						hasMarketPrice = false;
+						currentPrice = state.averagePrice; // для корректного подсчёта портфеля
+						currentTotal = state.amount * currentPrice;
+					}
 				}
-			} else {
-				// --- ДОБАВЛЕННЫЙ БЛОК ELSE ---
-				// Обычные акции, фонды или облигации без данных по номиналу
-				instrumentKind = priceInfo.instrumentKind;
-				currentPrice = priceInfo.price;
-				currentTotal = state.amount * currentPrice;
-			}
+            } else {
+                instrumentKind = priceInfo.instrumentKind;
+                currentPrice = priceInfo.price;
+                currentTotal = state.amount * currentPrice;
+                hasMarketPrice = true;
+            }
 
-			rawSubPositions.push({
-				ticker,
-				broker: (key.includes('|tbank') ? 'tbank' : 'sber') as BrokerSource,
-				shareName: state.shareName,
-				amount: state.amount,
-				averagePrice: state.averagePrice,
-				currentPrice,
-				currentTotal,
-				figi: lastFigiByTicker.get(ticker),
-				faceValue,
-				instrumentKind
-			});
-		}
+			//console.log(`[CALC] Позиция ${ticker}: priceInfo=${priceInfo}, hasMarketPrice=${hasMarketPrice}, currentPrice=${currentPrice}`);
 
-		// Группируем подпозиции по тикеру.
-		const groupedByTicker = new Map<string, RawSubPos[]>();
-		for (const sub of rawSubPositions) {
-			const list = groupedByTicker.get(sub.ticker);
-			if (list) {
-				list.push(sub);
-			} else {
-				groupedByTicker.set(sub.ticker, [sub]);
-			}
-		}
+            rawSubPositions.push({
+                ticker,
+                broker: (key.includes('|tbank') ? 'tbank' : 'sber') as BrokerSource,
+                shareName: shareNameFromPrice,
+                amount: state.amount,
+                averagePrice: state.averagePrice,
+                currentPrice,
+                currentTotal,
+                figi: lastFigiByTicker.get(ticker),
+                faceValue,
+                instrumentKind,
+                hasMarketPrice
+            });
+        }
 
-		const positionsResult: Position[] = [];
+	        const groupedByTicker = new Map<string, RawSubPos[]>();
+        for (const sub of rawSubPositions) {
+            const list = groupedByTicker.get(sub.ticker);
+            if (list) list.push(sub);
+            else groupedByTicker.set(sub.ticker, [sub]);
+        }
 
-		for (const [, subList] of groupedByTicker) {
-			const totalAmount = subList.reduce((s, p) => s + p.amount, 0);
-			const totalCurrentTotal = subList.reduce((s, p) => s + p.currentTotal, 0);
-			const weightedPrice = totalAmount > 0
-				? subList.reduce((s, p) => s + p.amount * p.averagePrice, 0) / totalAmount
-				: 0;
-			const first = subList[0];
+        const positionsResult: Position[] = [];
 
-			const brokerBreakdown: BrokerSubPosition[] = subList.map((p) => ({
-				broker: p.broker,
-				amount: p.amount,
-				averagePrice: p.averagePrice,
-				currentValue: p.currentTotal
-			}));
+        for (const [, subList] of groupedByTicker) {
+            const totalAmount = subList.reduce((s, p) => s + p.amount, 0);
+            const totalCurrentTotal = subList.reduce((s, p) => s + p.currentTotal, 0);
+            const weightedPrice = totalAmount > 0
+                ? subList.reduce((s, p) => s + p.amount * p.averagePrice, 0) / totalAmount
+                : 0;
+            const first = subList[0];
 
-			const investedAmount = totalAmount * weightedPrice;
-			const profitPercent = investedAmount > 0 ? ((totalCurrentTotal - investedAmount) / investedAmount) * 100 : 0;
+            const brokerBreakdown: BrokerSubPosition[] = subList.map(p => ({
+                broker: p.broker,
+                amount: p.amount,
+                averagePrice: p.averagePrice,
+                currentValue: p.currentTotal
+            }));
 
-			positionsResult.push({
-				ticker: first.ticker,
-				shareName: first.shareName,
-				amount: totalAmount,
-				averagePrice: weightedPrice,
-				currentPrice: first.currentPrice,
-				currentTotal: totalCurrentTotal,
-				profitPercent,
-				shareInPortfolio: 0,
-				figi: first.figi,
-				faceValue: first.faceValue,
-				instrumentKind: first.instrumentKind,
-				brokerBreakdown
-			});
-		}
+            const investedAmount = totalAmount * weightedPrice;
+            const profitPercent = investedAmount > 0 ? ((totalCurrentTotal - investedAmount) / investedAmount) * 100 : 0;
 
-		const totalPortfolioValue = positionsResult.reduce((s, p) => s + p.currentTotal, 0);
-		for (const p of positionsResult) {
-			p.shareInPortfolio = totalPortfolioValue > 0 ? (p.currentTotal / totalPortfolioValue) * 100 : 0;
-		}
+            positionsResult.push({
+                ticker: first.ticker,
+                shareName: first.shareName, // но оно уже будет исправлено через rawSubPos
+                amount: totalAmount,
+                averagePrice: weightedPrice,
+                currentPrice: first.currentPrice,
+                currentTotal: totalCurrentTotal,
+                profitPercent,
+                shareInPortfolio: 0,
+                figi: first.figi,
+                faceValue: first.faceValue,
+                instrumentKind: first.instrumentKind,
+                brokerBreakdown,
+                hasMarketPrice: first.hasMarketPrice
+            });
+        }
 
-		positionsResult.sort((a, b) => b.currentTotal - a.currentTotal);
-		return positionsResult;
-	}
+        const totalPortfolioValue = positionsResult.reduce((s, p) => s + p.currentTotal, 0);
+        for (const p of positionsResult) {
+            p.shareInPortfolio = totalPortfolioValue > 0 ? (p.currentTotal / totalPortfolioValue) * 100 : 0;
+        }
 
-		/**
-	 * Рассчитывает сводку по каждому брокеру отдельно для карточек дашборда.
-	 */
+        positionsResult.sort((a, b) => b.currentTotal - a.currentTotal);
+        return positionsResult;
+    }
+
 	public calculateBrokerSummaries(
 		transactions: Transaction[],
 		positions: Position[]
@@ -260,189 +233,143 @@ export class PortfolioCalculator {
 		return result;
 	}
 
-	private applyTradeToPositions(
-		positions: Map<string, InternalPositionState>,
-		transaction: Transaction
-	): void {
+    private applyTradeToPositions(
+        positions: Map<string, InternalPositionState>,
+        transaction: Transaction
+    ): void {
 		const ticker = transaction.ticker;
 		if (!ticker) {
-			console.warn(
-				'[PortfolioCalculator] Сделка без тикера, пропущена при расчёте позиций.',
-				transaction
-			);
+			console.warn('[PortfolioCalculator] Сделка без тикера, пропущена', transaction);
 			return;
 		}
-
 		const key = `${ticker}|${transaction.broker}`;
-		const pricePerUnit =
-			transaction.amount > 0 ? transaction.totalSum / transaction.amount : 0;
+		//console.log(`[PortfolioCalculator] Обработка сделки: ${transaction.type} для ${key}, amount=${transaction.amount}, totalSum=${transaction.totalSum}`);
+        const pricePerUnit = transaction.amount > 0 ? transaction.totalSum / transaction.amount : 0;
 
-		const existing = positions.get(key);
+        if (transaction.type === 'BUY') {
+            const existing = positions.get(key);
+            if (!existing || existing.amount <= AMOUNT_EPSILON) {
+                positions.set(key, {
+                    amount: transaction.amount,
+                    averagePrice: pricePerUnit,
+                    shareName: transaction.shareName || ticker
+                });
+                return;
+            }
+            const oldSum = existing.amount * existing.averagePrice;
+            const newSum = transaction.amount * pricePerUnit;
+            const newAmount = existing.amount + transaction.amount;
+            const newAveragePrice = newAmount > 0 ? (oldSum + newSum) / newAmount : 0;
+            positions.set(key, {
+                amount: newAmount,
+                averagePrice: newAveragePrice,
+                shareName: existing.shareName || transaction.shareName || ticker
+            });
+            return;
+        }
 
-		if (transaction.type === 'BUY') {
-			if (!existing || existing.amount <= AMOUNT_EPSILON) {
-				positions.set(key, {
-					amount: transaction.amount,
-					averagePrice: pricePerUnit,
-					shareName: transaction.shareName || ticker
-				});
-				return;
-			}
+        if (transaction.type === 'SELL') {
+            const existing = positions.get(key);
+            if (!existing) {
+                // Если продажа без покупки – игнорируем или создаём отрицательную (но лучше создать временную)
+                // Для безопасности просто не делаем ничего или создаём отрицательную
+                return;
+            }
+            const newAmount = existing.amount - transaction.amount;
+            // Если позиция полностью продана – удаляем из Map
+            if (newAmount <= AMOUNT_EPSILON) {
+                positions.delete(key);
+            } else {
+                positions.set(key, {
+                    amount: newAmount,
+                    averagePrice: existing.averagePrice,
+                    shareName: existing.shareName || transaction.shareName || ticker
+                });
+            }
+        }
+    }
 
-			const oldSum = existing.amount * existing.averagePrice;
-			const newSum = transaction.amount * pricePerUnit;
-			const newAmount = existing.amount + transaction.amount;
-			const newAveragePrice = newAmount > 0 ? (oldSum + newSum) / newAmount : 0;
-
-			positions.set(key, {
-				amount: newAmount,
-				averagePrice: newAveragePrice,
-				shareName: existing.shareName || transaction.shareName || ticker
-			});
-			return;
-		}
-
-		if (transaction.type === 'SELL') {
-			if (!existing) {
-				console.warn(
-					`[PortfolioCalculator] Продажа тикера "${ticker}" без предшествующей покупки в истории ` +
-						'транзакций. Позиция создана с нулевой средней ценой покупки.',
-					transaction
-				);
-				positions.set(key, {
-					amount: -transaction.amount,
-					averagePrice: 0,
-					shareName: transaction.shareName || ticker
-				});
-				return;
-			}
-
-			const newAmount = existing.amount - transaction.amount;
-			positions.set(key, {
-				amount: newAmount,
-				averagePrice: existing.averagePrice,
-				shareName: existing.shareName || transaction.shareName || ticker
-			});
-		}
-	}
-
-	/**
-	 * Строит исторический таймлайн капитала по дням от даты первой транзакции
-	 * до сегодняшнего дня (включительно) -> PortfolioSnapshot[].
-	 *
-	 * Стоимость удерживаемых активов на прошлые даты считается по средней цене
-	 * их покупки из транзакций (без рыночной переоценки задним числом), так как
-	 * у плагина нет полной исторической базы котировок MOEX за каждый день —
-	 * это явное и осознанное упрощение, соответствующее условию задачи.
-	 */
 	public generateCapitalTimeline(transactions: Transaction[]): PortfolioSnapshot[] {
 		if (!transactions || transactions.length === 0) {
 			return [];
 		}
 
+		// 1. Сортируем и определяем диапазон
 		const sorted = [...transactions].sort(
 			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 		);
 
-		const firstRaw = sorted[0]?.date || '';
-    	const firstDate = firstRaw && firstRaw.length >= 10 
-        ? this.toDateOnly(firstRaw) 	
-        : this.toDateOnly(new Date().toISOString());
-    // --------------------------
+		const firstDate = this.toDateOnly(sorted[0].date) || this.toDateOnly(new Date().toISOString());
+		const today = this.toDateOnly(new Date().toISOString());
+		const allDates = this.buildDateRange(firstDate, today);
 
-    	const today = this.toDateOnly(new Date().toISOString());
-    	const allDates = this.buildDateRange(firstDate, today);
-
-		// Группируем транзакции по дню, чтобы применять их пачками при проходе
-		// по датам, а не сканировать весь массив на каждой итерации.
+		// 2. Группируем транзакции по дням
 		const transactionsByDate = new Map<string, Transaction[]>();
 		for (const transaction of sorted) {
 			const dateKey = this.toDateOnly(transaction.date);
-			const bucket = transactionsByDate.get(dateKey);
-			if (bucket) {
-				bucket.push(transaction);
-			} else {
-				transactionsByDate.set(dateKey, [transaction]);
+			if (!transactionsByDate.has(dateKey)) {
+				transactionsByDate.set(dateKey, []);
 			}
+			transactionsByDate.get(dateKey)!.push(transaction);
 		}
 
-		const cashState: CashState = { cashBalance: 0, totalInvested: 0 };
+		// 3. Состояния (totalInvested считаем отдельно от cashBalance)
+		let cashBalance = 0;
+		let cumulativeInvested = 0;
 		const positions = new Map<string, InternalPositionState>();
-
 		const snapshots: PortfolioSnapshot[] = [];
 
+		// 4. Проходим по каждому дню
 		for (const dateKey of allDates) {
-			const dayTransactions = transactionsByDate.get(dateKey);
+			const dayTxs = transactionsByDate.get(dateKey);
 
-			if (dayTransactions) {
-				for (const transaction of dayTransactions) {
-					this.applyTransactionToCashAndPositions(cashState, positions, transaction);
+			if (dayTxs) {
+				for (const tx of dayTxs) {
+					switch (tx.type) {
+						case 'CASH_IN':
+							cashBalance += tx.totalSum;
+							cumulativeInvested += tx.totalSum;
+							break;
+						case 'CASH_OUT':
+							cashBalance -= tx.totalSum;
+							cumulativeInvested -= tx.totalSum;
+							break;
+						case 'DIV':
+						case 'COUPON':
+							cashBalance += tx.totalSum;
+							break;
+						case 'TAX':
+						case 'FEE':
+							cashBalance -= tx.totalSum;
+							break;
+						case 'BUY':
+							cashBalance -= tx.totalSum;
+							this.applyTradeToPositions(positions, tx);
+							break;
+						case 'SELL':
+							cashBalance += tx.totalSum;
+							this.applyTradeToPositions(positions, tx);
+							break;
+					}
 				}
 			}
 
+			// 5. Считаем активы по средней цене и формируем снапшот
 			const assetsValue = this.sumPositionsAtCostPrice(positions);
-			const totalCapital = cashState.cashBalance + assetsValue;
-			const profitAbsolute = totalCapital - cashState.totalInvested;
+			const totalCapital = cashBalance + assetsValue;
+			const profitAbsolute = totalCapital - cumulativeInvested;
 
 			snapshots.push({
 				date: dateKey,
 				totalCapital,
-				cashBalance: cashState.cashBalance,
+				cashBalance,
 				assetsValue,
-				totalInvested: cashState.totalInvested,
+				totalInvested: cumulativeInvested, // <--- ЗНАЧЕНИЕ ГАРАНТИРОВАННО ПЕРЕДАЁТСЯ
 				profitAbsolute
 			});
 		}
 
 		return snapshots;
-	}
-
-	/**
-	 * Применяет одну транзакцию к денежному состоянию (cashBalance/totalInvested)
-	 * и, если это сделка, к позициям — используется при построении таймлайна.
-	 */
-	private applyTransactionToCashAndPositions(
-		cashState: CashState,
-		positions: Map<string, InternalPositionState>,
-		transaction: Transaction
-	): void {
-		switch (transaction.type) {
-			case 'CASH_IN':
-				cashState.cashBalance += transaction.totalSum;
-				cashState.totalInvested += transaction.totalSum;
-				break;
-
-			case 'CASH_OUT':
-				cashState.cashBalance -= transaction.totalSum;
-				cashState.totalInvested -= transaction.totalSum;
-				break;
-
-			case 'DIV':
-			case 'COUPON':
-				cashState.cashBalance += transaction.totalSum;
-				break;
-
-			case 'TAX':
-			case 'FEE':
-				cashState.cashBalance -= transaction.totalSum;
-				break;
-
-			case 'BUY':
-				cashState.cashBalance -= transaction.totalSum;
-				this.applyTradeToPositions(positions, transaction);
-				break;
-
-			case 'SELL':
-				cashState.cashBalance += transaction.totalSum;
-				this.applyTradeToPositions(positions, transaction);
-				break;
-
-			default:
-				console.warn(
-					`[PortfolioCalculator] Неизвестный тип транзакции "${transaction.type}", пропущена при построении таймлайна.`,
-					transaction
-				);
-		}
 	}
 
 	/**
@@ -459,59 +386,57 @@ export class PortfolioCalculator {
 		return total;
 	}
 
-	/** Приводит ISO-дату/timestamp к формату "YYYY-MM-DD". */
-		/** Приводит ISO-дату/timestamp к формату "YYYY-MM-DD". */
 	private toDateOnly(isoDate: string): string {
-		return isoDate.length >= 10 ? isoDate.slice(0, 10) : isoDate;
+		if (!isoDate) return '';
+		// Если дата содержит время через T или пробел, берём только первую часть
+		const parts = isoDate.split(/[ T]/);
+		return parts[0] || '';
 	}
 
-	/**
-	 * Строит непрерывный список дат в формате "YYYY-MM-DD" от startDate до endDate
-	 * включительно, с шагом в один день. Используется для того, чтобы график капитала
-	 * имел ровную временную ось без пропусков в днях без транзакций.
-	 */
 	private buildDateRange(startDate: string, endDate: string): string[] {
-		const dates: string[] = [];
-
-		const start = this.parseDateOnly(startDate);
-		const end = this.parseDateOnly(endDate);
-
-		if (!startDate || !endDate || startDate.length === 0 || endDate.length === 0) {
-        	return [];
-    	}
-
-		if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-			console.warn(
-				`[PortfolioCalculator] Некорректный диапазон дат для таймлайна: "${startDate}" - "${endDate}". Возвращён пустой список дат.`
-			);
-			return dates;
+		if (!startDate || !endDate) {
+			console.warn('[PortfolioCalculator] buildDateRange: пустая startDate или endDate');
+			// В крайнем случае возвращаем сегодняшнюю дату
+			const today = new Date();
+			return [this.formatDateOnly(today)];
 		}
 
-		// Защита от аномально длинного диапазона (например, из-за битой даты в транзакции
-		// вроде "2099-01-01"), чтобы не уйти в многолетний цикл и не подвесить Obsidian.
-		const MAX_DAYS = 20000; // ~54 года — с большим запасом на любой реалистичный портфель
+		// Пытаемся распарсить даты. Если не получается – используем сегодня.
+		let start = new Date(startDate);
+		let end = new Date(endDate);
+
+		if (isNaN(start.getTime())) {
+			console.warn(`[PortfolioCalculator] startDate "${startDate}" невалидна, используем сегодня`);
+			start = new Date();
+		}
+		if (isNaN(end.getTime())) {
+			console.warn(`[PortfolioCalculator] endDate "${endDate}" невалидна, используем сегодня`);
+			end = new Date();
+		}
+
+		// Если start > end, меняем местами (на всякий случай)
+		if (start.getTime() > end.getTime()) {
+			console.warn('[PortfolioCalculator] startDate > endDate, меняем местами');
+			[start, end] = [end, start];
+		}
+
+		const dates: string[] = [];
+		let cursor = new Date(start);
+		const MAX_DAYS = 20000;
 		let dayCount = 0;
 
-		const cursor = new Date(start.getTime());
 		while (cursor.getTime() <= end.getTime() && dayCount < MAX_DAYS) {
 			dates.push(this.formatDateOnly(cursor));
 			cursor.setUTCDate(cursor.getUTCDate() + 1);
 			dayCount++;
 		}
 
-		if (dayCount >= MAX_DAYS) {
-			console.warn(
-				`[PortfolioCalculator] Диапазон дат таймлайна превысил ${MAX_DAYS} дней и был обрезан. ` +
-					'Проверьте корректность дат в транзакциях.'
-			);
+		if (dates.length === 0) {
+			// Если диапазон не дал ни одной даты (например, start == end), добавляем одну точку
+			dates.push(this.formatDateOnly(start));
 		}
 
 		return dates;
-	}
-
-	/** Парсит строку "YYYY-MM-DD" в Date, зафиксированную на полночь UTC. */
-	private parseDateOnly(dateOnly: string): Date {
-		return new Date(`${dateOnly}T00:00:00.000Z`);
 	}
 
 	/** Форматирует Date обратно в строку "YYYY-MM-DD" (в UTC, чтобы избежать сдвига по часовому поясу). */

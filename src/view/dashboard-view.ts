@@ -6,7 +6,8 @@ import { DataStore } from '../data/data-store';
 import { PortfolioCalculator } from '../data/portfolio-calculator';
 import { MoexApi } from '../api/moex-api';
 import { ReportParserDispatcher } from '../parser';
-import { CapitalChart } from './capital-chart';
+import { CapitalChart, BrokerTimeline } from './capital-chart';
+import { detectInstrumentKind } from '../api/moex-api';
 
 import * as XLSX from 'xlsx';
 
@@ -155,31 +156,111 @@ export class InvestmentDashboardView extends ItemView {
 		xlsxButton.addEventListener('click', () => {
 			this.triggerSberXlsxFilePicker();
 		});
+
+		// В методе buildToolbar добавляем кнопку:
+		const tbankXlsxButton = toolbar.createEl('button', {
+			text: 'Импортировать отчёт Т-Банка (XLSX)'
+		});
+		tbankXlsxButton.addEventListener('click', () => {
+			this.triggerTBankXlsxFilePicker();
+		});
 	}
 
-	/**
-	 * Открывает диалог выбора XLSX-файла.
-	 */
-	private triggerSberXlsxFilePicker(): void {
-		if (this.isBusy) {
-			return;
-		}
-
+	// Добавляем методы в класс:
+	private triggerTBankXlsxFilePicker(): void {
+		if (this.isBusy) return;
 		const inputEl = document.createElement('input');
 		inputEl.type = 'file';
 		inputEl.accept = '.xlsx';
 		inputEl.style.display = 'none';
-
 		inputEl.addEventListener('change', () => {
 			const file = inputEl.files?.[0];
-			if (file) {
-				void this.handleSberXlsxImport(file);
-			}
+			if (file) void this.handleTBankXlsxImport(file);
 			inputEl.remove();
 		});
-
 		document.body.appendChild(inputEl);
 		inputEl.click();
+	}
+
+	private async handleTBankXlsxImport(file: File): Promise<void> {
+		this.isBusy = true;
+		this.setButtonsDisabled(true);
+		this.setStatus(`Импорт XLSX-файла Т-Банка "${file.name}"...`);
+
+		try {
+			const arrayBuffer = await this.readFileAsArrayBuffer(file);
+			const transactions = this.plugin.parserDispatcher.parseTBankXlsx(arrayBuffer);
+
+			if (transactions.length === 0) {
+				new Notice('XLSX-отчёт Т-Банка обработан, но операций не найдено.');
+				this.setStatus(`Файл "${file.name}" обработан: операций не найдено.`);
+				return;
+			}
+
+			await this.plugin.dataStore.saveTransactions(transactions);
+
+			new Notice(`Импорт XLSX-отчёта Т-Банка завершён: обработано ${transactions.length} операций.`);
+			await this.updateDashboard();
+		} catch (error) {
+			console.error('[InvestmentDashboardView] Ошибка импорта XLSX-отчёта Т-Банка.', error);
+			this.setStatus('Ошибка импорта XLSX-отчёта Т-Банка. Подробности — в консоли разработчика.');
+			new Notice('Не удалось импортировать XLSX-отчёт Т-Банка. См. консоль (Ctrl+Shift+I).');
+		} finally {
+			this.isBusy = false;
+			this.setButtonsDisabled(false);
+		}
+	}
+
+	private triggerSberXlsxFilePicker(): void {
+		if (this.isBusy) return;
+		const inputEl = document.createElement('input');
+		inputEl.type = 'file';
+		inputEl.accept = '.xlsx';
+		inputEl.style.display = 'none';
+		inputEl.addEventListener('change', () => {
+			const file = inputEl.files?.[0];
+			if (file) void this.handleSberXlsxImport(file);
+			inputEl.remove();
+		});
+		document.body.appendChild(inputEl);
+		inputEl.click();
+	}
+
+	private async handleSberXlsxImport(file: File): Promise<void> {
+		this.isBusy = true;
+		this.setButtonsDisabled(true);
+		this.setStatus(`Импорт XLSX-файла "${file.name}"...`);
+		try {
+			const arrayBuffer = await this.readFileAsArrayBuffer(file);
+			const transactions = this.parseSberXlsx(arrayBuffer);
+			if (transactions.length === 0) {
+				new Notice('XLSX-отчёт обработан, но операций не найдено.');
+				this.setStatus(`Файл "${file.name}" обработан: операций не найдено.`);
+				return;
+			}
+			await this.plugin.dataStore.saveTransactions(transactions);
+			new Notice(`Импорт XLSX-отчёта Сбера завершён: обработано ${transactions.length} операций.`);
+			await this.updateDashboard();
+		} catch (error) {
+			console.error('[InvestmentDashboardView] Ошибка импорта XLSX-отчёта Сбера.', error);
+			this.setStatus('Ошибка импорта XLSX-отчёта. Подробности — в консоли разработчика.');
+			new Notice('Не удалось импортировать XLSX-отчёт Сбера. См. консоль (Ctrl+Shift+I).');
+		} finally {
+			this.isBusy = false;
+			this.setButtonsDisabled(false);
+		}
+	}
+
+	private readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => {
+				if (reader.result instanceof ArrayBuffer) resolve(reader.result);
+				else reject(new Error('Не удалось прочитать файл как ArrayBuffer.'));
+			};
+			reader.onerror = () => reject(reader.error ?? new Error('Ошибка чтения файла.'));
+			reader.readAsArrayBuffer(file);
+		});
 	}
 
 	/** Три сводные карточки: стоимость портфеля, внесённые средства, прибыль. */
@@ -280,8 +361,21 @@ export class InvestmentDashboardView extends ItemView {
 		];
 		for (const headerText of headers) {
 			const th = headerRow.createEl('th', { text: headerText });
-			th.style.cssText =
-				'text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--background-modifier-border); color: var(--text-muted); font-weight: 500; font-size: 12px; white-space: nowrap;';
+			if (headerText === 'Название') {
+				th.style.cssText = `
+					text-align: left; padding: 6px 10px;
+					border-bottom: 1px solid var(--background-modifier-border);
+					color: var(--text-muted); font-weight: 500; font-size: 12px;
+					width: 100px; white-space: normal; word-wrap: break-word;
+				`;
+			} else {
+				th.style.cssText = `
+					text-align: left; padding: 6px 10px;
+					border-bottom: 1px solid var(--background-modifier-border);
+					color: var(--text-muted); font-weight: 500; font-size: 12px;
+					white-space: nowrap;
+				`;
+			}
 		}
 
 		this.positionsTableBodyEl = table.createEl('tbody');
@@ -298,7 +392,7 @@ export class InvestmentDashboardView extends ItemView {
 			if (transactions.length === 0) {
 				this.setStatus('Нет сохранённых транзакций. Синхронизируйтесь с Т-Банком или импортируйте отчёт Сбера.');
 				this.renderSummaryCards([], [], []);
-				this.renderChart([], []);
+				this.renderChart([], [], []);
 				this.renderPositionsTable([]);
 				return;
 			}
@@ -313,27 +407,55 @@ export class InvestmentDashboardView extends ItemView {
 			);
 
 			const moexPrices = await this.plugin.moexApi.fetchCurrentPrices(uniqueTickers);
+			console.log('[DASHBOARD] Цены от MOEX:', moexPrices);
 
+			// --- Блок fallback для тикеров, отсутствующих в MOEX ---
 			const missingTickers = uniqueTickers.filter((ticker) => !moexPrices.has(ticker));
+			console.log('[Dashboard] Отсутствующие тикеры:', missingTickers);
 			if (missingTickers.length > 0 && this.plugin.settings.tbankApiToken) {
+				// Сначала собираем FIGI из транзакций
 				const figiByTicker = new Map<string, string>();
+				console.log('[Dashboard] FIGI по тикерам:', figiByTicker);
 				for (const t of transactions) {
 					if (missingTickers.includes(t.ticker) && t.figi) {
 						figiByTicker.set(t.ticker, t.figi);
 					}
 				}
 
+				// Для тикеров, у которых нет FIGI, пытаемся получить его через T-Invest API
+				const figiRequests: Promise<void>[] = [];
+				for (const ticker of missingTickers) {
+					if (!figiByTicker.has(ticker)) {
+						figiRequests.push((async () => {
+							const resolvedFigi = await this.plugin.parserDispatcher.resolveTBankFigi(
+								this.plugin.settings.tbankApiToken,
+								ticker
+							);
+							if (resolvedFigi) {
+								figiByTicker.set(ticker, resolvedFigi);
+							}
+						})());
+					}
+				}
+				await Promise.all(figiRequests);
+
+				// Теперь запрашиваем цены по полученным FIGI
 				const figiList = Array.from(figiByTicker.values());
 				if (figiList.length > 0) {
 					const tbankPrices = await this.plugin.parserDispatcher.fetchTBankLastPrices(
 						this.plugin.settings.tbankApiToken,
 						figiList
 					);
-
+					console.log('[Dashboard] Цены от T-Invest:', tbankPrices);
 					for (const [ticker, figi] of figiByTicker.entries()) {
 						const price = tbankPrices.get(figi);
 						if (price != null) {
-							moexPrices.set(ticker, { price, instrumentKind: 'FUND' });
+							const kind = detectInstrumentKind(ticker);
+							if (kind === 'BOND') {
+								// Для облигаций не добавляем, т.к. нет номинала – оставляем прочерк
+								continue;
+							}
+							moexPrices.set(ticker, { price, instrumentKind: kind });
 						}
 					}
 				}
@@ -344,9 +466,24 @@ export class InvestmentDashboardView extends ItemView {
 				moexPrices
 			);
 			const timeline = this.portfolioCalculator.generateCapitalTimeline(transactions);
+			const brokerTimelines = this.portfolioCalculator.generateBrokerTimelines(transactions);
+
+			// Если таймлайн пуст, создаём минимальную точку
+			if (timeline.length === 0 && transactions.length > 0) {
+				console.warn('[Dashboard] Таймлайн пуст, создаём искусственную точку');
+				const totalInvested = this.portfolioCalculator.calculateTotalInvested(transactions);
+				timeline.push({
+					date: new Date().toISOString().slice(0, 10),
+					totalCapital: totalInvested,
+					cashBalance: totalInvested,
+					assetsValue: 0,
+					totalInvested: totalInvested,
+					profitAbsolute: 0
+				});
+			}
 
 			this.renderSummaryCards(positions, timeline, transactions);
-			this.renderChart(timeline, transactions);
+			this.renderChart(timeline, positions, brokerTimelines);
 			this.renderPositionsTable(positions);
 
 			this.setStatus(`Данные обновлены: ${new Date().toLocaleString('ru-RU')}.`);
@@ -398,6 +535,8 @@ export class InvestmentDashboardView extends ItemView {
 
 			const transactions = await this.plugin.parserDispatcher.fetchTBankApi(token, fromDate, toDate);
 
+			console.log('[Dashboard] Сохраняем транзакции, количество:', transactions.length);
+
 			await this.plugin.dataStore.saveTransactions(transactions);
 
 			this.plugin.settings.lastSyncDate = toDate;
@@ -415,43 +554,76 @@ export class InvestmentDashboardView extends ItemView {
 		}
 	}
 
-	/**
-	 * Определяет нижнюю границу для первой синхронизации: явно заданную пользователем
-	 * дату открытия счёта (syncFromDate), а если она не задана — консервативный дефолт
-	 * "3 года назад". Указание реальной даты открытия счёта резко снижает число чанков
-	 * и, соответственно, число запросов к T-Invest API (что напрямую влияет на риск 429).
-	 */
 	private resolveInitialSyncFromDate(): string {
 		const configured = this.plugin.settings.syncFromDate;
 		if (configured && configured.trim().length > 0) {
 			const parsed = new Date(configured);
 			if (!Number.isNaN(parsed.getTime())) {
-				return parsed.toISOString();
+				// обрезаем миллисекунды
+				return parsed.toISOString().replace(/\.\d+Z$/, 'Z');
 			}
-			console.warn(
-				`[InvestmentDashboardView] Некорректный формат "Синхронизировать с даты": "${configured}". Используется дефолт (3 года назад).`
-			);
 		}
-		return new Date(Date.now() - 3 * 365 * 24 * 60 * 60 * 1000).toISOString();
+		return new Date(Date.now() - 3 * 365 * 24 * 60 * 60 * 1000)
+			.toISOString()
+			.replace(/\.\d+Z$/, 'Z');
 	}
 
-	/**
-	 * Парсит бинарный XLSX-файл отчёта Сбера.
-	 * Извлекает сделки из листа "Сделки" и денежные операции из листа "Движение ДС".
-	 */
 	private parseSberXlsx(buffer: ArrayBuffer): Transaction[] {
 		const workbook = XLSX.read(new Uint8Array(buffer), { type: 'array' });
 		const transactions: Transaction[] = [];
 
+		// 1. Сначала объявляем парсинг строковой даты (ISO или русский формат)
+		const parseSberDateString = (str: string): string => {
+			const trimmed = str.trim();
+			// ISO: YYYY-MM-DD (с временем или без)
+			const isoMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})/);
+			if (isoMatch) return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
+			// Русский: DD.MM.YYYY
+			const ruMatch = trimmed.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+			if (ruMatch) return `${ruMatch[3]}-${ruMatch[2]}-${ruMatch[1]}`;
+			return trimmed.slice(0, 10);
+		};
+
+		// 2. Функция преобразования Excel serial (число или строка-число)
+		const excelSerialToDate = (val: any): string => {
+			let serial: number;
+			if (typeof val === 'number') {
+				serial = val;
+			} else if (typeof val === 'string') {
+				const trimmed = val.trim();
+				if (!trimmed) return '';
+				const parsed = parseFloat(trimmed);
+				if (!isNaN(parsed)) {
+					serial = parsed;
+				} else {
+					// Не число — пробуем распарсить как строку даты
+					return parseSberDateString(trimmed); // <--- без this
+				}
+			} else {
+				return '';
+			}
+
+			const utcDays = serial - 25569;
+			const ms = utcDays * 86400 * 1000;
+			const date = new Date(ms);
+			if (isNaN(date.getTime())) return '';
+			return date.toISOString().split('T')[0];
+		};
+
+		// 3. Универсальное получение даты из ячейки
+		const getDate = (val: any): string => {
+			if (val == null) return '';
+			return excelSerialToDate(val);
+		};
+
 		// ------------------------------------------------------------
-		// 1. Парсинг листа "Сделки"
+		// 1. Лист "Сделки"
 		// ------------------------------------------------------------
 		const tradesSheet = workbook.Sheets['Сделки'];
 		if (tradesSheet) {
-			// Используем raw: false, чтобы все значения приводились к строкам
 			const rows = XLSX.utils.sheet_to_json<Record<string, any>>(tradesSheet, { defval: '', raw: false });
 			for (const row of rows) {
-				const dateStr = String(row['Дата заключения'] || '').trim();
+				const dateStr = getDate(row['Дата заключения']);
 				const ticker = String(row['Код финансового инструмента'] || '').trim();
 				const operation = String(row['Операция'] || '').trim();
 				const quantity = parseFloat(String(row['Количество'] || '0'));
@@ -469,13 +641,10 @@ export class InvestmentDashboardView extends ItemView {
 				else if (opLower.includes('продажа')) type = 'SELL';
 				if (!type) continue;
 
-				const isoDate = this.normalizeSberDate(dateStr);
-				if (!isoDate) continue;
-
-				const tradeId = String(row['Номер сделки'] || '').trim() || `${isoDate}-${ticker}-${quantity}`;
+				const tradeId = String(row['Номер сделки'] || '').trim() || `${dateStr}-${ticker}-${quantity}`;
 				transactions.push({
 					id: `sber-xlsx-trade-${tradeId}`,
-					date: isoDate,
+					date: dateStr,
 					broker: 'sber',
 					ticker: ticker.toUpperCase(),
 					shareName: ticker.toUpperCase(),
@@ -483,19 +652,20 @@ export class InvestmentDashboardView extends ItemView {
 					amount: Math.abs(quantity),
 					price: Math.abs(price),
 					totalSum: Math.abs(volume) || Math.abs(quantity * price),
-					currency: currency.toUpperCase()
+					currency: currency.toUpperCase(),
+					tradeId: tradeId || undefined
 				});
 			}
 		}
 
 		// ------------------------------------------------------------
-		// 2. Парсинг листа "Движение ДС"
+		// 2. Лист "Движение ДС"
 		// ------------------------------------------------------------
 		const cashSheet = workbook.Sheets['Движение ДС'];
 		if (cashSheet) {
 			const rows = XLSX.utils.sheet_to_json<Record<string, any>>(cashSheet, { defval: '', raw: false });
 			for (const row of rows) {
-				const dateStr = String(row['Дата исполнения поручения'] || '').trim();
+				const dateStr = getDate(row['Дата исполнения поручения']);
 				const operationText = String(row['Операция'] || '').trim();
 				const ticker = String(row['Код финансового инструмента'] || 'RUB').trim();
 				const sum = parseFloat(String(row['Сумма'] || '0'));
@@ -521,12 +691,9 @@ export class InvestmentDashboardView extends ItemView {
 					continue;
 				}
 
-				const isoDate = this.normalizeSberDate(dateStr);
-				if (!isoDate) continue;
-
 				transactions.push({
-					id: `sber-xlsx-cash-${isoDate}-${type}-${sum}`,
-					date: isoDate,
+					id: `sber-xlsx-cash-${dateStr}-${type}-${sum}`,
+					date: dateStr,
 					broker: 'sber',
 					ticker: ticker.toUpperCase(),
 					shareName: ticker === 'RUB' ? 'RUB' : ticker.toUpperCase(),
@@ -543,124 +710,63 @@ export class InvestmentDashboardView extends ItemView {
 		return transactions;
 	}
 
-	/**
-	 * Приводит дату из XLSX-отчёта Сбера к ISO-формату YYYY-MM-DD.
-	 * Поддерживает форматы:
-	 *   - "2026-07-18 15:28:08" -> "2026-07-18"
-	 *   - "2026-07-18" -> "2026-07-18"
-	 *   - "18.07.2026" -> "2026-07-18"
-	 */
-	private normalizeSberDate(dateStr: string): string {
-		const trimmed = dateStr.trim();
-		if (!trimmed) return '';
-
-		// ISO: YYYY-MM-DD (опционально с временем)
-		const isoMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})/);
-		if (isoMatch) {
-			return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
-		}
-
-		// Русский: DD.MM.YYYY
-		const ruMatch = trimmed.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-		if (ruMatch) {
-			return `${ruMatch[3]}-${ruMatch[2]}-${ruMatch[1]}`;
-		}
-
-		return trimmed.slice(0, 10);
-	}
-
-	private async handleSberXlsxImport(file: File): Promise<void> {
-		this.isBusy = true;
-		this.setButtonsDisabled(true);
-		this.setStatus(`Импорт XLSX-файла "${file.name}"...`);
-
-		try {
-			const arrayBuffer = await this.readFileAsArrayBuffer(file);
-			const transactions = this.parseSberXlsx(arrayBuffer);
-
-			if (transactions.length === 0) {
-				new Notice('XLSX-отчёт обработан, но операций не найдено.');
-				this.setStatus(`Файл "${file.name}" обработан: операций не найдено.`);
-				return;
-			}
-
-			await this.plugin.dataStore.saveTransactions(transactions);
-
-			new Notice(`Импорт XLSX-отчёта Сбера завершён: обработано ${transactions.length} операций.`);
-			await this.updateDashboard();
-		} catch (error) {
-			console.error('[InvestmentDashboardView] Ошибка импорта XLSX-отчёта Сбера.', error);
-			this.setStatus('Ошибка импорта XLSX-отчёта. Подробности — в консоли разработчика.');
-			new Notice('Не удалось импортировать XLSX-отчёт Сбера. См. консоль (Ctrl+Shift+I).');
-		} finally {
-			this.isBusy = false;
-			this.setButtonsDisabled(false);
-		}
-	}
-
-	private readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
-		return new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.onload = () => {
-				if (reader.result instanceof ArrayBuffer) {
-					resolve(reader.result);
-				} else {
-					reject(new Error('Не удалось прочитать файл как ArrayBuffer.'));
-				}
-			};
-			reader.onerror = () => reject(reader.error ?? new Error('Ошибка чтения файла.'));
-			reader.readAsArrayBuffer(file);
-		});
-	}
-
 	// ---------------------------------------------------------------------------
 	// Рендеринг динамических данных
 	// ---------------------------------------------------------------------------
-
-
-		private renderSummaryCards(positions: Position[], timeline: PortfolioSnapshot[], transactions: Transaction[]): void {
-		const assetsMarketValue = positions.reduce((sum, p) => sum + p.currentTotal, 0);
-		const lastSnapshot = timeline.length > 0 ? timeline[timeline.length - 1] : null;
-		const cashBalance = lastSnapshot?.cashBalance ?? 0;
+	private renderSummaryCards(positions: Position[], timeline: PortfolioSnapshot[], transactions: Transaction[]): void {
 		const totalInvested = this.portfolioCalculator.calculateTotalInvested(transactions);
 
-		const totalCapital = assetsMarketValue + cashBalance;
-		const profitAbsolute = totalCapital - totalInvested;
-		const profitPercent = totalInvested > 0 ? (profitAbsolute / totalInvested) * 100 : 0;
+		// Разделяем позиции на корректные и проблемные
+		const correctPositions = positions.filter(p => p.hasMarketPrice);
+		const problemPositions = positions.filter(p => !p.hasMarketPrice);
 
-		// Обновляем основные значения.
+		// Сумма, вложенная в проблемные позиции (по средней цене)
+		const investedInProblem = problemPositions.reduce((sum, p) => sum + p.amount * p.averagePrice, 0);
+		const correctInvested = totalInvested - investedInProblem;
+
+		// Рыночная стоимость только корректных позиций
+		const marketValueCorrect = correctPositions.reduce((sum, p) => sum + p.currentTotal, 0);
+		// Кэш-баланс (остаётся без изменений)
+		const lastSnapshot = timeline.length > 0 ? timeline[timeline.length - 1] : null;
+		const cashBalance = lastSnapshot?.cashBalance ?? 0;
+		const totalCapital = marketValueCorrect + cashBalance;
+
+		// Прибыль = рыночная стоимость корректных позиций + кэш - корректные внесённые
+		const profitAbsolute = totalCapital - correctInvested;
+		const profitPercent = correctInvested > 0 ? (profitAbsolute / correctInvested) * 100 : 0;
+
+		// --- Карточка "Текущая стоимость портфеля" ---
 		if (this.summaryCapitalValueEl) {
 			this.summaryCapitalValueEl.empty();
 			this.summaryCapitalValueEl.createSpan({ text: formatMoney(totalCapital) });
-			this.renderBrokerDropdown(
-				this.summaryCapitalValueEl,
-				transactions,
-				positions,
-				'currentValue'
-			);
+			// Дропдаун по брокерам (передаём только корректные позиции)
+			this.renderBrokerDropdown(this.summaryCapitalValueEl, transactions, correctPositions, 'currentValue');
 		}
 
+		// --- Карточка "Всего внесено средств" (с двумя цифрами) ---
 		if (this.summaryInvestedValueEl) {
 			this.summaryInvestedValueEl.empty();
-			this.summaryInvestedValueEl.createSpan({ text: formatMoney(totalInvested) });
-			this.renderBrokerDropdown(
-				this.summaryInvestedValueEl,
-				transactions,
-				positions,
-				'totalInvested'
-			);
+			const span = this.summaryInvestedValueEl.createSpan({
+				text: `${formatMoney(correctInvested)} (Общая: ${formatMoney(totalInvested)})`
+			});
+			span.style.fontSize = '14px';
+			span.style.fontWeight = '500';
+			// Дропдаун по брокерам – только корректные позиции
+			this.renderBrokerDropdown(this.summaryInvestedValueEl, transactions, correctPositions, 'totalInvested');
 		}
 
+		// --- Карточка "Общая прибыль" ---
 		if (this.summaryProfitValueEl) {
 			this.summaryProfitValueEl.empty();
-			const span = this.summaryProfitValueEl.createSpan({ text: `${formatMoney(profitAbsolute)} (${formatPercent(profitPercent)})` });
-			span.style.color = profitAbsolute >= 0 ? 'var(--text-success, #4caf50)' : 'var(--text-error, #e53935)';
-			this.renderBrokerDropdown(
-				this.summaryProfitValueEl,
-				transactions,
-				positions,
-				'profit'
-			);
+			if (correctPositions.length > 0) {
+				const span = this.summaryProfitValueEl.createSpan({
+					text: `${formatMoney(profitAbsolute)} (${formatPercent(profitPercent)})`
+				});
+				span.style.color = profitAbsolute >= 0 ? 'var(--text-success, #4caf50)' : 'var(--text-error, #e53935)';
+				this.renderBrokerDropdown(this.summaryProfitValueEl, transactions, correctPositions, 'profit');
+			} else {
+				this.summaryProfitValueEl.createSpan({ text: '—' });
+			}
 		}
 	}
 
@@ -718,14 +824,28 @@ export class InvestmentDashboardView extends ItemView {
 		});
 	}
 
-	private renderChart(timeline: PortfolioSnapshot[], transactions: Transaction[]): void {
-		if (!this.chartContainerEl) { return; }
+	private renderChart(
+		timeline: PortfolioSnapshot[],
+		positions: Position[],
+		brokerTimelines: BrokerTimeline[]
+	): void {
+		if (!this.chartContainerEl) {
+			return;
+		}
+
+		// Считаем рыночную стоимость только корректных позиций (с hasMarketPrice = true)
+		const correctPositions = positions.filter(p => p.hasMarketPrice);
+		const currentMarketValue = correctPositions.length > 0
+			? correctPositions.reduce((sum, p) => sum + p.currentTotal, 0)
+			: null;
+
 		this.capitalChart?.destroy();
-		
-		// Генерируем таймлайны по каждому брокеру
-		const brokerTimelines = this.portfolioCalculator.generateBrokerTimelines(transactions);
-		
-		this.capitalChart = new CapitalChart(this.chartContainerEl, timeline, brokerTimelines);
+		this.capitalChart = new CapitalChart(
+			this.chartContainerEl,
+			timeline,
+			brokerTimelines,
+			currentMarketValue // если null, пунктирная линия не рисуется
+		);
 		this.capitalChart.render();
 	}
 
@@ -747,10 +867,8 @@ export class InvestmentDashboardView extends ItemView {
 		// Сортировка: сначала все позиции одного брокера, затем другого,
 		// внутри группы — по убыванию стоимости.
 		const sorted = [...positions].sort((a, b) => {
-			const aBroker = a.brokerBreakdown[0]?.broker ?? 'tbank';
-			const bBroker = b.brokerBreakdown[0]?.broker ?? 'tbank';
-			if (aBroker !== bBroker) {
-				return aBroker === 'tbank' ? -1 : 1;
+			if (a.hasMarketPrice !== b.hasMarketPrice) {
+				return a.hasMarketPrice ? -1 : 1;
 			}
 			return b.currentTotal - a.currentTotal;
 		});
@@ -764,6 +882,11 @@ export class InvestmentDashboardView extends ItemView {
 
 			// Основная строка.
 			const row = this.positionsTableBodyEl.createEl('tr');
+			if (!position.hasMarketPrice) {
+				row.style.color = 'var(--text-error, #e53935)'; // красный текст
+				row.style.backgroundColor = 'rgba(229, 57, 53, 0.08)'; // лёгкий красный фон (опционально)
+			}
+			// дальше как обычно
 			row.style.cursor = hasMultiple ? 'pointer' : 'default';
 
 			// Цвет строки только если позиция в одном брокере.
@@ -777,17 +900,36 @@ export class InvestmentDashboardView extends ItemView {
 				: (position.brokerBreakdown[0]?.broker === 'tbank' ? 'Т-Банк' : 'Сбер');
 
 			this.createTableCell(row, position.ticker, true);
-			this.createTableCell(row, position.shareName);
+			
+			// Ячейка с названием (многострочная, с ограничением ширины)
+			const nameCell = this.createTableCell(row, position.shareName);
+			nameCell.style.maxWidth = '200px';
+			nameCell.style.whiteSpace = 'normal';
+			nameCell.style.wordWrap = 'break-word';
+			// title можно оставить для полного отображения при наведении
+			nameCell.title = position.shareName;
+
 			this.createTableCell(row, brokerText);
 			this.createTableCell(row, formatAmount(position.amount));
 			this.createTableCell(row, formatMoney(position.averagePrice));
-			this.createTableCell(row, formatMoney(position.currentPrice));
-			this.createTableCell(row, formatMoney(position.currentTotal));
+
+			// Текущая цена MOEX
+			const priceText = position.hasMarketPrice ? formatMoney(position.currentPrice) : '—';
+			this.createTableCell(row, priceText);
+
+			// Стоимость
+			const costText = position.hasMarketPrice ? formatMoney(position.currentTotal) : '—';
+			this.createTableCell(row, costText);
+
+			// Доля в портфеле (не зависит от цен)
 			this.createTableCell(row, `${position.shareInPortfolio.toFixed(2)}%`);
 
-			const profitCell = this.createTableCell(row, formatPercent(position.profitPercent));
-			profitCell.style.color =
-				position.profitPercent >= 0 ? 'var(--text-success, #4caf50)' : 'var(--text-error, #e53935)';
+			// Профит (%)
+			const profitText = position.hasMarketPrice ? formatPercent(position.profitPercent) : '—';
+			const profitCell = this.createTableCell(row, profitText);
+			if (position.hasMarketPrice) {
+				profitCell.style.color = position.profitPercent >= 0 ? 'var(--text-success, #4caf50)' : 'var(--text-error, #e53935)';
+			}
 
 			// Раскрывающиеся подстроки для позиций в обоих брокерах.
 			if (hasMultiple) {
@@ -828,10 +970,10 @@ export class InvestmentDashboardView extends ItemView {
 		}
 	}
 
-	/** Создаёт одну ячейку таблицы с базовыми стилями. */
 	private createTableCell(row: HTMLTableRowElement, text: string, emphasized = false): HTMLElement {
 		const cell = row.createEl('td', { text });
-		cell.style.cssText = `padding: 6px 10px; border-bottom: 1px solid var(--background-modifier-border); color: var(--text-normal); ${
+		// Добавили user-select: text и -webkit-user-select: text
+		cell.style.cssText = `padding: 6px 10px; border-bottom: 1px solid var(--background-modifier-border); color: var(--text-normal); user-select: text; -webkit-user-select: text; ${
 			emphasized ? 'font-weight: 600;' : ''
 		}`;
 		return cell;

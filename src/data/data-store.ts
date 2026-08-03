@@ -61,6 +61,11 @@ export class DataStore {
 	 * чтобы избежать ложных расхождений из-за погрешностей float).
 	 */
 	public async saveTransactions(newTransactions: Transaction[]): Promise<void> {
+		console.log('[DataStore] saveTransactions вызван! Количество транзакций:', newTransactions.length);
+		if (newTransactions.length > 0) {
+			console.log('[DataStore] Первая транзакция:', newTransactions[0]);
+		}
+
 		if (!newTransactions || newTransactions.length === 0) {
 			return;
 		}

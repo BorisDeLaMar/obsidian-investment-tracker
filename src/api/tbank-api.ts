@@ -451,7 +451,7 @@ export class TBankApi {
 	private static readonly MAX_RATE_LIMIT_RETRIES = 5;
 
 	/** Базовая задержка для экспоненциального backoff при 429 (удваивается с каждой попыткой). */
-	private static readonly RATE_LIMIT_BASE_DELAY_MS = 5000;
+	private static readonly RATE_LIMIT_BASE_DELAY_MS = 10000;
 
 	private readonly instrumentCache: Map<string, ResolvedInstrument> = new Map();
 	private accountIdCache: string | null = null;
@@ -485,41 +485,40 @@ export class TBankApi {
 		toDate: string
 	): Promise<Transaction[]> {
 		if (!token || token.trim().length === 0) {
-			throw new TBankApiError(
-				'Токен T-Invest API не задан. Укажите его в настройках плагина.'
-			);
+			throw new TBankApiError('Токен T-Invest API не задан.');
 		}
 
 		const fromMs = new Date(fromDate).getTime();
 		const toMs = new Date(toDate).getTime();
-
 		if (Number.isNaN(fromMs) || Number.isNaN(toMs)) {
-			throw new TBankApiError(
-				`Некорректный формат дат периода синхронизации: from="${fromDate}", to="${toDate}".`
-			);
+			throw new TBankApiError(`Некорректный формат дат: from="${fromDate}", to="${toDate}".`);
 		}
 
-		// Период нулевой или отрицательной длины — типичная ситуация при повторном нажатии
-		// "Синхронизировать" в тот же день сразу после успешной синхронизации: lastSyncDate
-		// (использованный как fromDate) уже равен верхней границе toDate, так как новый
-		// полностью закрытый расчётный день ещё не наступил. Это не ошибка, а штатный
-		// случай "синхронизировать нечего" — обращаться к API не нужно.
 		if (fromMs >= toMs) {
-			console.log(
-				`[TBankApi] Период синхронизации пуст (from="${fromDate}" >= to="${toDate}"). ` +
-					'Скорее всего, с момента последней синхронизации ещё не наступил новый ' +
-					'полностью завершённый день. Запрос к API пропущен.'
-			);
+			console.log('[TBankApi] Период синхронизации пуст, пропущено.');
 			return [];
 		}
 
 		const accountId = await this.resolveAccountId(token);
 		console.debug(`[TBankApi] Используется accountId: "${accountId}"`);
 
-		const [trades, nonTradeOperations] = await Promise.all([
-			this.fetchTrades(token, accountId, fromDate, toDate),
-			this.fetchNonTradeOperations(token, accountId, fromDate, toDate)
-		]);
+		// --- Заменяем Promise.all на поочерёдные вызовы с защитой ---
+		let trades: Transaction[] = [];
+		let nonTradeOperations: Transaction[] = [];
+
+		try {
+			trades = await this.fetchTrades(token, accountId, fromDate, toDate);
+		} catch (error) {
+			console.warn('[TBankApi] Ошибка получения сделок, пропускаем:', error);
+		}
+
+		try {
+			nonTradeOperations = await this.fetchNonTradeOperations(token, accountId, fromDate, toDate);
+		} catch (error) {
+			console.warn('[TBankApi] Ошибка получения операций, пропускаем:', error);
+		}
+
+		console.log(`[TBankApi] fetchBrokerReport возвращает ${trades.length} сделок и ${nonTradeOperations.length} операций`);
 
 		return this.mergeTransactions(trades, nonTradeOperations);
 	}
@@ -636,11 +635,6 @@ export class TBankApi {
 		);
 	}
 
-	/**
-	 * Разбивает диапазон [fromDate, toDate] на последовательные под-периоды длиной
-	 * не более maxDays дней каждый (включительно), чтобы обойти ограничение
-	 * GetBrokerReport/GetOperations на максимальную длину запрашиваемого периода.
-	 */
 	private splitDateRangeIntoChunks(
 		fromDate: string,
 		toDate: string,
@@ -648,33 +642,35 @@ export class TBankApi {
 	): Array<{ from: string; to: string }> {
 		const chunks: Array<{ from: string; to: string }> = [];
 
+		// Приводим к началу дня в UTC
 		const start = new Date(fromDate);
+		start.setUTCHours(0, 0, 0, 0);
 		const end = new Date(toDate);
+		end.setUTCHours(0, 0, 0, 0);
 
-		if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()) || start.getTime() > end.getTime()) {
-			console.warn(
-				`[TBankApi] Некорректный диапазон дат для запроса отчёта: "${fromDate}" - "${toDate}". ` +
-					'Запрос будет выполнен как есть, без разбиения на чанки.'
-			);
-			return [{ from: fromDate, to: toDate }];
-		}
-
-		const maxChunkMs = maxDays * 24 * 60 * 60 * 1000;
 		let chunkStart = start.getTime();
 		const endMs = end.getTime();
+		const maxChunkMs = maxDays * 24 * 60 * 60 * 1000;
 
-		while (chunkStart <= endMs) {
+		while (chunkStart < endMs) {
 			const chunkEnd = Math.min(chunkStart + maxChunkMs, endMs);
-			chunks.push({
-				from: new Date(chunkStart).toISOString(),
-				to: new Date(chunkEnd).toISOString()
-			});
 
-			if (chunkEnd >= endMs) {
-				break;
+			// from — всегда начало дня (без миллисекунд)
+			const fromStr = new Date(chunkStart).toISOString().replace(/\.\d+Z$/, 'Z');
+			
+			// to — конец дня (23:59:59, без миллисекунд)
+			const toDateObj = new Date(chunkEnd);
+			toDateObj.setUTCHours(23, 59, 59, 0);
+			const toStr = toDateObj.toISOString().replace(/\.\d+Z$/, 'Z');
+
+			// Убеждаемся, что from строго меньше to (хотя бы 1 секунда разницы)
+			if (new Date(fromStr).getTime() < new Date(toStr).getTime()) {
+				chunks.push({ from: fromStr, to: toStr });
 			}
 
-			chunkStart = chunkEnd + 1;
+			// Переходим на следующий день
+			if (chunkEnd >= endMs) break;
+			chunkStart = chunkEnd + 1; 
 		}
 
 		return chunks;
@@ -697,14 +693,19 @@ export class TBankApi {
 
 		const allTransactions: Transaction[] = [];
 
+		// Внутри fetchTrades, перед циклом по чанкам:
+		if (periodChunks.length === 0) {
+			console.log('[TBankApi] Нет допустимых чанков, синхронизация пропущена.');
+			return [];
+		}
+
 		for (const chunk of periodChunks) {
-			console.log(`[TBankApi] Обрабатывается чанк: ${chunk.from} - ${chunk.to}`);
 			try {
+				console.log(`[TBankApi] Обрабатывается чанк: ${chunk.from} - ${chunk.to}`);
 				const generationResult = await this.requestReportGeneration(token, accountId, chunk.from, chunk.to);
 
 				let firstPage: GetBrokerReportResponseBody['getBrokerReportResponse'];
 				let taskId: string | null = null;
-
 				if ('taskId' in generationResult) {
 					taskId = generationResult.taskId;
 					firstPage = await this.pollReportUntilReady(token, taskId);
@@ -717,23 +718,18 @@ export class TBankApi {
 					rows = await this.fetchRemainingPages(token, taskId, firstPage);
 				} else {
 					rows = [...(firstPage.brokerReport ?? [])];
-					if ((firstPage.pagesCount ?? 1) > 1) {
-						console.warn(
-							'[TBankApi] Отчёт пришёл синхронно сразу с несколькими страницами, но без taskId — ' +
-								'догрузить оставшиеся страницы невозможно. Обработана только первая страница.'
-						);
-					}
 				}
 
 				allTransactions.push(...this.mapTradeRowsToTransactions(rows));
+
 			} catch (error) {
 				if (this.isNoDataForPeriodError(error)) {
-					console.log(
-						`[TBankApi] Нет данных по сделкам за период ${chunk.from} - ${chunk.to} (счёт ещё не был активен). Пропущено.`
-					);
+					console.log(`[TBankApi] Нет данных за период ${chunk.from} - ${chunk.to} (пропущено).`);
 					continue;
 				}
-				throw error;
+				// ВАЖНО: Логируем ошибку, но НЕ прерываем цикл — продолжаем с другими чанками!
+				console.error(`[TBankApi] Ошибка при обработке чанка ${chunk.from} - ${chunk.to}:`, error);
+				continue;
 			}
 		}
 
@@ -968,12 +964,7 @@ export class TBankApi {
 					to: chunk.to,
 					state: 'OPERATION_STATE_EXECUTED'
 				};
-
-				const responseBody = await this.callMethod<unknown>(
-					token,
-					TBankApi.OPERATIONS_METHOD_PATH,
-					requestBody
-				);
+				const responseBody = await this.callMethod<unknown>(token, TBankApi.OPERATIONS_METHOD_PATH, requestBody);
 
 				if (!isOperationsResponse(responseBody)) {
 					throw new TBankApiError(
@@ -1033,12 +1024,11 @@ export class TBankApi {
 				}
 			} catch (error) {
 				if (this.isNoDataForPeriodError(error)) {
-					console.log(
-						`[TBankApi] Нет данных по операциям за период ${chunk.from} - ${chunk.to} (счёт ещё не был активен). Пропущено.`
-					);
+					console.log(`[TBankApi] Нет данных по операциям за ${chunk.from} - ${chunk.to}`);
 					continue;
 				}
-				throw error;
+				console.error(`[TBankApi] Ошибка получения операций за чанк ${chunk.from} - ${chunk.to}:`, error);
+				continue; // <--- НЕ БРОСАЕМ ОШИБКУ!
 			}
 		}
 
@@ -1285,6 +1275,36 @@ export class TBankApi {
 				`Не удалось разобрать JSON-ответ T-Invest API для метода ${methodPath}.`,
 				error
 			);
+		}
+	}
+
+	public async resolveFigiByTicker(token: string, ticker: string): Promise<string | null> {
+		// Нормализуем: убираем суффикс @ и пробелы
+		const cleanTicker = ticker.replace(/@$/, '').trim();
+		if (!cleanTicker) return null;
+
+		// В API для ISIN тоже используется тип TICKER (но можно попробовать FIGI, если есть)
+		// T-Invest API часто резолвит ISIN через поле ticker.
+		
+		try {
+			const requestBody: InstrumentRequestBody = {
+				idType: 'INSTRUMENT_ID_TYPE_TICKER',
+				id: cleanTicker
+			};
+			const responseBody = await this.callMethod<unknown>(
+				token,
+				TBankApi.GET_INSTRUMENT_BY_METHOD_PATH,
+				requestBody
+			);
+			if (isInstrumentResponse(responseBody) && responseBody.instrument) {
+				const figi = responseBody.instrument.figi ?? null;
+				console.log(`[TBankApi] Резолвинг FIGI для ${ticker} -> ${figi}`);
+				return figi;
+			}
+			return null;
+		} catch (error) {
+			console.warn(`[TBankApi] Не удалось получить FIGI для тикера "${ticker}":`, error);
+			return null;
 		}
 	}
 }

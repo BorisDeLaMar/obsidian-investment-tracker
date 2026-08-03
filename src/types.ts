@@ -1,5 +1,4 @@
 	// src/types.ts
-
 /**
  * Брокер, из отчёта которого получена транзакция.
  */
@@ -56,6 +55,7 @@ export interface Position {
 	instrumentKind?: InstrumentKind;
 		/** Разбивка позиции по брокерам — всегда непустой массив (1 или 2 элемента). */
 	brokerBreakdown: BrokerSubPosition[];
+	hasMarketPrice: boolean;
 }
 
 /**
