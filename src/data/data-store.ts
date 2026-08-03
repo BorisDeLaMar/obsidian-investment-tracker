@@ -228,7 +228,7 @@ export class DataStore {
 	// ---------------------------------------------------------------------------
 
 	private buildDedupKey(transaction: Transaction): string {
-		// 1. Если есть tradeId (например, из XLSX) — используем его как самый надёжный ключ
+		// 1. Если есть tradeId – используем его как самый надёжный ключ
 		if (transaction.tradeId) {
 			return `${transaction.broker}|TRADE|${transaction.tradeId}`;
 		}
@@ -236,17 +236,20 @@ export class DataStore {
 		const isoDate = transaction.date ?? '';
 		const dateOnly = isoDate.length >= 10 ? isoDate.slice(0, 10) : isoDate;
 		const normalizedTicker = (transaction.ticker ?? '').trim().toUpperCase();
+		// Добавляем название (shareName) для надёжности, приводим к нижнему регистру, удаляем лишние пробелы
+		const normalizedName = (transaction.shareName ?? '').trim().toLowerCase();
 
-		// 2. Если это сделка BUY/SELL, но у неё нет tradeId (например, из старого HTML),
-		// создаём ключ из даты, брокера, тикера, направления, КОЛИЧЕСТВА и ЦЕНЫ.
-		// Это гарантирует уникальность даже без номера сделки.
+		// 2. Для сделок BUY/SELL – максимально детальный ключ
 		if (transaction.type === 'BUY' || transaction.type === 'SELL') {
 			const amountRounded = Math.round((transaction.amount || 0) * 100) / 100;
 			const priceRounded = Math.round((transaction.price || 0) * 100) / 100;
-			return `${dateOnly}|${transaction.broker}|${normalizedTicker}|${transaction.type}|${amountRounded}|${priceRounded}`;
+			// Время, если есть, добавляем в формате HH:MM:SS
+			const timePart = transaction.time ? `|${transaction.time}` : '';
+			// Название включаем для дополнительной защиты от коллизий
+			return `${dateOnly}${timePart}|${transaction.broker}|${normalizedTicker}|${normalizedName}|${transaction.type}|${amountRounded}|${priceRounded}`;
 		}
 
-		// 3. Для денежных операций (пополнения, комиссии, дивиденды) оставляем старый ключ по сумме
+		// 3. Для денежных операций – старый ключ по дате, брокеру, тикеру, типу и сумме
 		const roundedSum = Math.round((transaction.totalSum ?? 0) * 100) / 100;
 		return `${dateOnly}|${transaction.broker}|${normalizedTicker}|${transaction.type}|${roundedSum.toFixed(2)}`;
 	}

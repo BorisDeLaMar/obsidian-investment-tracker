@@ -91,11 +91,12 @@ export class PortfolioCalculator {
 					}
 				}
             } else {
-                instrumentKind = priceInfo.instrumentKind;
-                currentPrice = priceInfo.price;
-                currentTotal = state.amount * currentPrice;
-                hasMarketPrice = true;
-            }
+				instrumentKind = priceInfo.instrumentKind;
+				currentPrice = priceInfo.price;
+				currentTotal = state.amount * currentPrice;
+				// ВАЖНО: теперь используем hasMarketPrice из priceInfo, а не ставим всегда true
+				hasMarketPrice = priceInfo.hasMarketPrice ?? true; 
+			}
 
 			//console.log(`[CALC] Позиция ${ticker}: priceInfo=${priceInfo}, hasMarketPrice=${hasMarketPrice}, currentPrice=${currentPrice}`);
 

@@ -20,20 +20,20 @@ export type TransactionType =
 export type InstrumentKind = 'STOCK' | 'BOND' | 'FUND' | 'UNKNOWN';
 
 export interface Transaction {
-	id: string;
-	date: string;
-	broker: 'tbank' | 'sber';
-	ticker: string;
-	shareName: string;
-	type: TransactionType | 'BUY' | 'SELL';
-	amount: number;
-	price: number;
-	totalSum: number;
-	currency?: string;
-	/** FIGI инструмента из T-Invest API (если доступен) — нужен для fallback-запроса цены. */
-	figi?: string;
-	  /** Уникальный номер сделки у брокера (например, номер сделки в отчёте Сбера) */
-  	tradeId?: string;
+    id: string;
+    date: string;
+    /** Время сделки в формате "HH:MM:SS" (опционально) – используется для точной дедупликации */
+    time?: string;
+    broker: 'tbank' | 'sber';
+    ticker: string;
+    shareName: string;
+    type: TransactionType | 'BUY' | 'SELL';
+    amount: number;
+    price: number;
+    totalSum: number;
+    currency?: string;
+    figi?: string;
+    tradeId?: string;
 }
 
 export interface Position {

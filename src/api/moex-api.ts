@@ -2,10 +2,11 @@ import { requestUrl } from 'obsidian';
 import { InstrumentKind } from '../types';
 
 export function detectInstrumentKind(ticker: string): InstrumentKind {
-    if (ticker.endsWith('@')) return 'FUND';
-    if (/^SU\d+RMFS/i.test(ticker)) return 'BOND';
-    if (/^RU[0-9A-Z]{10}$/i.test(ticker) && ticker.length === 12) return 'BOND';
-    if (ticker.includes('обб')) return 'BOND';
+    const clean = ticker.replace(/@$/, '');
+    if (clean.endsWith('@')) return 'FUND'; // уже не актуально
+    if (/^SU\d+RMFS/i.test(clean)) return 'BOND';
+    if (/^RU[0-9A-Z]{10}$/i.test(clean) && clean.length === 12) return 'BOND';
+    if (clean.includes('обб')) return 'BOND';
     return 'STOCK';
 }
 
@@ -15,7 +16,8 @@ export interface MoexPriceInfo {
     faceCurrency?: string;
     rubRate?: number;
     instrumentKind: InstrumentKind;
-    shareName?: string; // <-- новое поле
+    shareName?: string;        // <--- добавить
+    hasMarketPrice?: boolean;  // (если уже есть, оставить)
 }
 
 export class MoexApi {
@@ -23,7 +25,7 @@ export class MoexApi {
 
     public async fetchCurrentPrices(tickers: string[]): Promise<Map<string, MoexPriceInfo>> {
         const result = new Map<string, MoexPriceInfo>();
-        const safeTickers = tickers.map(t => t.trim().toUpperCase()).filter(t => t.length > 0);
+        const safeTickers = tickers.map(t => t.trim().toUpperCase().replace(/@$/, '')).filter(t => t.length > 0);
 
         const stockTickers: string[] = [];
         const bondTickers: string[] = [];

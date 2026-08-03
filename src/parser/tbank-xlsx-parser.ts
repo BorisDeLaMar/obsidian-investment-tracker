@@ -10,6 +10,8 @@ export class TBankXlsxParser {
         const rows: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
         const transactions: Transaction[] = [];
 
+        const isinMap = this.parseIsinMapping(rows);
+
         // ------------------------------------------------------------
         // 1. Парсинг секции "1.1 Информация о совершенных сделках"
         // ------------------------------------------------------------
@@ -27,6 +29,7 @@ export class TBankXlsxParser {
                     if (v === 'Номер сделки') tradeColMap.tradeId = idx;
                     else if (v === 'Дата заключения') tradeColMap.date = idx;
                     else if (v === 'Вид сделки') tradeColMap.type = idx;
+                    else if (v === 'Время') tradeColMap.time = idx; // <-- добавляем
                     else if (v === 'Наименование актива') tradeColMap.name = idx;
                     else if (v === 'Код актива') tradeColMap.ticker = idx;
                     else if (v === 'Цена за единицу') tradeColMap.price = idx;
@@ -51,6 +54,8 @@ export class TBankXlsxParser {
 
                 const dateStr = String(row[tradeColMap.date] || '').trim();
                 const ticker = String(row[tradeColMap.ticker] || '').trim();
+                const timeStr = String(row[tradeColMap.time] || '').trim(); // если колонка есть, иначе ''
+                const time = timeStr || undefined;
                 const typeStr = String(row[tradeColMap.type] || '').trim();
                 const amount = parseFloat(String(row[tradeColMap.amount] || '0'));
                 const price = parseFloat(String(row[tradeColMap.price] || '0'));
@@ -72,6 +77,7 @@ export class TBankXlsxParser {
                 transactions.push({
                     id: `tbank-xlsx-trade-${tradeId}`,
                     date: isoDate,
+                    time: time, // <-- добавляем
                     broker: 'tbank',
                     ticker: ticker.toUpperCase(),
                     shareName: String(row[tradeColMap.name] || ticker).trim(),
@@ -196,6 +202,7 @@ export class TBankXlsxParser {
                 }
 
                 const idBase = `tbank-xlsx-cash-${isoDate}-${transactionType}-${amount}`;
+                const isin = isinMap.get(ticker);
                 transactions.push({
                     id: idBase,
                     date: isoDate,
@@ -203,6 +210,7 @@ export class TBankXlsxParser {
                     ticker: ticker.toUpperCase(),
                     shareName: shareName,
                     type: transactionType,
+                    figi: isin || ticker,
                     amount: 1,
                     price: amount,
                     totalSum: amount,
@@ -213,6 +221,62 @@ export class TBankXlsxParser {
 
         transactions.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         return transactions;
+    }
+
+        /**
+     * Парсит секцию "3.1 Движение по ценным бумагам" и возвращает Map<код_актива, ISIN>
+     */
+    private parseIsinMapping(rows: any[][]): Map<string, string> {
+        const map = new Map<string, string>();
+
+        // Ищем строку с заголовками "Наименование актива", "Код актива", "ISIN"
+        let headerIndex = -1;
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const rowStr = row.map(c => String(c).trim()).join(' ');
+            if (rowStr.includes('Наименование актива') && rowStr.includes('Код актива') && rowStr.includes('ISIN')) {
+                headerIndex = i;
+                break;
+            }
+        }
+
+        if (headerIndex === -1) {
+            console.warn('[TBankXlsxParser] Секция 3.1 (Движение по ЦБ) не найдена, ISIN-маппинг пуст.');
+            return map;
+        }
+
+        // Определяем индексы колонок
+        const headerRow = rows[headerIndex];
+        let codeIdx = -1, isinIdx = -1;
+        headerRow.forEach((val: string, idx: number) => {
+            const v = String(val).trim();
+            if (v === 'Код актива') codeIdx = idx;
+            if (v === 'ISIN') isinIdx = idx;
+        });
+
+        if (codeIdx === -1 || isinIdx === -1) {
+            console.warn('[TBankXlsxParser] Не найдены колонки "Код актива" или "ISIN" в секции 3.1.');
+            return map;
+        }
+
+        // Читаем строки данных до следующей секции (например, 3.2 или 4.1)
+        for (let i = headerIndex + 1; i < rows.length; i++) {
+            const row = rows[i];
+            const firstCell = String(row[0] || '').trim();
+            // Если встречаем новую секцию – выходим
+            if (firstCell.startsWith('3.2') || firstCell.startsWith('4.')) break;
+            // Если строка пустая – пропускаем
+            if (row.every(c => !c)) continue;
+
+            const code = String(row[codeIdx] || '').trim();
+            const isin = String(row[isinIdx] || '').trim();
+            if (code && isin) {
+                map.set(code, isin);
+            }
+        }
+
+        console.log(`[TBankXlsxParser] Найдено ISIN для ${map.size} инструментов.`);
+        return map;
     }
 
     private normalizeDate(dateStr: string): string {

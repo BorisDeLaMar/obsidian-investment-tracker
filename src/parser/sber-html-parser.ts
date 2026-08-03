@@ -322,18 +322,17 @@ export class SberHtmlParser {
 					(columnMap.currency !== undefined ? cells[columnMap.currency] : '') || 'RUB';
 
 				const rawTime = columnMap.time !== undefined ? cells[columnMap.time] : '';
-				const timeSuffix = rawTime.replace(/[^\d]/g, '');
+				const time = rawTime.trim() || undefined;
 
 				const tradeNumber =
 					columnMap.tradeNumber !== undefined ? cells[columnMap.tradeNumber]?.trim() : '';
 
-				const id = tradeNumber
-					? `sber-trade-${isoDate}-${ticker}-${tradeNumber}`
-					: `sber-trade-${isoDate}-${ticker}-${timeSuffix}`;
-
 				transactions.push({
-					id,
+					id: tradeNumber
+						? `sber-trade-${isoDate}-${ticker}-${tradeNumber}`
+						: `sber-trade-${isoDate}-${ticker}-${time}`,
 					date: isoDate,
+					time: time, // <-- добавляем
 					broker: 'sber',
 					ticker,
 					shareName,
@@ -342,7 +341,7 @@ export class SberHtmlParser {
 					price,
 					totalSum,
 					currency,
-					tradeId: tradeNumber || undefined, // добавляем
+					tradeId: tradeNumber || undefined,
 				});
 			}
 		}

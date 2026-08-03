@@ -38,6 +38,10 @@ export class ReportParserDispatcher {
         }
     }
 
+    public async fetchTBankLastPrices(token: string, identifiers: string[]): Promise<Map<string, number>> {
+        return this.tbankApi.fetchLastPrices(token, identifiers);
+    }
+
     public parseSberXlsx(content: string): Transaction[] {
         // ... существующий код
         if (!content || content.trim().length === 0) {
@@ -83,10 +87,6 @@ export class ReportParserDispatcher {
 
     public async checkTBankConnection(token: string): Promise<{ accountId: string; accountName: string }> {
         return this.tbankApi.checkConnection(token);
-    }
-
-    public async fetchTBankLastPrices(token: string, figiList: string[]): Promise<Map<string, number>> {
-        return this.tbankApi.fetchLastPricesByFigi(token, figiList);
     }
 
 	/**

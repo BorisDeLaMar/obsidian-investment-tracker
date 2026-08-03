@@ -3,6 +3,7 @@
 import { App, Plugin, PluginSettingTab, Setting, Notice } from 'obsidian';
 import { InvestmentTrackerPluginLike } from '../view/dashboard-view';
 import { TBankApiError } from '../api/tbank-api';
+import { VIEW_TYPE_INVESTMENT_DASHBOARD, InvestmentDashboardView } from '../view/dashboard-view';
 
 /**
  * Комбинированный тип для плагина: реальный класс наследуется от Obsidian Plugin
@@ -33,6 +34,44 @@ export class InvestmentTrackerSettingsTab extends PluginSettingTab {
 		this.buildSyncFromDateSetting(containerEl);
 		this.buildTestConnectionSetting(containerEl);
 		this.buildLastSyncInfo(containerEl);
+
+		containerEl.createEl('h3', { text: 'Управление данными' });
+
+		new Setting(containerEl)
+			.setName('Очистить все данные')
+			.setDesc(
+				'Удалить все сохранённые транзакции и сбросить дату последней синхронизации. ' +
+				'Это действие необратимо.'
+			)
+			.addButton((button) => {
+				button.setButtonText('Очистить')
+					.setWarning()
+					.onClick(async () => {
+						if (!confirm('Вы уверены, что хотите удалить все данные? Восстановить их будет невозможно.')) {
+							return;
+						}
+
+						try {
+							await this.plugin.dataStore.clearAllTransactions();
+							this.plugin.settings.lastSyncDate = '';
+							await this.plugin.saveSettings();
+
+							new Notice('Все данные успешно очищены.');
+
+							// Обновляем дашборд, если он открыт
+							const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_INVESTMENT_DASHBOARD);
+							for (const leaf of leaves) {
+								const view = leaf.view;
+								if (view instanceof InvestmentDashboardView) {
+									await view.updateDashboard();
+								}
+							}
+						} catch (error) {
+							console.error('[InvestmentTrackerSettingsTab] Ошибка при очистке данных.', error);
+							new Notice('Не удалось очистить данные. Подробности в консоли.');
+						}
+					});
+			});
 	}
 
 	/** Поле ввода токена T-Invest API, замаскированное как пароль. */

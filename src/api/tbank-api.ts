@@ -197,7 +197,8 @@ type InstrumentIdType =
 	| 'INSTRUMENT_ID_UNSPECIFIED'
 	| 'INSTRUMENT_ID_TYPE_FIGI'
 	| 'INSTRUMENT_ID_TYPE_TICKER'
-	| 'INSTRUMENT_ID_TYPE_UID';
+	| 'INSTRUMENT_ID_TYPE_UID'
+	| 'INSTRUMENT_ID_TYPE_ISIN';
 
 interface InstrumentRequestBody {
 	idType: InstrumentIdType;
@@ -451,7 +452,7 @@ export class TBankApi {
 	private static readonly MAX_RATE_LIMIT_RETRIES = 5;
 
 	/** Базовая задержка для экспоненциального backoff при 429 (удваивается с каждой попыткой). */
-	private static readonly RATE_LIMIT_BASE_DELAY_MS = 10000;
+	private static readonly RATE_LIMIT_BASE_DELAY_MS = 5000;
 
 	private readonly instrumentCache: Map<string, ResolvedInstrument> = new Map();
 	private accountIdCache: string | null = null;
@@ -523,17 +524,44 @@ export class TBankApi {
 		return this.mergeTransactions(trades, nonTradeOperations);
 	}
 
+	// src/api/tbank-api.ts
+
 	/**
-	 * Fallback-получение текущих цен по списку figi через T-Invest API MarketDataService.
-	 * Используется только для инструментов, которые MOEX ISS не может опознать по тикеру
-	 * (внутренние коды биржевых фондов брокера, например "TRUR@").
+	 * Универсальный запрос текущих цен по списку идентификаторов.
+	 * Принимает любые идентификаторы (тикер, ISIN, FIGI) и возвращает Map<исходный_идентификатор, цена>.
 	 */
-	public async fetchLastPricesByFigi(token: string, figiList: string[]): Promise<Map<string, number>> {
+	public async fetchLastPrices(
+		token: string,
+		identifiers: string[]
+	): Promise<Map<string, number>> {
 		const result = new Map<string, number>();
-		if (figiList.length === 0) {
-			return result;
+		if (identifiers.length === 0) return result;
+
+		// 1. Преобразуем все идентификаторы в FIGI
+		const figiMap = new Map<string, string>(); // исходный идентификатор → FIGI
+		for (const id of identifiers) {
+			const trimmed = id.trim();
+			if (!trimmed) continue;
+
+			// Если это уже похоже на FIGI (12 символов, буквы+цифры, часто начинается с BBG) – оставляем
+			// Иначе пробуем получить FIGI через API (поддерживает TICKER, ISIN, UID)
+			let figi = trimmed;
+			if (!/^[A-Z0-9]{12}$/.test(trimmed) && !trimmed.startsWith('BBG')) {
+				const resolved = await this.resolveFigiByTicker(token, trimmed);
+				if (resolved) {
+					figi = resolved;
+				} else {
+					console.warn(`[TBankApi] Не удалось получить FIGI для идентификатора "${trimmed}"`);
+					continue;
+				}
+			}
+			figiMap.set(id, figi);
 		}
 
+		if (figiMap.size === 0) return result;
+
+		// 2. Запрашиваем цены по FIGI
+		const figiList = Array.from(figiMap.values());
 		try {
 			const responseBody = await this.callMethod<{ lastPrices?: Array<{ figi?: string; price?: MoneyValue }> }>(
 				token,
@@ -541,13 +569,20 @@ export class TBankApi {
 				{ figi: figiList }
 			);
 
+			// 3. Маппим полученные цены обратно на исходные идентификаторы
 			for (const item of responseBody.lastPrices ?? []) {
 				if (item.figi && item.price) {
-					result.set(item.figi, moneyValueToNumber(item.price));
+					const price = moneyValueToNumber(item.price);
+					for (const [orig, f] of figiMap) {
+						if (f === item.figi) {
+							result.set(orig, price);
+							break;
+						}
+					}
 				}
 			}
 		} catch (error) {
-			console.warn('[TBankApi] Не удалось получить цены через MarketDataService.GetLastPrices.', error);
+			console.warn('[TBankApi] Ошибка при запросе цен через GetLastPrices.', error);
 		}
 
 		return result;
@@ -924,9 +959,14 @@ export class TBankApi {
 				);
 			}
 
+			const dateObj = new Date(row.tradeDatetime);
+			const date = dateObj.toISOString().slice(0, 10);
+			const time = dateObj.toISOString().slice(11, 19); // "HH:MM:SS"
+
 			transactions.push({
 				id: row.tradeId ?? `tbank-trade-${row.tradeDatetime}-${ticker}-${amount}-${price}`,
-				date: new Date(row.tradeDatetime).toISOString(),
+				date,
+				time, // <-- добавляем
 				broker: 'tbank',
 				ticker,
 				shareName: row.name ?? ticker,
@@ -935,7 +975,8 @@ export class TBankApi {
 				price,
 				totalSum,
 				currency,
-				figi: row.figi
+				figi: row.figi,
+				tradeId: row.tradeId
 			});
 		}
 
@@ -1279,33 +1320,76 @@ export class TBankApi {
 	}
 
 	public async resolveFigiByTicker(token: string, ticker: string): Promise<string | null> {
-		// Нормализуем: убираем суффикс @ и пробелы
-		const cleanTicker = ticker.replace(/@$/, '').trim();
-		if (!cleanTicker) return null;
+		const clean = ticker.replace(/@$/, '').trim();
+		if (!clean) return null;
 
-		// В API для ISIN тоже используется тип TICKER (но можно попробовать FIGI, если есть)
-		// T-Invest API часто резолвит ISIN через поле ticker.
-		
-		try {
-			const requestBody: InstrumentRequestBody = {
-				idType: 'INSTRUMENT_ID_TYPE_TICKER',
-				id: cleanTicker
-			};
-			const responseBody = await this.callMethod<unknown>(
-				token,
-				TBankApi.GET_INSTRUMENT_BY_METHOD_PATH,
-				requestBody
-			);
-			if (isInstrumentResponse(responseBody) && responseBody.instrument) {
-				const figi = responseBody.instrument.figi ?? null;
-				console.log(`[TBankApi] Резолвинг FIGI для ${ticker} -> ${figi}`);
-				return figi;
-			}
-			return null;
-		} catch (error) {
-			console.warn(`[TBankApi] Не удалось получить FIGI для тикера "${ticker}":`, error);
+		// Проверяем, не ISIN ли это (12 символов, буквы/цифры)
+		if (/^[A-Z0-9]{12}$/.test(clean)) {
+			try {
+				const requestBody: InstrumentRequestBody = {
+					idType: 'INSTRUMENT_ID_TYPE_ISIN',
+					id: clean
+				};
+				const responseBody = await this.callMethod<unknown>(
+					token,
+					TBankApi.GET_INSTRUMENT_BY_METHOD_PATH,
+					requestBody
+				);
+				if (isInstrumentResponse(responseBody) && responseBody.instrument) {
+					return responseBody.instrument.figi ?? null;
+				}
+			} catch (e) { /* ignore */ }
 			return null;
 		}
+
+		// Проверяем, не UID ли это (UUID)
+		if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(clean)) {
+			try {
+				const requestBody: InstrumentRequestBody = {
+					idType: 'INSTRUMENT_ID_TYPE_UID',
+					id: clean
+				};
+				const responseBody = await this.callMethod<unknown>(
+					token,
+					TBankApi.GET_INSTRUMENT_BY_METHOD_PATH,
+					requestBody
+				);
+				if (isInstrumentResponse(responseBody) && responseBody.instrument) {
+					return responseBody.instrument.figi ?? null;
+				}
+			} catch (e) { /* ignore */ }
+			return null;
+		}
+
+		// Иначе это тикер – пробуем разные class_code
+		const classCodes = ['SPBRU', 'TQBR', 'TQCB', 'TQOB'];
+		for (const classCode of classCodes) {
+			try {
+				const requestBody: InstrumentRequestBody = {
+					idType: 'INSTRUMENT_ID_TYPE_TICKER',
+					id: clean,
+					classCode: classCode
+				};
+				const responseBody = await this.callMethod<unknown>(
+					token,
+					TBankApi.GET_INSTRUMENT_BY_METHOD_PATH,
+					requestBody
+				);
+				if (isInstrumentResponse(responseBody) && responseBody.instrument) {
+					const figi = responseBody.instrument.figi;
+					if (figi) {
+						console.log(`[TBankApi] Резолвинг FIGI для ${clean} (classCode=${classCode}) -> ${figi}`);
+						return figi;
+					}
+				}
+			} catch (error) {
+				// Пробуем следующий class_code
+				continue;
+			}
+		}
+
+		console.warn(`[TBankApi] Не удалось найти FIGI для тикера "${clean}" ни с одним class_code.`);
+		return null;
 	}
 }
 

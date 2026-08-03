@@ -1,14 +1,13 @@
 // src/view/dashboard-view.ts
 
 import { ItemView, WorkspaceLeaf, Notice } from 'obsidian';
-import { Transaction, Position, PortfolioSnapshot, PluginSettings } from '../types';
+import { Transaction, Position, PortfolioSnapshot, BrokerSource, PluginSettings } from '../types';
 import { DataStore } from '../data/data-store';
 import { PortfolioCalculator } from '../data/portfolio-calculator';
 import { MoexApi } from '../api/moex-api';
 import { ReportParserDispatcher } from '../parser';
 import { CapitalChart, BrokerTimeline } from './capital-chart';
 import { detectInstrumentKind } from '../api/moex-api';
-
 import * as XLSX from 'xlsx';
 
 /** Уникальный идентификатор вкладки дашборда, используется при регистрации View в main.ts. */
@@ -21,12 +20,11 @@ export const VIEW_TYPE_INVESTMENT_DASHBOARD = 'investment-dashboard-view';
  * класс плагина по структуре полей/методов автоматически (structural typing).
  */
 export interface InvestmentTrackerPluginLike {
-	settings: PluginSettings;
-	dataStore: DataStore;
-	moexApi: MoexApi;
-	parserDispatcher: ReportParserDispatcher;
-	/** Персистентно сохраняет settings (обычно через this.saveData(this.settings) в main.ts). */
-	saveSettings(): Promise<void>;
+    settings: PluginSettings;
+    dataStore: DataStore;
+    moexApi: MoexApi;
+    parserDispatcher: ReportParserDispatcher;
+    saveSettings(): Promise<void>;
 }
 
 /** Форматирует число как рублёвую сумму с разделителями тысяч и 2 знаками после запятой. */
@@ -186,6 +184,15 @@ export class InvestmentDashboardView extends ItemView {
 		this.isBusy = true;
 		this.setButtonsDisabled(true);
 		this.setStatus(`Импорт XLSX-файла Т-Банка "${file.name}"...`);
+
+		// Проверка токена
+		const token = this.plugin.settings.tbankApiToken;
+		if (!token || token.trim().length === 0) {
+			new Notice(
+				'Токен T-Invest API не задан. Цены для биржевых фондов и некоторых бумаг не будут загружены. ' +
+				'Вы можете указать токен в настройках плагина и повторить импорт.'
+			);
+		}
 
 		try {
 			const arrayBuffer = await this.readFileAsArrayBuffer(file);
@@ -381,6 +388,10 @@ export class InvestmentDashboardView extends ItemView {
 		this.positionsTableBodyEl = table.createEl('tbody');
 	}
 
+	public async clearAllTransactions(): Promise<void> {
+		await this.plugin.dataStore.clearAllTransactions();
+	}
+
 	// ---------------------------------------------------------------------------
 	// Обновление данных дашборда
 	// ---------------------------------------------------------------------------
@@ -391,7 +402,7 @@ export class InvestmentDashboardView extends ItemView {
 
 			if (transactions.length === 0) {
 				this.setStatus('Нет сохранённых транзакций. Синхронизируйтесь с Т-Банком или импортируйте отчёт Сбера.');
-				this.renderSummaryCards([], [], []);
+				this.renderSummaryCards([], []);
 				this.renderChart([], [], []);
 				this.renderPositionsTable([]);
 				return;
@@ -411,51 +422,33 @@ export class InvestmentDashboardView extends ItemView {
 
 			// --- Блок fallback для тикеров, отсутствующих в MOEX ---
 			const missingTickers = uniqueTickers.filter((ticker) => !moexPrices.has(ticker));
-			console.log('[Dashboard] Отсутствующие тикеры:', missingTickers);
 			if (missingTickers.length > 0 && this.plugin.settings.tbankApiToken) {
-				// Сначала собираем FIGI из транзакций
-				const figiByTicker = new Map<string, string>();
-				console.log('[Dashboard] FIGI по тикерам:', figiByTicker);
+				// Собираем идентификаторы (figi или тикер) для этих тикеров
+				const idByTicker = new Map<string, string>();
 				for (const t of transactions) {
-					if (missingTickers.includes(t.ticker) && t.figi) {
-						figiByTicker.set(t.ticker, t.figi);
+					if (missingTickers.includes(t.ticker)) {
+						const id = t.figi || t.ticker;
+						idByTicker.set(t.ticker, id);
 					}
 				}
 
-				// Для тикеров, у которых нет FIGI, пытаемся получить его через T-Invest API
-				const figiRequests: Promise<void>[] = [];
-				for (const ticker of missingTickers) {
-					if (!figiByTicker.has(ticker)) {
-						figiRequests.push((async () => {
-							const resolvedFigi = await this.plugin.parserDispatcher.resolveTBankFigi(
-								this.plugin.settings.tbankApiToken,
-								ticker
-							);
-							if (resolvedFigi) {
-								figiByTicker.set(ticker, resolvedFigi);
-							}
-						})());
-					}
-				}
-				await Promise.all(figiRequests);
-
-				// Теперь запрашиваем цены по полученным FIGI
-				const figiList = Array.from(figiByTicker.values());
-				if (figiList.length > 0) {
+				if (idByTicker.size > 0) {
+					const identifiers = Array.from(idByTicker.values());
 					const tbankPrices = await this.plugin.parserDispatcher.fetchTBankLastPrices(
 						this.plugin.settings.tbankApiToken,
-						figiList
+						identifiers
 					);
-					console.log('[Dashboard] Цены от T-Invest:', tbankPrices);
-					for (const [ticker, figi] of figiByTicker.entries()) {
-						const price = tbankPrices.get(figi);
+					// tbankPrices маппит исходный идентификатор → цена
+					for (const [ticker, id] of idByTicker) {
+						const price = tbankPrices.get(id);
 						if (price != null) {
 							const kind = detectInstrumentKind(ticker);
-							if (kind === 'BOND') {
-								// Для облигаций не добавляем, т.к. нет номинала – оставляем прочерк
-								continue;
-							}
-							moexPrices.set(ticker, { price, instrumentKind: kind });
+							if (kind === 'BOND') continue; // облигации пропускаем (нужен номинал)
+							moexPrices.set(ticker, {
+								price,
+								instrumentKind: kind,
+								hasMarketPrice: true
+							});
 						}
 					}
 				}
@@ -482,7 +475,7 @@ export class InvestmentDashboardView extends ItemView {
 				});
 			}
 
-			this.renderSummaryCards(positions, timeline, transactions);
+			this.renderSummaryCards(positions, transactions);
 			this.renderChart(timeline, positions, brokerTimelines);
 			this.renderPositionsTable(positions);
 
@@ -710,60 +703,60 @@ export class InvestmentDashboardView extends ItemView {
 		return transactions;
 	}
 
-	// ---------------------------------------------------------------------------
-	// Рендеринг динамических данных
-	// ---------------------------------------------------------------------------
-	private renderSummaryCards(positions: Position[], timeline: PortfolioSnapshot[], transactions: Transaction[]): void {
-		const totalInvested = this.portfolioCalculator.calculateTotalInvested(transactions);
+	private renderSummaryCards(positions: Position[], transactions: Transaction[]): void {
+		// 1. Сумма затрат на текущие позиции = сумма (кол-во * средняя цена) по всем позициям
+		const totalInvested = positions.reduce((sum, p) => sum + p.amount * p.averagePrice, 0);
 
-		// Разделяем позиции на корректные и проблемные
-		const correctPositions = positions.filter(p => p.hasMarketPrice);
-		const problemPositions = positions.filter(p => !p.hasMarketPrice);
+		// 2. Текущая стоимость портфеля = сумма текущих стоимостей всех позиций
+		const totalCapital = positions.reduce((sum, p) => sum + p.currentTotal, 0);
 
-		// Сумма, вложенная в проблемные позиции (по средней цене)
-		const investedInProblem = problemPositions.reduce((sum, p) => sum + p.amount * p.averagePrice, 0);
-		const correctInvested = totalInvested - investedInProblem;
-
-		// Рыночная стоимость только корректных позиций
-		const marketValueCorrect = correctPositions.reduce((sum, p) => sum + p.currentTotal, 0);
-		// Кэш-баланс (остаётся без изменений)
-		const lastSnapshot = timeline.length > 0 ? timeline[timeline.length - 1] : null;
-		const cashBalance = lastSnapshot?.cashBalance ?? 0;
-		const totalCapital = marketValueCorrect + cashBalance;
-
-		// Прибыль = рыночная стоимость корректных позиций + кэш - корректные внесённые
-		const profitAbsolute = totalCapital - correctInvested;
-		const profitPercent = correctInvested > 0 ? (profitAbsolute / correctInvested) * 100 : 0;
+		// 3. Прибыль
+		const profitAbsolute = totalCapital - totalInvested;
+		const profitPercent = totalInvested > 0 ? (profitAbsolute / totalInvested) * 100 : 0;
 
 		// --- Карточка "Текущая стоимость портфеля" ---
 		if (this.summaryCapitalValueEl) {
 			this.summaryCapitalValueEl.empty();
-			this.summaryCapitalValueEl.createSpan({ text: formatMoney(totalCapital) });
-			// Дропдаун по брокерам (передаём только корректные позиции)
-			this.renderBrokerDropdown(this.summaryCapitalValueEl, transactions, correctPositions, 'currentValue');
+			const span = this.summaryCapitalValueEl.createSpan({ text: formatMoney(totalCapital) });
+			span.style.cssText = 'font-size: 22px; font-weight: 600; color: var(--text-normal);';
+			const brokerSummaries = this.portfolioCalculator.calculateBrokerSummaries(transactions, positions);
+			const currentValueSummaries = brokerSummaries.map(s => ({ broker: s.broker, value: s.currentValue }));
+			this.renderBrokerDropdown(this.summaryCapitalValueEl, currentValueSummaries);
 		}
 
-		// --- Карточка "Всего внесено средств" (с двумя цифрами) ---
+		// --- Карточка "Всего внесено средств" (затраты на текущие позиции) ---
 		if (this.summaryInvestedValueEl) {
 			this.summaryInvestedValueEl.empty();
-			const span = this.summaryInvestedValueEl.createSpan({
-				text: `${formatMoney(correctInvested)} (Общая: ${formatMoney(totalInvested)})`
-			});
-			span.style.fontSize = '14px';
-			span.style.fontWeight = '500';
-			// Дропдаун по брокерам – только корректные позиции
-			this.renderBrokerDropdown(this.summaryInvestedValueEl, transactions, correctPositions, 'totalInvested');
+			const span = this.summaryInvestedValueEl.createSpan({ text: formatMoney(totalInvested) });
+			span.style.cssText = 'font-size: 22px; font-weight: 600; color: var(--text-normal);';
+
+			// Разбивка по брокерам: сумма затрат по подпозициям каждого брокера
+			const investedByBroker = new Map<BrokerSource, number>();
+			for (const pos of positions) {
+				for (const bp of pos.brokerBreakdown) {
+					const cost = bp.amount * bp.averagePrice;
+					investedByBroker.set(bp.broker, (investedByBroker.get(bp.broker) || 0) + cost);
+				}
+			}
+			const investedSummaries = Array.from(investedByBroker.entries()).map(([broker, value]) => ({ broker, value }));
+			this.renderBrokerDropdown(this.summaryInvestedValueEl, investedSummaries);
 		}
 
 		// --- Карточка "Общая прибыль" ---
 		if (this.summaryProfitValueEl) {
 			this.summaryProfitValueEl.empty();
-			if (correctPositions.length > 0) {
+			if (positions.length > 0) {
 				const span = this.summaryProfitValueEl.createSpan({
 					text: `${formatMoney(profitAbsolute)} (${formatPercent(profitPercent)})`
 				});
 				span.style.color = profitAbsolute >= 0 ? 'var(--text-success, #4caf50)' : 'var(--text-error, #e53935)';
-				this.renderBrokerDropdown(this.summaryProfitValueEl, transactions, correctPositions, 'profit');
+				const brokerSummaries = this.portfolioCalculator.calculateBrokerSummaries(transactions, positions);
+				const profitSummaries = brokerSummaries.map(s => ({
+					broker: s.broker,
+					value: s.profit,
+					profitPercent: s.profitPercent
+				}));
+				this.renderBrokerDropdown(this.summaryProfitValueEl, profitSummaries);
 			} else {
 				this.summaryProfitValueEl.createSpan({ text: '—' });
 			}
@@ -771,16 +764,13 @@ export class InvestmentDashboardView extends ItemView {
 	}
 
 	/**
-	 * Добавляет стрелочку-дропдаун с раскладкой по брокерам к элементу карточки.
+	 * Рисует выпадающий список с разбивкой по брокерам.
+	 * Принимает готовый массив summaries с уже вычисленными значениями.
 	 */
 	private renderBrokerDropdown(
 		parentEl: HTMLElement,
-		transactions: Transaction[],
-		positions: Position[],
-		metric: 'currentValue' | 'totalInvested' | 'profit'
+		summaries: Array<{ broker: BrokerSource; value: number; profitPercent?: number }>
 	): void {
-		const summaries = this.portfolioCalculator.calculateBrokerSummaries(transactions, positions);
-
 		if (summaries.length <= 1) {
 			return;
 		}
@@ -795,15 +785,9 @@ export class InvestmentDashboardView extends ItemView {
 
 		for (const s of summaries) {
 			const brokerLabel = s.broker === 'tbank' ? 'Т-Банк' : 'Сбер';
-			let value: number;
-			let suffix = '';
-			if (metric === 'currentValue') {
-				value = s.currentValue;
-			} else if (metric === 'totalInvested') {
-				value = s.totalInvested;
-			} else {
-				value = s.profit;
-				suffix = ` (${formatPercent(s.profitPercent)})`;
+			let valueText = formatMoney(s.value);
+			if (s.profitPercent !== undefined) {
+				valueText += ` (${formatPercent(s.profitPercent)})`;
 			}
 
 			const line = dropdownEl.createDiv();
@@ -811,9 +795,9 @@ export class InvestmentDashboardView extends ItemView {
 				'display: flex; justify-content: space-between; padding: 2px 0; ' +
 				`border-left: 3px solid ${s.broker === 'tbank' ? '#F9A825' : '#43A047'}; padding-left: 8px;`;
 			line.createSpan({ text: brokerLabel }).style.cssText = 'color: var(--text-muted);';
-			const valEl = line.createSpan({ text: formatMoney(value) + suffix });
-			if (metric === 'profit') {
-				valEl.style.color = value >= 0 ? 'var(--text-success, #4caf50)' : 'var(--text-error, #e53935)';
+			const valEl = line.createSpan({ text: valueText });
+			if (s.profitPercent !== undefined) {
+				valEl.style.color = s.value >= 0 ? 'var(--text-success, #4caf50)' : 'var(--text-error, #e53935)';
 			}
 		}
 
@@ -829,12 +813,10 @@ export class InvestmentDashboardView extends ItemView {
 		positions: Position[],
 		brokerTimelines: BrokerTimeline[]
 	): void {
-		if (!this.chartContainerEl) {
-			return;
-		}
+		if (!this.chartContainerEl) return;
 
-		// Считаем рыночную стоимость только корректных позиций (с hasMarketPrice = true)
 		const correctPositions = positions.filter(p => p.hasMarketPrice);
+
 		const currentMarketValue = correctPositions.length > 0
 			? correctPositions.reduce((sum, p) => sum + p.currentTotal, 0)
 			: null;
@@ -844,7 +826,7 @@ export class InvestmentDashboardView extends ItemView {
 			this.chartContainerEl,
 			timeline,
 			brokerTimelines,
-			currentMarketValue // если null, пунктирная линия не рисуется
+			currentMarketValue
 		);
 		this.capitalChart.render();
 	}
@@ -864,8 +846,7 @@ export class InvestmentDashboardView extends ItemView {
 			return;
 		}
 
-		// Сортировка: сначала все позиции одного брокера, затем другого,
-		// внутри группы — по убыванию стоимости.
+		// Сортировка: сначала корректные, затем проблемные (без цветового выделения)
 		const sorted = [...positions].sort((a, b) => {
 			if (a.hasMarketPrice !== b.hasMarketPrice) {
 				return a.hasMarketPrice ? -1 : 1;
@@ -880,12 +861,19 @@ export class InvestmentDashboardView extends ItemView {
 		for (const position of sorted) {
 			const hasMultiple = position.brokerBreakdown.length > 1;
 
+			if (position.ticker.endsWith('@')) {
+				console.log('🟡 ДИАГНОСТИКА ФОНДА:', {
+					ticker: position.ticker,
+					hasMarketPrice: position.hasMarketPrice,
+					currentPrice: position.currentPrice,
+					currentTotal: position.currentTotal,
+					profitPercent: position.profitPercent,
+					averagePrice: position.averagePrice
+				});
+			}
 			// Основная строка.
 			const row = this.positionsTableBodyEl.createEl('tr');
-			if (!position.hasMarketPrice) {
-				row.style.color = 'var(--text-error, #e53935)'; // красный текст
-				row.style.backgroundColor = 'rgba(229, 57, 53, 0.08)'; // лёгкий красный фон (опционально)
-			}
+
 			// дальше как обычно
 			row.style.cursor = hasMultiple ? 'pointer' : 'default';
 
@@ -899,32 +887,46 @@ export class InvestmentDashboardView extends ItemView {
 				? '▸ Оба'
 				: (position.brokerBreakdown[0]?.broker === 'tbank' ? 'Т-Банк' : 'Сбер');
 
+			// 1. Тикер
 			this.createTableCell(row, position.ticker, true);
-			
-			// Ячейка с названием (многострочная, с ограничением ширины)
+
+			// 2. Название
 			const nameCell = this.createTableCell(row, position.shareName);
 			nameCell.style.maxWidth = '200px';
 			nameCell.style.whiteSpace = 'normal';
 			nameCell.style.wordWrap = 'break-word';
-			// title можно оставить для полного отображения при наведении
 			nameCell.title = position.shareName;
 
+			// 3. Брокер
 			this.createTableCell(row, brokerText);
+
+			// 4. Кол-во
 			this.createTableCell(row, formatAmount(position.amount));
+
+			// 5. Средняя цена
 			this.createTableCell(row, formatMoney(position.averagePrice));
 
-			// Текущая цена MOEX
+			// 6. Текущая цена MOEX (ЗДЕСЬ ОПРЕДЕЛЯЕМ priceText И СОЗДАЁМ ЯЧЕЙКУ!)
 			const priceText = position.hasMarketPrice ? formatMoney(position.currentPrice) : '—';
 			this.createTableCell(row, priceText);
 
-			// Стоимость
+			// Сразу проверяем, нужно ли красить строку красным
+			const shouldBeRed = priceText === '—';
+			if (shouldBeRed) {
+				// Темно-красный цвет текста
+				row.style.color = '#b71c1c'; 
+				// Более насыщенный, темный фон
+				row.style.backgroundColor = 'rgba(183, 28, 28, 0.12)'; 
+			}
+
+			// 7. Стоимость
 			const costText = position.hasMarketPrice ? formatMoney(position.currentTotal) : '—';
 			this.createTableCell(row, costText);
 
-			// Доля в портфеле (не зависит от цен)
+			// 8. Доля (%)
 			this.createTableCell(row, `${position.shareInPortfolio.toFixed(2)}%`);
 
-			// Профит (%)
+			// 9. Профит (%)
 			const profitText = position.hasMarketPrice ? formatPercent(position.profitPercent) : '—';
 			const profitCell = this.createTableCell(row, profitText);
 			if (position.hasMarketPrice) {

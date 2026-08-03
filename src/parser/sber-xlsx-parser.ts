@@ -57,6 +57,11 @@ export class SberXlsxParser {
 
 			const tradeNumber = cells[1] ?? '';
 			const dateStr = cells[2] ?? '';
+			const dateTimeParts = dateStr.split(' ');
+			const datePart = dateTimeParts[0]; // "2026-07-18"
+			const timePart = dateTimeParts[1] || ''; // "15:28:08"
+			const isoDate = this.parseSberDate(datePart);
+			const time = timePart || undefined;
 			const ticker = cells[3] ?? '';
 			// cells[4] = тип инструмента (Акция/Облигация)
 			// cells[5] = тип рынка
@@ -78,11 +83,10 @@ export class SberXlsxParser {
 			const price = Math.abs(this.parseNumber(priceStr));
 			const totalSum = Math.abs(this.parseNumber(volumeStr)) || amount * price;
 
-			const isoDate = this.parseSberDate(dateStr);
-
 			transactions.push({
 				id: `sber-xlsx-trade-${tradeNumber || `${isoDate}-${ticker}-${amount}`}`,
 				date: isoDate,
+				time: time, // <-- добавляем
 				broker: 'sber',
 				ticker: ticker.toUpperCase(),
 				shareName: ticker.toUpperCase(),
@@ -91,7 +95,7 @@ export class SberXlsxParser {
 				price,
 				totalSum,
 				currency: currency.toUpperCase(),
-                tradeId: tradeNumber || undefined, // добавляем
+				tradeId: tradeNumber || undefined,
 			});
 		}
 
