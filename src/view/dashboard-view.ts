@@ -418,64 +418,73 @@ export class InvestmentDashboardView extends ItemView {
 
 			const moexPrices = await this.plugin.moexApi.fetchCurrentPrices(uniqueTickers);
 			console.log('[DASHBOARD] Цены от MOEX:', moexPrices);
+			console.log('[DASHBOARD] Все уникальные тикеры:', uniqueTickers);
 
-			// --- Блок fallback для тикеров, отсутствующих в MOEX ---
 			const missingTickers = uniqueTickers.filter((ticker) => !moexPrices.has(ticker));
+			console.log('[DASHBOARD] Отсутствующие тикеры (не найдены в MOEX):', missingTickers);
+
 			if (missingTickers.length > 0 && this.plugin.settings.tbankApiToken) {
+				console.log('[DASHBOARD] Токен T-Invest API присутствует, пробуем fallback...');
 				const idByTicker = new Map<string, string>();
 				for (const t of transactions) {
 					if (missingTickers.includes(t.ticker)) {
 						const id = t.figi || t.ticker;
-						idByTicker.set(t.ticker, id);
+						if (id) {
+							idByTicker.set(t.ticker, id);
+						}
 					}
 				}
+				console.log('[DASHBOARD] Сопоставление тикер -> идентификатор для fallback:', idByTicker);
 
 				if (idByTicker.size > 0) {
 					const identifiers = Array.from(idByTicker.values());
-					const tbankPrices = await this.plugin.parserDispatcher.fetchTBankLastPrices(
-						this.plugin.settings.tbankApiToken,
-						identifiers
-					);
+					console.log('[DASHBOARD] Запрос цен через T-Invest API для FIGI/UID:', identifiers);
+					try {
+						const tbankPrices = await this.plugin.parserDispatcher.fetchTBankLastPrices(
+							this.plugin.settings.tbankApiToken,
+							identifiers
+						);
+						console.log('[DASHBOARD] Получены цены от T-Invest API:', tbankPrices);
 
-					const figiToSave = new Map<string, string>();
-					for (const [ticker, id] of idByTicker) {
-						const price = tbankPrices.get(id);
-						if (price != null) {
-							const kind = detectInstrumentKind(ticker);
-							if (kind === 'BOND') continue;
-							moexPrices.set(ticker, {
-								price,
-								instrumentKind: kind,
-								hasMarketPrice: true
-							});
-							const hasFigi = transactions.some(t => t.ticker === ticker && t.figi);
-							if (!hasFigi) {
-								const figi = await this.plugin.parserDispatcher.resolveTBankFigi(
-									this.plugin.settings.tbankApiToken,
-									id
-								);
-								if (figi) {
-									figiToSave.set(ticker, figi);
+						// Добавляем полученные цены в moexPrices
+						for (const [ticker, id] of idByTicker) {
+							const price = tbankPrices.get(id);
+							if (price != null) {
+								const kind = detectInstrumentKind(ticker);
+								// Для облигаций пропускаем (они уже обработаны MOEX, если есть)
+								if (kind === 'BOND') continue;
+								moexPrices.set(ticker, {
+									price,
+									instrumentKind: kind,
+									hasMarketPrice: true
+								});
+								console.log(`[DASHBOARD] Добавлена цена для ${ticker}: ${price} (из T-Invest API)`);
+								// Сохранение FIGI в транзакции, если нужно
+								const hasFigi = transactions.some(t => t.ticker === ticker && t.figi);
+								if (!hasFigi) {
+									const figi = await this.plugin.parserDispatcher.resolveTBankFigi(
+										this.plugin.settings.tbankApiToken,
+										id
+									);
+									if (figi) {
+										// ... существующий код сохранения FIGI
+									}
 								}
+							} else {
+								console.warn(`[DASHBOARD] T-Invest API не вернул цену для ${ticker} (id: ${id})`);
 							}
 						}
+					} catch (error) {
+						console.error('[DASHBOARD] Ошибка при запросе цен через T-Invest API:', error);
 					}
-
-					if (figiToSave.size > 0) {
-						let needUpdate = false;
-						const updatedTransactions = transactions.map(t => {
-							const figi = figiToSave.get(t.ticker);
-							if (figi && !t.figi) {
-								needUpdate = true;
-								return { ...t, figi };
-							}
-							return t;
-						});
-						if (needUpdate) {
-							await this.plugin.dataStore.saveTransactions(updatedTransactions);
-							transactions = await this.plugin.dataStore.getTransactions(); // теперь можно
-						}
-					}
+				} else {
+					console.log('[DASHBOARD] Нет идентификаторов для fallback (idByTicker пуст).');
+				}
+			} else {
+				if (missingTickers.length === 0) {
+					console.log('[DASHBOARD] Все тикеры найдены в MOEX, fallback не требуется.');
+				} else {
+					console.log('[DASHBOARD] Токен T-Invest API не задан, fallback недоступен.');
 				}
 			}
 

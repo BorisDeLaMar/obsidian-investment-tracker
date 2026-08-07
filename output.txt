@@ -1,0 +1,3528 @@
+[InvestmentDashboardView] Синхронизация: from="2026-01-01T00:00:00Z", to="2026-08-04T00:00:00.000Z" (now="2026-08-07T10:51:18.175Z").
+plugin:obsidian-investment-tracker:143 [TBankApi] Запрошенный период (2026-01-01T00:00:00Z - 2026-08-04T00:00:00.000Z) превышает 30 дней и будет разбит на 8 последовательных запросов к GetBrokerReport.
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-01-01T00:00:00Z - 2026-01-31T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Нет данных за период 2026-01-01T00:00:00Z - 2026-01-31T23:59:59Z (пропущено).
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-01-31T00:00:00Z - 2026-03-02T23:59:59Z
+2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ-ПД254" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-03-02T00:00:00Z - 2026-04-01T23:59:59Z
+2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "Полипласт обб2П015" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-04-01T00:00:00Z - 2026-05-01T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "РЖД оббП51" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГТЛК 1P-22" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МЕТАЛЛОИНВЕСТ обб2П02" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "Полипласт обб2П015" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "РЖД оббП51" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГЛОРАКС оббП05" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "РЖД оббП51" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГЛОРАКС оббП05" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-05-01T00:00:00Z - 2026-05-31T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МКПАО ОК РУСАЛ оббП15" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-05-31T00:00:00Z - 2026-06-30T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Получен ответ 429 (Too Many Requests) для /tinkoff.public.invest.api.contract.v1.OperationsService/GetBrokerReport. Повторная попытка 1/5 через 5000 мс.
+executeWithRetry @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Получен ответ 429 (Too Many Requests) для /tinkoff.public.invest.api.contract.v1.OperationsService/GetBrokerReport. Повторная попытка 2/5 через 10000 мс.
+executeWithRetry @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Получен ответ 429 (Too Many Requests) для /tinkoff.public.invest.api.contract.v1.OperationsService/GetBrokerReport. Повторная попытка 3/5 через 20000 мс.
+executeWithRetry @ plugin:obsidian-investment-tracker:143
+2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГЛОРАКС оббП05" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ-ПД254" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МКПАО ОК РУСАЛ оббП15" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МЕТАЛЛОИНВЕСТ обб2П02" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-06-30T00:00:00Z - 2026-07-30T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МКПАО ОК РУСАЛ оббП15" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МЕТАЛЛОИНВЕСТ обб2П02" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "Полипласт обб2П015" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ 26248" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+3plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "РЖД оббП51" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ 26248" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "Полипласт обб2П015" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГТЛК 1P-22" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-07-30T00:00:00Z - 2026-08-04T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 0 операций из GetOperations за чанк 2026-01-01T00:00:00Z - 2026-01-31T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 16 операций из GetOperations за чанк 2026-01-31T00:00:00Z - 2026-03-02T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "630035494380",
+  "date": "2026-02-26T15:19:21.243Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-5",
+    "nano": -890000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "5",
+    "nano": 890000000
+  },
+  "quantity": "1",
+  "figi": "TCS30A108BL2",
+  "instrumentUid": "55111741-4618-4254-9c78-255b0067fcbe"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TITR@, сумма=5.89, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "630035483710",
+  "date": "2026-02-26T15:19:05.917Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-136",
+    "nano": -370000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "10",
+    "nano": 490000000
+  },
+  "quantity": "13",
+  "figi": "TCS20A10B0G9",
+  "instrumentUid": "5293ef3c-37bb-4d6f-8d43-802c57560881"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TRND@, сумма=136.37, количество=13
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14320526806",
+  "date": "2026-02-26T15:18:19.768Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": -620000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004RVFFC0",
+  "instrumentUid": "88468f6c-c67a-4fb4-a006-53eed803883c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "76306853242",
+  "date": "2026-02-26T15:18:18.768Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-538",
+    "nano": -900000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "538",
+    "nano": 900000000
+  },
+  "quantity": "1",
+  "figi": "BBG004RVFFC0",
+  "instrumentUid": "88468f6c-c67a-4fb4-a006-53eed803883c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TATN, сумма=538.9, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14320319561",
+  "date": "2026-02-26T15:03:31.164Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-49",
+    "nano": -760000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10D533",
+  "instrumentUid": "1fd40228-8edd-4eb2-8584-1d7dbac103f0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "76306283680",
+  "date": "2026-02-26T15:03:30.164Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-17407",
+    "nano": -620000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "921",
+    "nano": 500000000
+  },
+  "quantity": "18",
+  "figi": "TCS00A10D533",
+  "instrumentUid": "1fd40228-8edd-4eb2-8584-1d7dbac103f0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SU26254RMFS1, сумма=17407.62, количество=18
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "376842594199",
+  "date": "2026-02-26T14:59:05Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "18140",
+    "nano": 770000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "629907434090",
+  "date": "2026-02-24T08:00:53.364Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-5",
+    "nano": -860000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "5",
+    "nano": 860000000
+  },
+  "quantity": "1",
+  "figi": "TCS30A108BL2",
+  "instrumentUid": "55111741-4618-4254-9c78-255b0067fcbe"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TITR@, сумма=5.86, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "629907344990",
+  "date": "2026-02-24T08:00:14.275Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-293",
+    "nano": -440000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "10",
+    "nano": 480000000
+  },
+  "quantity": "28",
+  "figi": "TCS20A10B0G9",
+  "instrumentUid": "5293ef3c-37bb-4d6f-8d43-802c57560881"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TRND@, сумма=293.44, количество=28
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14284991521",
+  "date": "2026-02-24T07:56:55.683Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-4",
+    "nano": -750000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG0047315Y7",
+  "instrumentUid": "c190ff1f-1447-4227-b543-316332699ca5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "76203082284",
+  "date": "2026-02-24T07:56:54.683Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-1583",
+    "nano": -400000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "316",
+    "nano": 680000000
+  },
+  "quantity": "5",
+  "figi": "BBG0047315Y7",
+  "instrumentUid": "c190ff1f-1447-4227-b543-316332699ca5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBERP, сумма=1583.4, количество=5
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14284976401",
+  "date": "2026-02-24T07:56:20.114Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-5",
+    "nano": -190000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG00F6NKQX3",
+  "instrumentUid": "4d813ab1-8bc9-4670-89ea-12bfbab6017d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "76203041559",
+  "date": "2026-02-24T07:56:19.114Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-1728",
+    "nano": -400000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "864",
+    "nano": 200000000
+  },
+  "quantity": "2",
+  "figi": "BBG00F6NKQX3",
+  "instrumentUid": "4d813ab1-8bc9-4670-89ea-12bfbab6017d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SMLT, сумма=1728.4, количество=2
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14284891791",
+  "date": "2026-02-24T07:53:03.823Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-286",
+    "nano": -410000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10D533",
+  "instrumentUid": "1fd40228-8edd-4eb2-8584-1d7dbac103f0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "76202802682",
+  "date": "2026-02-24T07:53:02.823Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-100091",
+    "nano": -280000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "926",
+    "nano": 880000000
+  },
+  "quantity": "103",
+  "figi": "TCS00A10D533",
+  "instrumentUid": "1fd40228-8edd-4eb2-8584-1d7dbac103f0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SU26254RMFS1, сумма=100091.28, количество=103
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "376077718425",
+  "date": "2026-02-24T07:51:48Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "104000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 15 операций из GetOperations за чанк 2026-03-02T00:00:00Z - 2026-04-01T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "631272767840",
+  "date": "2026-03-31T08:34:06.524Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-189",
+    "nano": -810000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "9",
+    "nano": 990000000
+  },
+  "quantity": "19",
+  "figi": "TCS20A10B0G9",
+  "instrumentUid": "5293ef3c-37bb-4d6f-8d43-802c57560881"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TRND@, сумма=189.81, количество=19
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14697494845",
+  "date": "2026-03-30T05:05:46.928Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-2",
+    "nano": -440000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG008F2T3T2",
+  "instrumentUid": "f866872b-8f68-4b6e-930f-749fe9aa79c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "77495805323",
+  "date": "2026-03-30T05:05:45.928Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-812",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "40",
+    "nano": 600000000
+  },
+  "quantity": "20",
+  "figi": "BBG008F2T3T2",
+  "instrumentUid": "f866872b-8f68-4b6e-930f-749fe9aa79c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RUAL, сумма=812, количество=20
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14697493012",
+  "date": "2026-03-30T05:05:17.572Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-2",
+    "nano": -20000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004RVFFC0",
+  "instrumentUid": "88468f6c-c67a-4fb4-a006-53eed803883c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "77495787833",
+  "date": "2026-03-30T05:05:16.572Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "674",
+    "nano": 200000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "674",
+    "nano": 200000000
+  },
+  "quantity": "1",
+  "figi": "BBG004RVFFC0",
+  "instrumentUid": "88468f6c-c67a-4fb4-a006-53eed803883c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: TATN, сумма=674.2, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "212075375822",
+  "date": "2026-03-27T14:28:00Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "339",
+    "nano": 40000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "630682158130",
+  "date": "2026-03-13T07:09:04.722Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-96",
+    "nano": -600000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "16",
+    "nano": 100000000
+  },
+  "quantity": "6",
+  "figi": "TCS80A101X50",
+  "instrumentUid": "de82be66-3b9b-4612-9572-61e3c6039013"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TGLD@, сумма=96.6, количество=6
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14505373653",
+  "date": "2026-03-13T07:07:45.466Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-23",
+    "nano": -650000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "76911204981",
+  "date": "2026-03-13T07:07:44.466Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-7935",
+    "nano": -160000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7882",
+    "nano": 981963000
+  },
+  "quantity": "1",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10ECX8, сумма=7935.16, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "380718612487",
+  "date": "2026-03-13T07:07:22Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "100",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "380717969355",
+  "date": "2026-03-13T07:04:09Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "400",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "14505280152",
+  "date": "2026-03-13T07:03:07.414Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-71",
+    "nano": -150000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "76910834848",
+  "date": "2026-03-13T07:03:06.414Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-23874",
+    "nano": -280000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7905",
+    "nano": 911422000
+  },
+  "quantity": "3",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10ECX8, сумма=23874.28, количество=3
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "380714592002",
+  "date": "2026-03-13T06:43:14Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "1500",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "380574710895",
+  "date": "2026-03-12T17:27:10Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "30000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 50 операций из GetOperations за чанк 2026-04-01T00:00:00Z - 2026-05-01T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15151447862",
+  "date": "2026-04-29T16:14:45.395Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-12",
+    "nano": -740000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78672657699",
+  "date": "2026-04-29T16:14:44.395Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-4252",
+    "nano": -80000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "1061",
+    "nano": 900000000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10E655, сумма=4252.08, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15151446473",
+  "date": "2026-04-29T16:14:36.129Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-32",
+    "nano": -650000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78672630788",
+  "date": "2026-04-29T16:14:18.238Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-10922",
+    "nano": -830000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "10881",
+    "nano": 797116000
+  },
+  "quantity": "1",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10E8P0, сумма=10922.83, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15141282523",
+  "date": "2026-04-29T07:50:53.739Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-2",
+    "nano": -870000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004S683W7",
+  "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78634927252",
+  "date": "2026-04-29T07:50:52.739Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-956",
+    "nano": -600000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "47",
+    "nano": 830000000
+  },
+  "quantity": "20",
+  "figi": "BBG004S683W7",
+  "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: AFLT, сумма=956.6, количество=20
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15141277929",
+  "date": "2026-04-29T07:50:35.965Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-12",
+    "nano": -830000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78634913192",
+  "date": "2026-04-29T07:50:34.965Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-4282",
+    "nano": -80000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "1069",
+    "nano": 400000000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10E655, сумма=4282.08, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15141182430",
+  "date": "2026-04-29T07:47:12.039Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-8",
+    "nano": -90000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004731489",
+  "instrumentUid": "509edd0c-129c-4ee2-934d-7f6246126da1"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78634679677",
+  "date": "2026-04-29T07:47:11.039Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-2696",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "134",
+    "nano": 800000000
+  },
+  "quantity": "20",
+  "figi": "BBG004731489",
+  "instrumentUid": "509edd0c-129c-4ee2-934d-7f6246126da1"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: GMKN, сумма=2696, количество=20
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15141167954",
+  "date": "2026-04-29T07:46:43.606Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-17",
+    "nano": -280000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78634654915",
+  "date": "2026-04-29T07:46:42.606Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-5760",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "57",
+    "nano": 600000000
+  },
+  "quantity": "100",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: GLRX, сумма=5760, количество=100
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15141138506",
+  "date": "2026-04-29T07:45:40.925Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-32",
+    "nano": -810000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78634588303",
+  "date": "2026-04-29T07:45:39.925Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-10977",
+    "nano": -340000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "10936",
+    "nano": 310160000
+  },
+  "quantity": "1",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10E8P0, сумма=10977.34, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "392150120040",
+  "date": "2026-04-29T07:36:32Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "40000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15131608715",
+  "date": "2026-04-28T12:36:22.979Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -520000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78603649110",
+  "date": "2026-04-28T12:36:21.979Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-173",
+    "nano": -790000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "57",
+    "nano": 930000000
+  },
+  "quantity": "3",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: GLRX, сумма=173.79, количество=3
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15131598735",
+  "date": "2026-04-28T12:35:41.144Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": -440000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004S683W7",
+  "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78603622359",
+  "date": "2026-04-28T12:35:40.144Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-481",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "48",
+    "nano": 100000000
+  },
+  "quantity": "10",
+  "figi": "BBG004S683W7",
+  "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: AFLT, сумма=481, количество=10
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "215097548336",
+  "date": "2026-04-28T08:11:43Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "628",
+    "nano": 640000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15067724998",
+  "date": "2026-04-23T07:21:08.730Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-89",
+    "nano": -820000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78444777138",
+  "date": "2026-04-23T07:21:07.730Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-30233",
+    "nano": -800000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7484",
+    "nano": 950100000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10ECX8, сумма=30233.8, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "390743667735",
+  "date": "2026-04-23T07:20:54Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "350",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "390743536624",
+  "date": "2026-04-23T07:19:48Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "30000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "632580533360",
+  "date": "2026-04-22T13:41:08.460Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-71",
+    "nano": -890000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "10",
+    "nano": 270000000
+  },
+  "quantity": "7",
+  "figi": "TCS60A1011U5",
+  "instrumentUid": "d16d8124-ce0c-4869-9efb-98700332feab"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TRUR@, сумма=71.89, количество=7
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15059609381",
+  "date": "2026-04-22T13:38:04.672Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -300000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG0100R9963",
+  "instrumentUid": "7bedd86b-478d-4742-a28c-29d27f8dbc7d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78421987900",
+  "date": "2026-04-22T13:38:03.672Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-101",
+    "nano": -100000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "1",
+    "nano": 11000000
+  },
+  "quantity": "100",
+  "figi": "BBG0100R9963",
+  "instrumentUid": "7bedd86b-478d-4742-a28c-29d27f8dbc7d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SGZH, сумма=101.1, количество=100
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15059602215",
+  "date": "2026-04-22T13:37:29.014Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": -920000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG00F6NKQX3",
+  "instrumentUid": "4d813ab1-8bc9-4670-89ea-12bfbab6017d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78421965980",
+  "date": "2026-04-22T13:37:28.014Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-638",
+    "nano": -400000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "638",
+    "nano": 400000000
+  },
+  "quantity": "1",
+  "figi": "BBG00F6NKQX3",
+  "instrumentUid": "4d813ab1-8bc9-4670-89ea-12bfbab6017d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SMLT, сумма=638.4, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15059587092",
+  "date": "2026-04-22T13:36:39.587Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-21",
+    "nano": -170000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CSG3",
+  "instrumentUid": "6966a3ae-5d0c-4e01-8640-cd926d8bf1c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78421934240",
+  "date": "2026-04-22T13:36:38.587Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-7063",
+    "nano": -50000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7055",
+    "nano": 588902000
+  },
+  "quantity": "1",
+  "figi": "TCS00A10CSG3",
+  "instrumentUid": "6966a3ae-5d0c-4e01-8640-cd926d8bf1c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10CSG3, сумма=7063.05, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "214554222182",
+  "date": "2026-04-22T12:51:09Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "7843",
+    "nano": 220000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10D533",
+  "instrumentUid": "1fd40228-8edd-4eb2-8584-1d7dbac103f0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15054100392",
+  "date": "2026-04-22T07:56:47.994Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": -490000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG0100R9963",
+  "instrumentUid": "7bedd86b-478d-4742-a28c-29d27f8dbc7d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78406179802",
+  "date": "2026-04-22T07:56:46.994Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-496",
+    "nano": -250000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 992500000
+  },
+  "quantity": "500",
+  "figi": "BBG0100R9963",
+  "instrumentUid": "7bedd86b-478d-4742-a28c-29d27f8dbc7d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SGZH, сумма=496.25, количество=500
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "632555200580",
+  "date": "2026-04-22T07:56:18.884Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "553",
+    "nano": 300000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "10",
+    "nano": 60000000
+  },
+  "quantity": "55",
+  "figi": "TCS20A10B0G9",
+  "instrumentUid": "5293ef3c-37bb-4d6f-8d43-802c57560881"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: TRND@, сумма=553.3, количество=55
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15040461216",
+  "date": "2026-04-21T08:38:39.897Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -380000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A104U43",
+  "instrumentUid": "714e76ab-03f2-4a77-b523-d9714dc04c6c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78362237709",
+  "date": "2026-04-21T08:38:38.897Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-128",
+    "nano": -180000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "128",
+    "nano": 180000000
+  },
+  "quantity": "1",
+  "figi": "TCS00A104U43",
+  "instrumentUid": "714e76ab-03f2-4a77-b523-d9714dc04c6c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: BTBR, сумма=128.18, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "632463695440",
+  "date": "2026-04-21T08:38:25.103Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "10",
+    "nano": 640000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "5",
+    "nano": 320000000
+  },
+  "quantity": "2",
+  "figi": "TCS30A108BL2",
+  "instrumentUid": "55111741-4618-4254-9c78-255b0067fcbe"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: TITR@, сумма=10.64, количество=2
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15040443704",
+  "date": "2026-04-21T08:37:41.455Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -380000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A104U43",
+  "instrumentUid": "714e76ab-03f2-4a77-b523-d9714dc04c6c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78362171008",
+  "date": "2026-04-21T08:37:40.455Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-128",
+    "nano": -220000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "128",
+    "nano": 220000000
+  },
+  "quantity": "1",
+  "figi": "TCS00A104U43",
+  "instrumentUid": "714e76ab-03f2-4a77-b523-d9714dc04c6c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: BTBR, сумма=128.22, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15033788905",
+  "date": "2026-04-20T16:40:20.120Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-93",
+    "nano": -360000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10EAM5",
+  "instrumentUid": "47351bd8-0f04-4067-a3c3-0404b8f6c12d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15031676532",
+  "date": "2026-04-20T14:22:44.587Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": -860000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG00F6NKQX3",
+  "instrumentUid": "4d813ab1-8bc9-4670-89ea-12bfbab6017d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78332528546",
+  "date": "2026-04-20T14:22:43.587Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-621",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "621",
+    "nano": 0
+  },
+  "quantity": "1",
+  "figi": "BBG00F6NKQX3",
+  "instrumentUid": "4d813ab1-8bc9-4670-89ea-12bfbab6017d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SMLT, сумма=621, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78332483117",
+  "date": "2026-04-20T14:21:58.297Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-31145",
+    "nano": -460000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7780",
+    "nano": 280655000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10EAM5",
+  "instrumentUid": "47351bd8-0f04-4067-a3c3-0404b8f6c12d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10EAM5, сумма=31145.46, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15031643765",
+  "date": "2026-04-20T14:20:54.023Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-98",
+    "nano": -460000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "78332402196",
+  "date": "2026-04-20T14:20:53.023Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-32883",
+    "nano": -850000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "10940",
+    "nano": 440789000
+  },
+  "quantity": "3",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10E8P0, сумма=32883.85, количество=3
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "632418075280",
+  "date": "2026-04-20T14:17:52.266Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "65014",
+    "nano": 470000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "155",
+    "nano": 910000000
+  },
+  "quantity": "417",
+  "figi": "TCS70A106DL2",
+  "instrumentUid": "498ec3ff-ef27-4729-9703-a5aac48d5789"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: TMON@, сумма=65014.47, количество=417
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "632233425860",
+  "date": "2026-04-16T13:24:04.664Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-155",
+    "nano": -700000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "155",
+    "nano": 700000000
+  },
+  "quantity": "1",
+  "figi": "TCS70A106DL2",
+  "instrumentUid": "498ec3ff-ef27-4729-9703-a5aac48d5789"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TMON@, сумма=155.7, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "632233398540",
+  "date": "2026-04-16T13:23:29.591Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-64771",
+    "nano": -200000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "155",
+    "nano": 700000000
+  },
+  "quantity": "416",
+  "figi": "TCS70A106DL2",
+  "instrumentUid": "498ec3ff-ef27-4729-9703-a5aac48d5789"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: TMON@, сумма=64771.2, количество=416
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "389124581140",
+  "date": "2026-04-16T12:01:18Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "65000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 13 операций из GetOperations за чанк 2026-05-01T00:00:00Z - 2026-05-31T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "217817280650",
+  "date": "2026-05-28T13:06:45Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "134",
+    "nano": 800000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "217606261690",
+  "date": "2026-05-26T14:45:27Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "598",
+    "nano": 160000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15407358748",
+  "date": "2026-05-21T07:16:44.322Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-16",
+    "nano": -290000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "79330430585",
+  "date": "2026-05-21T07:16:43.322Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-5428",
+    "nano": -260000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "51",
+    "nano": 210000000
+  },
+  "quantity": "106",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: GLRX, сумма=5428.26, количество=106
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "397073609003",
+  "date": "2026-05-21T07:15:29Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "5000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15394869791",
+  "date": "2026-05-20T08:22:32.550Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-124",
+    "nano": -800000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CSD0",
+  "instrumentUid": "5b5a95e8-c017-4eb3-b32d-c5a005e4b82b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "79292480668",
+  "date": "2026-05-20T07:39:39.542Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-41633",
+    "nano": -40000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "10400",
+    "nano": 692000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10CSD0",
+  "instrumentUid": "5b5a95e8-c017-4eb3-b32d-c5a005e4b82b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10CSD0, сумма=41633.04, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "396809540337",
+  "date": "2026-05-20T07:39:10Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "600",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "396808279339",
+  "date": "2026-05-20T07:33:32Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "1000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "396807530899",
+  "date": "2026-05-20T07:29:58Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "40000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "216977371092",
+  "date": "2026-05-19T11:27:08Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "38",
+    "nano": 30000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CSG3",
+  "instrumentUid": "6966a3ae-5d0c-4e01-8640-cd926d8bf1c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "216866988065",
+  "date": "2026-05-18T14:25:30Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "228",
+    "nano": 200000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10EAM5",
+  "instrumentUid": "47351bd8-0f04-4067-a3c3-0404b8f6c12d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "216371468516",
+  "date": "2026-05-12T15:21:35Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "342",
+    "nano": 850000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 38 операций из GetOperations за чанк 2026-05-31T00:00:00Z - 2026-06-30T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15884654411",
+  "date": "2026-06-30T09:31:07.938Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-94",
+    "nano": -480000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80892582755",
+  "date": "2026-06-30T09:31:06.938Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-31491",
+    "nano": -800000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "311",
+    "nano": 800000000
+  },
+  "quantity": "101",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=31491.8, количество=101
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "220825580579",
+  "date": "2026-06-30T07:53:10Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "320",
+    "nano": 150000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15880960443",
+  "date": "2026-06-30T05:35:51.541Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-94",
+    "nano": -760000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80872407221",
+  "date": "2026-06-30T05:12:20.986Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "31652",
+    "nano": 330000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7896",
+    "nano": 756063000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: RU000A10ECX8, сумма=31652.33, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15879944890",
+  "date": "2026-06-30T04:04:43.929Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -920000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80869966757",
+  "date": "2026-06-30T04:04:42.929Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-308",
+    "nano": -240000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "308",
+    "nano": 240000000
+  },
+  "quantity": "1",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=308.24, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15875547788",
+  "date": "2026-06-29T15:02:43.597Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-21",
+    "nano": -190000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80855470710",
+  "date": "2026-06-29T15:02:42.597Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-7062",
+    "nano": -380000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "307",
+    "nano": 60000000
+  },
+  "quantity": "23",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=7062.38, количество=23
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15875178229",
+  "date": "2026-06-29T14:39:21.111Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-21",
+    "nano": -880000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CSG3",
+  "instrumentUid": "6966a3ae-5d0c-4e01-8640-cd926d8bf1c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80853490808",
+  "date": "2026-06-29T14:39:20.111Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "7312",
+    "nano": 770000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7294",
+    "nano": 280069000
+  },
+  "quantity": "1",
+  "figi": "TCS00A10CSG3",
+  "instrumentUid": "6966a3ae-5d0c-4e01-8640-cd926d8bf1c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: RU000A10CSG3, сумма=7312.77, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15870048238",
+  "date": "2026-06-29T09:01:07.563Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-23",
+    "nano": -710000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80829036805",
+  "date": "2026-06-29T09:01:06.563Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-7904",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "304",
+    "nano": 0
+  },
+  "quantity": "26",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=7904, количество=26
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15869997613",
+  "date": "2026-06-29T08:58:21.297Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-52",
+    "nano": -210000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004S683W7",
+  "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80828747196",
+  "date": "2026-06-29T08:58:20.297Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-17404",
+    "nano": -200000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "38",
+    "nano": 676000000
+  },
+  "quantity": "450",
+  "figi": "BBG004S683W7",
+  "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: AFLT, сумма=17404.2, количество=450
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15869973353",
+  "date": "2026-06-29T08:56:57.957Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-60",
+    "nano": -240000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80828610776",
+  "date": "2026-06-29T08:56:56.957Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-20077",
+    "nano": -500000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "267",
+    "nano": 700000000
+  },
+  "quantity": "75",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: T, сумма=20077.5, количество=75
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15867507183",
+  "date": "2026-06-29T06:58:26.597Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-135",
+    "nano": -890000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CSD0",
+  "instrumentUid": "5b5a95e8-c017-4eb3-b32d-c5a005e4b82b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80807680390",
+  "date": "2026-06-29T05:04:17.866Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "45424",
+    "nano": 320000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "11324",
+    "nano": 564100000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10CSD0",
+  "instrumentUid": "5b5a95e8-c017-4eb3-b32d-c5a005e4b82b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: RU000A10CSD0, сумма=45424.32, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15866384676",
+  "date": "2026-06-29T05:03:23.785Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": -590000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80807654696",
+  "date": "2026-06-29T05:03:22.785Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-531",
+    "nano": -520000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "265",
+    "nano": 760000000
+  },
+  "quantity": "2",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: T, сумма=531.52, количество=2
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "220424998929",
+  "date": "2026-06-25T15:49:02Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "626",
+    "nano": 800000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "219650550441",
+  "date": "2026-06-18T07:30:57Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "226",
+    "nano": 40000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10EAM5",
+  "instrumentUid": "47351bd8-0f04-4067-a3c3-0404b8f6c12d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "219555585008",
+  "date": "2026-06-17T08:55:37Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "37",
+    "nano": 670000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CSG3",
+  "instrumentUid": "6966a3ae-5d0c-4e01-8640-cd926d8bf1c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15718978419",
+  "date": "2026-06-16T13:32:24.260Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": -990000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG008F2T3T2",
+  "instrumentUid": "f866872b-8f68-4b6e-930f-749fe9aa79c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80250303678",
+  "date": "2026-06-16T13:32:23.260Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-662",
+    "nano": -300000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "33",
+    "nano": 115000000
+  },
+  "quantity": "20",
+  "figi": "BBG008F2T3T2",
+  "instrumentUid": "f866872b-8f68-4b6e-930f-749fe9aa79c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RUAL, сумма=662.3, количество=20
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "219461802193",
+  "date": "2026-06-16T12:46:43Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "252",
+    "nano": 840000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CSD0",
+  "instrumentUid": "5b5a95e8-c017-4eb3-b32d-c5a005e4b82b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15678485094",
+  "date": "2026-06-12T11:22:57.402Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-137",
+    "nano": -730000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10D533",
+  "instrumentUid": "1fd40228-8edd-4eb2-8584-1d7dbac103f0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80151064043",
+  "date": "2026-06-12T11:22:56.402Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-46889",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "918",
+    "nano": 190000000
+  },
+  "quantity": "50",
+  "figi": "TCS00A10D533",
+  "instrumentUid": "1fd40228-8edd-4eb2-8584-1d7dbac103f0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SU26254RMFS1, сумма=46889, количество=50
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15678467373",
+  "date": "2026-06-12T11:20:36.948Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-35",
+    "nano": -220000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80151004692",
+  "date": "2026-06-12T11:20:35.948Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-11857",
+    "nano": -570000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "1067",
+    "nano": 290909000
+  },
+  "quantity": "11",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RU000A10E655, сумма=11857.57, количество=11
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "402246993910",
+  "date": "2026-06-12T11:19:47Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "59000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "219100332997",
+  "date": "2026-06-11T11:29:29Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "330",
+    "nano": 700000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15633730714",
+  "date": "2026-06-09T05:25:25.692Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-10",
+    "nano": -390000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "79981276087",
+  "date": "2026-06-09T05:25:24.692Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-3463",
+    "nano": -320000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "45",
+    "nano": 570000000
+  },
+  "quantity": "76",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: GLRX, сумма=3463.32, количество=76
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15633724630",
+  "date": "2026-06-09T05:24:51.266Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-6",
+    "nano": -830000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "79981247473",
+  "date": "2026-06-09T05:24:50.266Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-2278",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "45",
+    "nano": 560000000
+  },
+  "quantity": "126",
+  "figi": "TCS00A10CRQ4",
+  "instrumentUid": "51be1fe4-9fe1-4626-9400-6cd1fb6286c5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: GLRX, сумма=2278, количество=126
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "401382959424",
+  "date": "2026-06-09T05:22:39Z",
+  "type": "Пополнение брокерского счёта",
+  "operationType": "OPERATION_TYPE_INPUT",
+  "payment": {
+    "currency": "rub",
+    "units": "5000",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "",
+  "instrumentUid": ""
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 30 операций из GetOperations за чанк 2026-06-30T00:00:00Z - 2026-07-30T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "16266770613",
+  "date": "2026-07-28T13:02:03.031Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -820000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "82333415224",
+  "date": "2026-07-28T13:02:02.031Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-274",
+    "nano": -180000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "274",
+    "nano": 180000000
+  },
+  "quantity": "1",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=274.18, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "223576823156",
+  "date": "2026-07-28T11:21:03Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "320",
+    "nano": 150000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "16095504003",
+  "date": "2026-07-16T15:44:58.386Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -710000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "81672604028",
+  "date": "2026-07-16T15:44:57.386Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-237",
+    "nano": -40000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "237",
+    "nano": 40000000
+  },
+  "quantity": "1",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: T, сумма=237.04, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "222203816701",
+  "date": "2026-07-15T08:51:11Z",
+  "type": "Выплата дивидендов",
+  "operationType": "OPERATION_TYPE_DIVIDEND",
+  "payment": {
+    "currency": "rub",
+    "units": "10",
+    "nano": 380000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A104U43",
+  "instrumentUid": "714e76ab-03f2-4a77-b523-d9714dc04c6c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "5881539214",
+  "date": "2026-07-15T08:51:11Z",
+  "type": "Удержание налога по дивидендам",
+  "operationType": "OPERATION_TYPE_DIVIDEND_TAX",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A104U43",
+  "instrumentUid": "714e76ab-03f2-4a77-b523-d9714dc04c6c"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15916500958",
+  "date": "2026-07-02T14:34:43.754Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-49",
+    "nano": -750000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "81022130789",
+  "date": "2026-07-02T14:34:42.754Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-16584",
+    "nano": -150000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "301",
+    "nano": 530000000
+  },
+  "quantity": "55",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=16584.15, количество=55
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15916475171",
+  "date": "2026-07-02T14:33:04.363Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-45",
+    "nano": -200000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "81022011817",
+  "date": "2026-07-02T14:33:03.363Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-15067",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "301",
+    "nano": 340000000
+  },
+  "quantity": "50",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=15067, количество=50
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15916467109",
+  "date": "2026-07-02T14:32:26.059Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-95",
+    "nano": -400000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10EAM5",
+  "instrumentUid": "47351bd8-0f04-4067-a3c3-0404b8f6c12d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "81021954017",
+  "date": "2026-07-02T14:32:25.059Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "31931",
+    "nano": 490000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7949",
+    "nano": 999006000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10EAM5",
+  "instrumentUid": "47351bd8-0f04-4067-a3c3-0404b8f6c12d"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: RU000A10EAM5, сумма=31931.49, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15895270653",
+  "date": "2026-07-01T05:29:14.685Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-48",
+    "nano": -480000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG008F2T3T2",
+  "instrumentUid": "f866872b-8f68-4b6e-930f-749fe9aa79c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80931685146",
+  "date": "2026-07-01T05:29:13.685Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-16161",
+    "nano": -600000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "28",
+    "nano": 860000000
+  },
+  "quantity": "560",
+  "figi": "BBG008F2T3T2",
+  "instrumentUid": "f866872b-8f68-4b6e-930f-749fe9aa79c0"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: RUAL, сумма=16161.6, количество=560
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15895255793",
+  "date": "2026-07-01T05:27:12.966Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-96",
+    "nano": -540000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15895183753",
+  "date": "2026-07-01T05:14:45.688Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-171",
+    "nano": -680000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A108EH4",
+  "instrumentUid": "043ffb17-07e9-4c79-941f-4c5712d133cd"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80931259565",
+  "date": "2026-07-01T05:14:44.688Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-57906",
+    "nano": -100000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "817",
+    "nano": 500000000
+  },
+  "quantity": "70",
+  "figi": "TCS00A108EH4",
+  "instrumentUid": "043ffb17-07e9-4c79-941f-4c5712d133cd"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SU26248RMFS3, сумма=57906.1, количество=70
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15895181582",
+  "date": "2026-07-01T05:14:14.075Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-172",
+    "nano": -940000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80931247926",
+  "date": "2026-07-01T05:14:13.075Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "57895",
+    "nano": 280000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "11528",
+    "nano": 826621000
+  },
+  "quantity": "5",
+  "figi": "TCS00A10E8P0",
+  "instrumentUid": "4d269122-5590-4b40-b4cf-e497dad6a695"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: RU000A10E8P0, сумма=57895.28, количество=5
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15895174116",
+  "date": "2026-07-01T05:12:58.763Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-46",
+    "nano": -600000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A108EH4",
+  "instrumentUid": "043ffb17-07e9-4c79-941f-4c5712d133cd"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80931216644",
+  "date": "2026-07-01T05:12:57.763Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-15717",
+    "nano": -370000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "817",
+    "nano": 500000000
+  },
+  "quantity": "19",
+  "figi": "TCS00A108EH4",
+  "instrumentUid": "043ffb17-07e9-4c79-941f-4c5712d133cd"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SU26248RMFS3, сумма=15717.37, количество=19
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80931120615",
+  "date": "2026-07-01T05:09:22.113Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "32253",
+    "nano": 340000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "8044",
+    "nano": 549488000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: RU000A10ECX8, сумма=32253.34, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15884654411",
+  "date": "2026-06-30T09:31:07.938Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-94",
+    "nano": -480000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80892582755",
+  "date": "2026-06-30T09:31:06.938Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-31491",
+    "nano": -800000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "311",
+    "nano": 800000000
+  },
+  "quantity": "101",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=31491.8, количество=101
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "220825580579",
+  "date": "2026-06-30T07:53:10Z",
+  "type": "Выплата купонов",
+  "operationType": "OPERATION_TYPE_COUPON",
+  "payment": {
+    "currency": "rub",
+    "units": "320",
+    "nano": 150000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10E655",
+  "instrumentUid": "908c18cd-ae6e-4abc-8952-36f0d50c4a2a"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15880960443",
+  "date": "2026-06-30T05:35:51.541Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-94",
+    "nano": -760000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80872407221",
+  "date": "2026-06-30T05:12:20.986Z",
+  "type": "Продажа ценных бумаг",
+  "operationType": "OPERATION_TYPE_SELL",
+  "payment": {
+    "currency": "rub",
+    "units": "31652",
+    "nano": 330000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "7896",
+    "nano": 756063000
+  },
+  "quantity": "4",
+  "figi": "TCS00A10ECX8",
+  "instrumentUid": "a58a970e-9f41-4303-a78f-bbe77a302542"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция SELL: RU000A10ECX8, сумма=31652.33, количество=4
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "15879944890",
+  "date": "2026-06-30T04:04:43.929Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -920000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "80869966757",
+  "date": "2026-06-30T04:04:42.929Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-308",
+    "nano": -240000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "308",
+    "nano": 240000000
+  },
+  "quantity": "1",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=308.24, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 14 операций из GetOperations за чанк 2026-07-30T00:00:00Z - 2026-08-04T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "16371950436",
+  "date": "2026-08-04T18:41:47.345Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "0",
+    "nano": -820000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "82653586018",
+  "date": "2026-08-04T18:41:46.345Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-273",
+    "nano": -140000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "273",
+    "nano": 140000000
+  },
+  "quantity": "1",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: T, сумма=273.14, количество=1
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "16371948265",
+  "date": "2026-08-04T18:41:31.215Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-1",
+    "nano": -710000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "82653577081",
+  "date": "2026-08-04T18:41:30.215Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-569",
+    "nano": -360000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "284",
+    "nano": 680000000
+  },
+  "quantity": "2",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=569.36, количество=2
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "16371946393",
+  "date": "2026-08-04T18:41:16.100Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-22",
+    "nano": -810000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG01MVSHPP3",
+  "instrumentUid": "031fc073-aeee-4b5f-8d31-1056b0400e04"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "82653567290",
+  "date": "2026-08-04T18:41:15.100Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-7816",
+    "nano": -320000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "844",
+    "nano": 990000000
+  },
+  "quantity": "9",
+  "figi": "BBG01MVSHPP3",
+  "instrumentUid": "031fc073-aeee-4b5f-8d31-1056b0400e04"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SU26247RMFS5, сумма=7816.32, количество=9
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "5962563172",
+  "date": "2026-08-04T15:53:46Z",
+  "type": "Удержание налога по дивидендам",
+  "operationType": "OPERATION_TYPE_DIVIDEND_TAX",
+  "payment": {
+    "currency": "rub",
+    "units": "-1242",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "224253881717",
+  "date": "2026-08-04T15:53:46Z",
+  "type": "Выплата дивидендов",
+  "operationType": "OPERATION_TYPE_DIVIDEND",
+  "payment": {
+    "currency": "rub",
+    "units": "9635",
+    "nano": 840000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004730N88",
+  "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "224207869241",
+  "date": "2026-08-04T08:57:18Z",
+  "type": "Выплата дивидендов",
+  "operationType": "OPERATION_TYPE_DIVIDEND",
+  "payment": {
+    "currency": "rub",
+    "units": "188",
+    "nano": 200000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG0047315Y7",
+  "instrumentUid": "c190ff1f-1447-4227-b543-316332699ca5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "5959263910",
+  "date": "2026-08-04T08:57:18Z",
+  "type": "Удержание налога по дивидендам",
+  "operationType": "OPERATION_TYPE_DIVIDEND_TAX",
+  "payment": {
+    "currency": "rub",
+    "units": "-25",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG0047315Y7",
+  "instrumentUid": "c190ff1f-1447-4227-b543-316332699ca5"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "16334006448",
+  "date": "2026-08-02T14:00:18.465Z",
+  "type": "Удержание комиссии за операцию",
+  "operationType": "OPERATION_TYPE_BROKER_FEE",
+  "payment": {
+    "currency": "rub",
+    "units": "-6",
+    "nano": -410000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "REX0EKXMF2TTB2H409QX",
+  "date": "2026-08-02T14:00:17.457Z",
+  "type": "Покупка ценных бумаг",
+  "operationType": "OPERATION_TYPE_BUY",
+  "payment": {
+    "currency": "rub",
+    "units": "-2136",
+    "nano": -800000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "267",
+    "nano": 100000000
+  },
+  "quantity": "8",
+  "figi": "TCS80A107UL4",
+  "instrumentUid": "87db07bc-0e02-4e29-90bb-05e8ef791d7b"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: T, сумма=2136.8, количество=8
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "223917078953",
+  "date": "2026-07-31T09:35:37Z",
+  "type": "Выплата дивидендов",
+  "operationType": "OPERATION_TYPE_DIVIDEND",
+  "payment": {
+    "currency": "rub",
+    "units": "2539",
+    "nano": 200000000
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004S683W7",
+  "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
+  "id": "5945412513",
+  "date": "2026-07-31T09:35:37Z",
+  "type": "Удержание налога по дивидендам",
+  "operationType": "OPERATION_TYPE_DIVIDEND_TAX",
+  "payment": {
+    "currency": "rub",
+    "units": "-328",
+    "nano": 0
+  },
+  "price": {
+    "currency": "rub",
+    "units": "0",
+    "nano": 0
+  },
+  "quantity": "0",
+  "figi": "BBG004S683W7",
+  "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
+}
+plugin:obsidian-investment-tracker:143 [TBankApi] fetchBrokerReport возвращает 97 сделок и 176 операций
+plugin:obsidian-investment-tracker:143 [TBankApi] Удалено 22 дублирующихся транзакций. Пример: (3) ['{"id":"14011224000","date":"2026-03-31","time":"08…B","figi":"TCS20A10B0G9","tradeId":"14011224000"}', '{"id":"16208256710","date":"2026-04-20","time":"16…B","figi":"TCS00A10EAM5","tradeId":"16208256710"}', '{"id":"14263757620","date":"2026-04-22","time":"07…B","figi":"TCS20A10B0G9","tradeId":"14263757620"}']
+plugin:obsidian-investment-tracker:155 [Dashboard] Сохраняем транзакции, количество: 251
+plugin:obsidian-investment-tracker:143 [DataStore] saveTransactions вызван. Количество транзакций: 251
+plugin:obsidian-investment-tracker:143 [DataStore] writeFile вызывается, количество транзакций: 251
+plugin:obsidian-investment-tracker:143 [DataStore] writeFile завершён успешно.
+plugin:obsidian-investment-tracker:143 [DataStore] Импорт завершён. Всего в базе: 251.
+plugin:obsidian-investment-tracker:143 [MOEX] Курс USD от ЦБ РФ (дата 07.08.2026): 81.4077
+plugin:obsidian-investment-tracker:143 [MOEX] Курс CNY от ЦБ РФ (дата 07.08.2026): 12.0637
+plugin:obsidian-investment-tracker:143 [MoexApi] Не удалось получить цену облигации "RU000A107UL4" ни на TQCB, ни на TQOB.
+fetchBondPrices @ plugin:obsidian-investment-tracker:143
+await in fetchBondPrices
+fetchCurrentPrices @ plugin:obsidian-investment-tracker:143
+await in fetchCurrentPrices
+updateDashboard @ plugin:obsidian-investment-tracker:155
+await in updateDashboard
+handleSyncTBank @ plugin:obsidian-investment-tracker:155
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Цены от MOEX: Map(25) {'SMLT' => {…}, 'SBERP' => {…}, 'TRND' => {…}, 'TITR' => {…}, 'TATN' => {…}, …}
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Все уникальные тикеры: (26) ['SU26254RMFS1', 'SMLT', 'SBERP', 'TRND@', 'TITR@', 'TATN', 'RU000A10ECX8', 'TGLD@', 'RUAL', 'TMON@', 'RU000A10E8P0', 'RU000A10EAM5', 'BTBR', 'SGZH', 'RU000A10CSG3', 'TRUR@', 'AFLT', 'GLRX', 'GMKN', 'RU000A10E655', 'RU000A10CSD0', 'T', 'SBER', 'SU26248RMFS3', 'RU000A107UL4', 'SU26247RMFS5']
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Отсутствующие тикеры (не найдены в MOEX): (6) ['TRND@', 'TITR@', 'TGLD@', 'TMON@', 'TRUR@', 'RU000A107UL4']
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Токен T-Invest API присутствует, пробуем fallback...
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Сопоставление тикер -> идентификатор для fallback: Map(6) {'TRND@' => 'TCS20A10B0G9', 'TITR@' => 'TCS30A108BL2', 'TGLD@' => 'TCS80A101X50', 'TMON@' => 'TCS70A106DL2', 'TRUR@' => 'TCS60A1011U5', …}
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Запрос цен через T-Invest API для FIGI/UID: (6) ['TCS20A10B0G9', 'TCS30A108BL2', 'TCS80A101X50', 'TCS70A106DL2', 'TCS60A1011U5', 'TCS01A107UL4']
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Получены цены от T-Invest API: Map(0) {size: 0}
+plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TRND@ (id: TCS20A10B0G9)
+updateDashboard @ plugin:obsidian-investment-tracker:155
+plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TITR@ (id: TCS30A108BL2)
+updateDashboard @ plugin:obsidian-investment-tracker:155
+plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TGLD@ (id: TCS80A101X50)
+updateDashboard @ plugin:obsidian-investment-tracker:155
+plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TMON@ (id: TCS70A106DL2)
+updateDashboard @ plugin:obsidian-investment-tracker:155
+plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TRUR@ (id: TCS60A1011U5)
+updateDashboard @ plugin:obsidian-investment-tracker:155
+plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для RU000A107UL4 (id: TCS01A107UL4)
+updateDashboard @ plugin:obsidian-investment-tracker:155
+plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TGLD@', hasMarketPrice: false, currentPrice: 16.099999999999998, currentTotal: 193.2, profitPercent: 0, …}
+plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TRND@', hasMarketPrice: false, currentPrice: 10.326999999999998, currentTotal: 144.57799999999997, profitPercent: 0, …}
+plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TRUR@', hasMarketPrice: false, currentPrice: 10.27, currentTotal: 143.78, profitPercent: 0, …}

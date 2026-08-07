@@ -219,7 +219,7 @@ export class PortfolioCalculator {
 		const result: BrokerSummary[] = [];
 		for (const [broker, cs] of cashByBroker.entries()) {
 			const assetValue = assetsByBroker.get(broker) ?? 0;
-			const value = assetValue + cs.balance;
+			const value = assetValue;
 			const profit = value - cs.invested;
 			const profitPercent = cs.invested > 0 ? (profit / cs.invested) * 100 : 0;
 			result.push({

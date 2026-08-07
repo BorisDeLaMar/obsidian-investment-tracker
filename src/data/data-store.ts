@@ -3,226 +3,130 @@
 import { App, normalizePath } from 'obsidian';
 import { Transaction } from '../types';
 
-/**
- * Идентификатор плагина. Должен совпадать с полем "id" в manifest.json,
- * так как именно оно определяет путь к папке плагина внутри .obsidian/plugins/.
- */
 const PLUGIN_ID = 'obsidian-investment-tracker';
 
-/**
- * Схема содержимого data.json. Обёрнута в объект с полем `transactions`
- * (а не хранится как «голый» массив), чтобы в будущем можно было безопасно
- * дописать в этот же файл другие агрегаты (например, кэш котировок MOEX
- * или таймлайн стоимости портфеля) без breaking change формата файла.
- */
-interface DataFileSchema {
-	/** Версия схемы файла — на случай будущих миграций формата. */
-	schemaVersion: number;
-	transactions: Transaction[];
+interface TransactionsFileSchema {
+    schemaVersion: number;
+    transactions: Transaction[];
 }
 
-const EMPTY_DATA: DataFileSchema = {
-	schemaVersion: 1,
-	transactions: []
+const EMPTY_TRANSACTIONS: TransactionsFileSchema = {
+    schemaVersion: 1,
+    transactions: []
 };
 
 /**
- * Хранилище агрегированных данных плагина поверх скрытого JSON-файла
- * `.obsidian/plugins/obsidian-investment-tracker/data.json`.
- *
- * Все операции чтения/записи идут через `this.app.vault.adapter`, так как
- * эта директория находится вне обычного пользовательского хранилища заметок
- * и не должна индексироваться Obsidian как часть vault-контента.
+ * Хранилище транзакций в отдельном файле transactions.json.
+ * Настройки остаются в data.json (управляются Obsidian).
  */
 export class DataStore {
-	private readonly pluginDirPath: string;
-	private readonly dataFilePath: string;
+    private readonly pluginDirPath: string;
+    private readonly transactionsFilePath: string;
+    private cache: TransactionsFileSchema | null = null;
 
-	/**
-	 * Простой in-memory кеш последних прочитанных данных, чтобы дашборд
-	 * (который может дёргать getTransactions() многократно за рендер)
-	 * не делал лишние обращения к диску. Кеш сбрасывается при каждой
-	 * успешной записи через saveTransactions().
-	 */
-	private cache: DataFileSchema | null = null;
+    constructor(private readonly app: App) {
+        this.pluginDirPath = normalizePath(`${this.app.vault.configDir}/plugins/${PLUGIN_ID}`);
+        this.transactionsFilePath = normalizePath(`${this.pluginDirPath}/transactions.json`);
+    }
 
-	constructor(private readonly app: App) {
-		this.pluginDirPath = normalizePath(`${this.app.vault.configDir}/plugins/${PLUGIN_ID}`);
-		this.dataFilePath = normalizePath(`${this.pluginDirPath}/data.json`);
-	}
+    public async saveTransactions(newTransactions: Transaction[]): Promise<void> {
+        console.log('[DataStore] saveTransactions вызван. Количество:', newTransactions.length);
 
-	public async saveTransactions(newTransactions: Transaction[]): Promise<void> {
-		console.log('[DataStore] saveTransactions вызван! Количество транзакций:', newTransactions.length);
-		if (newTransactions.length > 0) {
-			console.log('[DataStore] Первая транзакция:', newTransactions[0]);
-		}
+        if (!newTransactions || newTransactions.length === 0) {
+            return;
+        }
 
-		if (!newTransactions || newTransactions.length === 0) {
-			return;
-		}
+        const existingData = await this.readFile();
+        const existingTransactions = existingData.transactions;
 
-		const existingData = await this.readFile();
-		const existingTransactions = existingData.transactions;
+        // Объединяем и дедуплицируем
+        const all = [...existingTransactions, ...newTransactions];
+        const seen = new Map<string, Transaction>();
+        for (const tx of all) {
+			const amountKey = Math.round(tx.amount * 1e6) / 1e6;
+			const totalSumKey = Math.round(tx.totalSum * 1e6) / 1e6;
+			const key = `${tx.broker}|${tx.ticker}|${tx.date}|${tx.type}|${amountKey}|${totalSumKey}`;
+            seen.set(key, tx);
+        }
+        const merged = Array.from(seen.values());
+        merged.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-		const merged = [...existingTransactions];
-		let addedCount = 0;
-		let replacedCount = 0;
+        const updatedData: TransactionsFileSchema = {
+            schemaVersion: existingData.schemaVersion,
+            transactions: merged
+        };
 
-		for (const newTx of newTransactions) {
-			const matchIndex = merged.findIndex(existing => {
-				if (existing.broker !== newTx.broker) return false;
-				if (existing.type !== newTx.type) return false;
+        await this.writeFile(updatedData);
+        console.log(`[DataStore] Импорт завершён. Всего в базе: ${merged.length}.`);
+    }
 
-				// Для BUY/SELL – точное совпадение тикера, количества, цены и даты
-				if (newTx.type === 'BUY' || newTx.type === 'SELL') {
-					if (existing.ticker !== newTx.ticker) return false;
-					if (Math.abs((existing.amount || 0) - (newTx.amount || 0)) > 0.001) return false;
-					if (Math.abs((existing.price || 0) - (newTx.price || 0)) > 0.001) return false;
-					return existing.date === newTx.date;
-				}
+    public async getTransactions(): Promise<Transaction[]> {
+        const data = await this.readFile();
+        return [...data.transactions].sort(
+            (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+    }
 
-				// Для денежных операций – сравниваем сумму (с tolerance 0.01) и дату (допуск 2 дня)
-				const existingSum = existing.totalSum || 0;
-				const newSum = newTx.totalSum || 0;
-				if (Math.abs(existingSum - newSum) > 0.01) return false;
+    public async clearAllTransactions(): Promise<void> {
+        await this.writeFile({ ...EMPTY_TRANSACTIONS });
+        console.log('[DataStore] Все транзакции удалены.');
+    }
 
-				const existingDate = new Date(existing.date);
-				const newDate = new Date(newTx.date);
-				const diffDays = Math.abs((existingDate.getTime() - newDate.getTime()) / (1000 * 60 * 60 * 24));
-				return diffDays <= 3;
-			});
+    // ---- Внутренние методы ----
 
-			if (matchIndex !== -1) {
-				merged[matchIndex] = newTx;
-				replacedCount++;
-			} else {
-				merged.push(newTx);
-				addedCount++;
-			}
-		}
+    private async ensurePluginDirectoryExists(): Promise<void> {
+        const dirExists = await this.app.vault.adapter.exists(this.pluginDirPath);
+        if (!dirExists) {
+            await this.app.vault.adapter.mkdir(this.pluginDirPath);
+        }
+    }
 
-		merged.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    private async readFile(): Promise<TransactionsFileSchema> {
+        if (this.cache) return this.cache;
 
-		const updatedData: DataFileSchema = {
-			schemaVersion: existingData.schemaVersion,
-			transactions: merged
-		};
+        try {
+            const fileExists = await this.app.vault.adapter.exists(this.transactionsFilePath);
+            if (!fileExists) {
+                this.cache = { ...EMPTY_TRANSACTIONS };
+                return this.cache;
+            }
 
-		await this.writeFile(updatedData);
+            const raw = await this.app.vault.adapter.read(this.transactionsFilePath);
+            if (!raw || raw.trim().length === 0) {
+                this.cache = { ...EMPTY_TRANSACTIONS };
+                return this.cache;
+            }
 
-		console.log(
-			`[DataStore] Импорт завершён: добавлено ${addedCount} новых транзакций, ` +
-			`заменено ${replacedCount} старых (обновлены данными из нового импорта). ` +
-			`Всего в базе: ${merged.length}.`
-		);
-	}
+            const parsed = JSON.parse(raw) as Partial<TransactionsFileSchema>;
+            if (!parsed || !Array.isArray(parsed.transactions)) {
+                console.warn('[DataStore] transactions.json повреждён, инициализация пустой.');
+                this.cache = { ...EMPTY_TRANSACTIONS };
+                return this.cache;
+            }
 
-	/**
-	 * Возвращает все сохранённые транзакции, отсортированные по дате
-	 * от самых старых к самым новым.
-	 *
-	 * Метод асинхронный, так как Obsidian.Vault.adapter не предоставляет
-	 * синхронного API для чтения файлов (read/write/exists строго Promise-based).
-	 */
-	public async getTransactions(): Promise<Transaction[]> {
-		const data = await this.readFile();
-		const sorted = [...data.transactions].sort(
-			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-		);
-		return sorted;
-	}
+            this.cache = {
+                schemaVersion: typeof parsed.schemaVersion === 'number' ? parsed.schemaVersion : 1,
+                transactions: parsed.transactions
+            };
+            return this.cache;
+        } catch (error) {
+            console.error('[DataStore] Ошибка чтения transactions.json', error);
+            this.cache = { ...EMPTY_TRANSACTIONS };
+            return this.cache;
+        }
+    }
 
-	/**
-	 * Полностью очищает базу транзакций (например, для команды "Сбросить данные плагина").
-	 * Явно вынесен отдельным методом, чтобы такое разрушительное действие
-	 * не пряталось внутри saveTransactions с пустым массивом.
-	 */
-	public async clearAllTransactions(): Promise<void> {
-		await this.writeFile({ ...EMPTY_DATA });
-		console.log('[DataStore] Все транзакции удалены из локального хранилища.');
-	}
-
-	// ---------------------------------------------------------------------------
-	// Внутренняя работа с файловой системой
-	// ---------------------------------------------------------------------------
-
-	/**
-	 * Гарантирует существование папки плагина перед записью файла.
-	 * Обычно она уже существует (Obsidian сам создаёт её при установке плагина),
-	 * но при первом запуске сразу после ручной установки директории может не быть.
-	 */
-	private async ensurePluginDirectoryExists(): Promise<void> {
-		const dirExists = await this.app.vault.adapter.exists(this.pluginDirPath);
-		if (!dirExists) {
-			await this.app.vault.adapter.mkdir(this.pluginDirPath);
-		}
-	}
-
-	/**
-	 * Читает и парсит data.json. При отсутствии файла, пустом содержимом
-	 * или повреждённом JSON возвращает пустую схему вместо падения — импорт
-	 * не должен срываться из-за проблем с ранее сохранёнными данными.
-	 * Результат кешируется в памяти до следующей успешной записи.
-	 */
-	private async readFile(): Promise<DataFileSchema> {
-		if (this.cache) {
-			return this.cache;
-		}
-
-		try {
-			const fileExists = await this.app.vault.adapter.exists(this.dataFilePath);
-			if (!fileExists) {
-				this.cache = { ...EMPTY_DATA, transactions: [] };
-				return this.cache;
-			}
-
-			const rawContent = await this.app.vault.adapter.read(this.dataFilePath);
-			if (!rawContent || rawContent.trim().length === 0) {
-				this.cache = { ...EMPTY_DATA, transactions: [] };
-				return this.cache;
-			}
-
-			const parsed = JSON.parse(rawContent) as Partial<DataFileSchema>;
-
-			if (!parsed || !Array.isArray(parsed.transactions)) {
-				console.warn(
-					'[DataStore] Файл data.json повреждён или имеет неожиданный формат ' +
-						'(поле transactions отсутствует или не является массивом). ' +
-						'Хранилище инициализировано как пустое, старый файл не удалён.'
-				);
-				this.cache = { ...EMPTY_DATA, transactions: [] };
-				return this.cache;
-			}
-
-			this.cache = {
-				schemaVersion: typeof parsed.schemaVersion === 'number' ? parsed.schemaVersion : 1,
-				transactions: parsed.transactions
-			};
-			return this.cache;
-		} catch (error) {
-			console.error(
-				'[DataStore] Ошибка при чтении/разборе data.json. Хранилище инициализировано как пустое.',
-				error
-			);
-			this.cache = { ...EMPTY_DATA, transactions: [] };
-			return this.cache;
-		}
-	}
-
-	/**
-	 * Сериализует и записывает схему данных в data.json, обновляя in-memory кеш.
-	 */
-	private async writeFile(data: DataFileSchema): Promise<void> {
-		await this.ensurePluginDirectoryExists();
-
-		const serialized = JSON.stringify(data, null, 2);
-
-		try {
-			await this.app.vault.adapter.write(this.dataFilePath, serialized);
-			this.cache = data;
-		} catch (error) {
-			console.error('[DataStore] Не удалось записать data.json на диск.', error);
-			throw error;
-		}
-	}
+    private async writeFile(data: TransactionsFileSchema): Promise<void> {
+        console.log('[DataStore] Запись transactions.json, количество:', data.transactions.length);
+        await this.ensurePluginDirectoryExists();
+        const serialized = JSON.stringify(data, null, 2);
+        try {
+            await this.app.vault.adapter.write(this.transactionsFilePath, serialized);
+            this.cache = data;
+            console.log('[DataStore] transactions.json успешно записан.');
+        } catch (error) {
+            console.error('[DataStore] Ошибка записи transactions.json', error);
+            throw error;
+        }
+    }
 }
