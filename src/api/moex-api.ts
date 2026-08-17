@@ -48,6 +48,13 @@ export class MoexApi {
         if (stockTickers.length > 0) await this.fetchStockPrices(stockTickers, result);
         if (bondTickers.length > 0) await this.fetchBondPrices(bondTickers, result);
 
+        // ---- FALLBACK: для облигаций, которые не нашлись, пробуем как акции ----
+        const unresolvedBondTickers = bondTickers.filter(t => !result.has(t));
+        if (unresolvedBondTickers.length > 0) {
+            console.log(`[MoexApi] ${unresolvedBondTickers.length} облигаций не найдены, пробуем как акции:`, unresolvedBondTickers);
+            await this.fetchStockPrices(unresolvedBondTickers, result);
+        }
+
         return result;
     }
 

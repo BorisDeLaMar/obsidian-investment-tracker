@@ -11,7 +11,11 @@ export class TBankXlsxParser {
         const transactions: Transaction[] = [];
 
         const isinMap = this.parseIsinMapping(rows);
-
+        // Строим обратный маппинг: ISIN -> код актива (тикер)
+        const tickerByIsin = new Map<string, string>();
+        for (const [code, isin] of isinMap) {
+            tickerByIsin.set(isin, code);
+        }
         // ------------------------------------------------------------
         // 1. Парсинг секции "1.1 Информация о совершенных сделках"
         // ------------------------------------------------------------
@@ -63,6 +67,18 @@ export class TBankXlsxParser {
                 const brokerFee = parseFloat(String(row[tradeColMap.brokerFee] || '0'));
                 const currency = String(row[tradeColMap.currency] || 'RUB').trim();
 
+                let actualTicker = ticker;
+                // Если ticker похож на ISIN, пытаемся получить реальный тикер
+                if (/^RU[0-9A-Z]{10}$/i.test(ticker) && ticker.length === 12) {
+                    const resolved = tickerByIsin.get(ticker);
+                    if (resolved) {
+                        actualTicker = resolved;
+                        console.log(`[TBankXlsxParser] Заменён ISIN ${ticker} на тикер ${actualTicker}`);
+                    }
+                }
+
+                const isin = isinMap.get(ticker) || ticker;
+
                 if (!dateStr || !ticker || amount === 0 || price === 0) continue;
 
                 let type: 'BUY' | 'SELL' | null = null;
@@ -77,16 +93,16 @@ export class TBankXlsxParser {
                 transactions.push({
                     id: `tbank-xlsx-trade-${tradeId}`,
                     date: isoDate,
-                    time: time, // <-- добавляем
+                    time: time,
                     broker: 'tbank',
-                    ticker: ticker.toUpperCase(),
+                    ticker: actualTicker.toUpperCase(),
                     shareName: String(row[tradeColMap.name] || ticker).trim(),
                     type,
                     amount: Math.abs(amount),
                     price: Math.abs(price),
                     totalSum: Math.abs(totalSum),
                     currency: currency.toUpperCase(),
-                    figi: ticker,
+                    figi: isin, // ISIN из маппинга или исходный
                     tradeId
                 });
 
@@ -169,7 +185,13 @@ export class TBankXlsxParser {
                     amount = Math.abs(amountOut);
                     shareName = 'Комиссия за сделки';
                 } else if (typeText.includes('Выплата доходов по корпоративным действиям')) {
-                    transactionType = 'DIV';
+                    // Определяем, купон или дивиденд
+                    const lowerNote = note.toLowerCase();
+                    const isCoupon = lowerNote.includes('облигация') || 
+                                    lowerNote.includes('купон') || 
+                                    lowerNote.includes('офз') || 
+                                    lowerNote.includes('обб');
+                    transactionType = isCoupon ? 'COUPON' : 'DIV';
                     amount = Math.abs(amountIn);
                     shareName = note.length > 0 ? note : 'Выплата доходов';
                 } else if (typeText.includes('Налог (дивиденды)')) {
@@ -200,6 +222,8 @@ export class TBankXlsxParser {
                         if (/^[A-Z0-9]{12}$/.test(maybeIsin)) ticker = maybeIsin;
                     }
                 }
+
+                console.log(`[TBankXlsxParser] Создана CASH операция: тип=${transactionType}, дата=${isoDate}, сумма=${amount}, ticker=${ticker}`);
 
                 const idBase = `tbank-xlsx-cash-${isoDate}-${transactionType}-${amount}`;
                 const isin = isinMap.get(ticker);

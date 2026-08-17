@@ -235,6 +235,10 @@ const CASH_IN_OPERATION_TYPES = new Set<string>([
     'OPERATION_TYPE_INPUT',
     'OPERATION_TYPE_INPUT_SWIFT',
     'OPERATION_TYPE_INPUT_ACQUIRING',
+    'OPERATION_TYPE_INPUT_CASH',
+    'OPERATION_TYPE_INPUT_CARD',
+    'OPERATION_TYPE_INPUT_OTHER',
+    // если API использует числовые коды, но обычно строки
 ]);
 
 const CASH_OUT_OPERATION_TYPES = new Set<string>([
@@ -283,13 +287,31 @@ function guessTypeFromText(text: string | undefined): TransactionType | 'TRADE' 
     if (!text) return null;
     const normalized = text.toLowerCase();
 
+    // Сделки
     if (normalized.includes('покупка') || normalized.includes('продажа')) return 'TRADE';
+
+    // Пополнения (CASH_IN)
+    if (normalized.includes('пополнение') || normalized.includes('ввод денежных') ||
+        normalized.includes('зачисление') || normalized.includes('ввод') ||
+        normalized.includes('input') || normalized.includes('deposit') ||
+        normalized.includes('зачислено') || normalized.includes('поступление') ||
+        normalized.includes('внесение') || normalized.includes('пополнить') ||
+        normalized.includes('внесено')) {
+        return 'CASH_IN';
+    }
+
+    // Выводы (CASH_OUT)
+    if (normalized.includes('вывод') || normalized.includes('списание') ||
+        normalized.includes('withdrawal') || normalized.includes('output')) {
+        return 'CASH_OUT';
+    }
+
+    // Дивиденды, купоны, налоги, комиссии
     if (normalized.includes('дивиденд')) return 'DIV';
     if (normalized.includes('купон')) return 'COUPON';
     if (normalized.includes('налог')) return 'TAX';
     if (normalized.includes('комис') || normalized.includes('плата') || normalized.includes('сбор')) return 'FEE';
-    if (normalized.includes('пополнение') || normalized.includes('ввод денежных')) return 'CASH_IN';
-    if (normalized.includes('вывод')) return 'CASH_OUT';
+
     return null;
 }
 
@@ -459,6 +481,58 @@ export class TBankApi {
         return merged;
     }
 
+    // src/api/tbank-api.ts
+
+    public async resolveIsinByTicker(token: string, ticker: string): Promise<string | null> {
+        const clean = ticker.replace(/@$/, '').trim();
+        if (!clean) return null;
+
+        // Если это уже ISIN (12 символов, буквы/цифры) – возвращаем как есть
+        if (/^[A-Z0-9]{12}$/.test(clean)) {
+            return clean;
+        }
+
+        // Пробуем резолвить через InstrumentsService
+        const classCodes = ['SPBRU', 'TQBR', 'TQCB', 'TQOB'];
+        for (const classCode of classCodes) {
+            try {
+                const resp = await this.callMethod<{ instrument?: { isin?: string } }>(
+                    token,
+                    TBankApi.GET_INSTRUMENT_BY_METHOD_PATH,
+                    {
+                        getInstrumentByRequest: {
+                            idType: 'INSTRUMENT_ID_TYPE_TICKER',
+                            id: clean,
+                            classCode,
+                        }
+                    }
+                );
+                if (resp.instrument?.isin) {
+                    console.log(`[TBankApi] Резолвинг ISIN для ${clean} (classCode=${classCode}) -> ${resp.instrument.isin}`);
+                    return resp.instrument.isin;
+                }
+            } catch { /* continue */ }
+        }
+
+        // Если не нашли – пробуем через UID или FIGI (редко, но бывает)
+        try {
+            const resp = await this.callMethod<{ instrument?: { isin?: string } }>(
+                token,
+                TBankApi.GET_INSTRUMENT_BY_METHOD_PATH,
+                {
+                    getInstrumentByRequest: {
+                        idType: 'INSTRUMENT_ID_TYPE_UID',
+                        id: clean,
+                    }
+                }
+            );
+            if (resp.instrument?.isin) return resp.instrument.isin;
+        } catch { /* ignore */ }
+
+        console.warn(`[TBankApi] Не удалось найти ISIN для "${clean}"`);
+        return null;
+    }
+
     public async fetchLastPrices(
         token: string,
         identifiers: string[]
@@ -466,35 +540,39 @@ export class TBankApi {
         const result = new Map<string, number>();
         if (identifiers.length === 0) return result;
 
-        // Резолвим все идентификаторы в FIGI (если они ещё не FIGI)
-        const figiMap = new Map<string, string>();
+        // Преобразуем каждый идентификатор в ISIN
+        const isinMap = new Map<string, string>(); // исходный -> ISIN
         for (const id of identifiers) {
-            let figi = id;
-            // Если это не FIGI (не начинается с BBG и длина 12), пробуем резолвить
-            if (!/^BBG[A-Z0-9]{9}$/.test(id)) {
-                const resolved = await this.resolveFigiByTicker(token, id);
-                if (resolved) figi = resolved;
+            let isin = id;
+            // Если это не ISIN – пробуем резолвить
+            if (!/^[A-Z0-9]{12}$/.test(id)) {
+                const resolved = await this.resolveIsinByTicker(token, id);
+                if (resolved) isin = resolved;
                 else continue;
             }
-            figiMap.set(id, figi);
+            isinMap.set(id, isin);
         }
 
-        if (figiMap.size === 0) return result;
+        if (isinMap.size === 0) return result;
 
-        const figiList = Array.from(figiMap.values());
+        const isinList = Array.from(isinMap.values());
         try {
-            // Отправляем запрос с обёрткой getLastPricesRequest
             const responseBody = await this.callMethod<{ lastPrices?: Array<{ figi?: string; price?: MoneyValue }> }>(
                 token,
                 TBankApi.GET_LAST_PRICES_METHOD_PATH,
-                { getLastPricesRequest: { figi: figiList } }
+                {
+                    getLastPricesRequest: {
+                        instrumentId: isinList,
+                        instrumentIdType: 'INSTRUMENT_ID_TYPE_ISIN'
+                    }
+                }
             );
 
             for (const item of responseBody.lastPrices ?? []) {
-                if (item.figi && item.price) {
+                if (item.figi && item.price) { // здесь figi будет ISIN (API возвращает его как figi)
                     const price = moneyValueToNumber(item.price);
-                    for (const [orig, f] of figiMap) {
-                        if (f === item.figi) {
+                    for (const [orig, isin] of isinMap) {
+                        if (isin === item.figi) {
                             result.set(orig, price);
                             break;
                         }
@@ -502,7 +580,7 @@ export class TBankApi {
                 }
             }
         } catch (error) {
-            console.warn('[TBankApi] Ошибка при запросе цен через GetLastPrices.', error);
+            console.warn('[TBankApi] Ошибка при запросе цен через GetLastPrices (ISIN).', error);
         }
 
         return result;
@@ -995,6 +1073,10 @@ export class TBankApi {
 
                     const resolvedType = resolveNonTradeType(op);
                     if (!resolvedType) {
+                        console.warn('[TBankApi] Не удалось определить тип операции, пропускаем. operationType=', op.operationType, 'type=', op.type, 'payment=', op.payment);
+                        continue;
+                    }
+                    if (!resolvedType) {
                         console.warn('[TBankApi] Не удалось определить тип операции, пропускаем:', op);
                         continue;
                     }
@@ -1164,7 +1246,13 @@ export class TBankApi {
         for (const tx of all) {
             const amountKey = Math.round(tx.amount * 1e6) / 1e6;
             const totalSumKey = Math.round(tx.totalSum * 1e6) / 1e6;
-            const key = `${tx.broker}|${tx.ticker}|${tx.date}|${tx.type}|${amountKey}|${totalSumKey}`;
+            let key: string;
+            if (tx.type === 'CASH_IN' || tx.type === 'CASH_OUT') {
+                const dateOnly = tx.date.slice(0, 10);
+                key = `${tx.broker}|${tx.type}|${dateOnly}|${totalSumKey}`;
+            } else {
+                key = `${tx.broker}|${tx.ticker}|${tx.date}|${tx.type}|${amountKey}|${totalSumKey}`;
+            }
             seen.set(key, tx);
         }
         const result = Array.from(seen.values());

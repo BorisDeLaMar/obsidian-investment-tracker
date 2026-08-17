@@ -29,36 +29,113 @@ export class DataStore {
         this.transactionsFilePath = normalizePath(`${this.pluginDirPath}/transactions.json`);
     }
 
-    public async saveTransactions(newTransactions: Transaction[]): Promise<void> {
-        console.log('[DataStore] saveTransactions вызван. Количество:', newTransactions.length);
+	// src/data/data-store.ts
 
-        if (!newTransactions || newTransactions.length === 0) {
-            return;
-        }
+	// ... внутри класса DataStore ...
 
-        const existingData = await this.readFile();
-        const existingTransactions = existingData.transactions;
+	/**
+	 * Проверяет, есть ли уже транзакция с такими же брокером, типом и суммой,
+	 * чья дата отличается от указанной не более чем на maxDaysDiff дней.
+	 */
+	private hasDuplicateCashOperation(
+		existing: Transaction[],
+		candidate: Transaction,
+		maxDaysDiff: number = 4
+	): boolean {
+		if (candidate.type !== 'CASH_IN' && candidate.type !== 'CASH_OUT') {
+			return false;
+		}
+		const candDate = new Date(candidate.date);
+		for (const tx of existing) {
+			if (tx.broker !== candidate.broker) continue;
+			if (tx.type !== candidate.type) continue;
+			if (Math.abs(tx.totalSum - candidate.totalSum) > 0.01) continue;
+			const txDate = new Date(tx.date);
+			const diffDays = Math.abs((txDate.getTime() - candDate.getTime()) / (1000 * 60 * 60 * 24));
+			if (diffDays <= maxDaysDiff) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-        // Объединяем и дедуплицируем
-        const all = [...existingTransactions, ...newTransactions];
-        const seen = new Map<string, Transaction>();
-        for (const tx of all) {
-			const amountKey = Math.round(tx.amount * 1e6) / 1e6;
-			const totalSumKey = Math.round(tx.totalSum * 1e6) / 1e6;
-			const key = `${tx.broker}|${tx.ticker}|${tx.date}|${tx.type}|${amountKey}|${totalSumKey}`;
-            seen.set(key, tx);
-        }
-        const merged = Array.from(seen.values());
-        merged.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+	public async saveTransactions(newTransactions: Transaction[], replace: boolean = false): Promise<void> {
+		console.log(`[DataStore] saveTransactions вызван. Количество: ${newTransactions.length}, replace=${replace}`);
 
-        const updatedData: TransactionsFileSchema = {
-            schemaVersion: existingData.schemaVersion,
-            transactions: merged
-        };
+		if (!newTransactions || newTransactions.length === 0) {
+			return;
+		}
 
-        await this.writeFile(updatedData);
-        console.log(`[DataStore] Импорт завершён. Всего в базе: ${merged.length}.`);
-    }
+		if (replace) {
+			const data: TransactionsFileSchema = {
+				schemaVersion: 1,
+				transactions: newTransactions.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+			};
+			await this.writeFile(data);
+			console.log(`[DataStore] Полная замена: записано ${newTransactions.length} транзакций.`);
+			return;
+		}
+
+		const existingData = await this.readFile();
+		const existingTransactions = existingData.transactions;
+
+		// Собираем ключи существующих транзакций для точного совпадения (для BUY/SELL)
+		const existingKeys = new Set<string>();
+		for (const tx of existingTransactions) {
+			existingKeys.add(this.generateDedupKey(tx));
+		}
+
+		const merged = [...existingTransactions];
+		let addedCount = 0;
+
+		for (const tx of newTransactions) {
+			const key = this.generateDedupKey(tx);
+
+			// Для CASH_IN/OUT используем проверку с диапазоном дат
+			if (tx.type === 'CASH_IN' || tx.type === 'CASH_OUT') {
+				if (this.hasDuplicateCashOperation(merged, tx, 4)) {
+					console.log(`[DataStore] Пропущен дубликат (с допуском ±4 дня): ${key}`);
+					continue;
+				}
+			} else {
+				// Для остальных типов используем точное совпадение ключа
+				if (existingKeys.has(key) || merged.some(m => this.generateDedupKey(m) === key && m.id !== tx.id)) {
+					console.log(`[DataStore] Пропущен дубликат (точное совпадение): ${key}`);
+					continue;
+				}
+			}
+
+			// Добавляем
+			merged.push(tx);
+			existingKeys.add(key);
+			addedCount++;
+			console.log(`[DataStore] Добавлена новая транзакция: ${key}, тип=${tx.type}, сумма=${tx.totalSum}`);
+		}
+
+		merged.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+		const updatedData: TransactionsFileSchema = {
+			schemaVersion: existingData.schemaVersion,
+			transactions: merged
+		};
+		await this.writeFile(updatedData);
+		console.log(`[DataStore] Импорт завершён. Добавлено ${addedCount} новых транзакций. Всего в базе: ${merged.length}.`);
+	}
+
+	private generateDedupKey(tx: Transaction): string {
+		const dateOnly = tx.date.slice(0, 10);
+		const totalKey = Math.round(tx.totalSum * 100) / 100;
+
+		// Для BUY/SELL используем полный ключ (брокер|тип|дата|тикер|сумма)
+		if (tx.type === 'BUY' || tx.type === 'SELL') {
+			const ticker = tx.ticker || '';
+			return `${tx.broker}|${tx.type}|${dateOnly}|${ticker}|${totalKey}`;
+		}
+
+		// Для всех остальных (CASH_IN, CASH_OUT, FEE, TAX, DIV, COUPON)
+		// используем только брокер, дату и сумму (без типа и тикера)
+		return `${tx.broker}|${dateOnly}|${totalKey}`;
+	}
 
     public async getTransactions(): Promise<Transaction[]> {
         const data = await this.readFile();

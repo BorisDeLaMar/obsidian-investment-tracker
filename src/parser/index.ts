@@ -38,6 +38,11 @@ export class ReportParserDispatcher {
         }
     }
 
+    public async resolveTBankIsin(token: string, ticker: string): Promise<string | null> {
+        if (!token || !ticker) return null;
+        return this.tbankApi.resolveIsinByTicker(token, ticker);
+    }
+
     public async fetchTBankLastPrices(token: string, identifiers: string[]): Promise<Map<string, number>> {
         return this.tbankApi.fetchLastPrices(token, identifiers);
     }

@@ -407,11 +407,31 @@ export class InvestmentDashboardView extends ItemView {
 				return;
 			}
 
+			// Строим маппинг ISIN -> тикер из транзакций, где figi является ISIN, а ticker - нормальный тикер
+			const isinToTicker = new Map<string, string>();
+			for (const tx of transactions) {
+				const figi = tx.figi;
+				const ticker = tx.ticker;
+				if (figi && /^RU[0-9A-Z]{10}$/i.test(figi) && ticker && !/^RU[0-9A-Z]{10}$/i.test(ticker)) {
+					isinToTicker.set(figi, ticker);
+					console.log(`[Dashboard] Найден маппинг ISIN ${figi} -> тикер ${ticker}`);
+				}
+			}
+
 			const uniqueTickers = Array.from(
 				new Set(
 					transactions
 						.filter((t) => t.type === 'BUY' || t.type === 'SELL')
-						.map((t) => t.ticker)
+						.map((t) => {
+							let ticker = t.ticker;
+							// Если ticker похож на ISIN, пытаемся заменить через маппинг
+							if (/^RU[0-9A-Z]{10}$/i.test(ticker) && isinToTicker.has(ticker)) {
+								const resolved = isinToTicker.get(ticker);
+								console.log(`[Dashboard] Заменён ISIN ${ticker} на тикер ${resolved} для запроса цены`);
+								return resolved!;
+							}
+							return ticker;
+						})
 						.filter((ticker): ticker is string => !!ticker)
 				)
 			);
@@ -421,64 +441,49 @@ export class InvestmentDashboardView extends ItemView {
 			console.log('[DASHBOARD] Все уникальные тикеры:', uniqueTickers);
 
 			const missingTickers = uniqueTickers.filter((ticker) => !moexPrices.has(ticker));
-			console.log('[DASHBOARD] Отсутствующие тикеры (не найдены в MOEX):', missingTickers);
 
 			if (missingTickers.length > 0 && this.plugin.settings.tbankApiToken) {
-				console.log('[DASHBOARD] Токен T-Invest API присутствует, пробуем fallback...');
-				const idByTicker = new Map<string, string>();
-				for (const t of transactions) {
-					if (missingTickers.includes(t.ticker)) {
-						const id = t.figi || t.ticker;
-						if (id) {
-							idByTicker.set(t.ticker, id);
-						}
+				const token = this.plugin.settings.tbankApiToken;
+				const idMap = new Map<string, string>();
+
+				for (const ticker of missingTickers) {
+					// Сначала пытаемся взять ISIN из транзакций (поле figi)
+					const tx = transactions.find(t => t.ticker === ticker && t.figi);
+					let id = tx?.figi || '';
+
+					// Если в транзакциях нет figi – резолвим через API
+					if (!id) {
+						try {
+							const resolved = await this.plugin.parserDispatcher.resolveTBankIsin(token, ticker);
+							if (resolved) id = resolved;
+						} catch (e) { /* ignore */ }
+					}
+
+					// Если id найден – добавляем
+					if (id) {
+						idMap.set(ticker, id);
 					}
 				}
-				console.log('[DASHBOARD] Сопоставление тикер -> идентификатор для fallback:', idByTicker);
 
-				if (idByTicker.size > 0) {
-					const identifiers = Array.from(idByTicker.values());
-					console.log('[DASHBOARD] Запрос цен через T-Invest API для FIGI/UID:', identifiers);
+				if (idMap.size > 0) {
+					const identifiers = Array.from(idMap.values());
 					try {
-						const tbankPrices = await this.plugin.parserDispatcher.fetchTBankLastPrices(
-							this.plugin.settings.tbankApiToken,
-							identifiers
-						);
-						console.log('[DASHBOARD] Получены цены от T-Invest API:', tbankPrices);
-
-						// Добавляем полученные цены в moexPrices
-						for (const [ticker, id] of idByTicker) {
-							const price = tbankPrices.get(id);
+						const tbankPrices = await this.plugin.parserDispatcher.fetchTBankLastPrices(token, identifiers);
+						for (const [ticker, isin] of idMap) {
+							const price = tbankPrices.get(isin);
 							if (price != null) {
 								const kind = detectInstrumentKind(ticker);
-								// Для облигаций пропускаем (они уже обработаны MOEX, если есть)
-								if (kind === 'BOND') continue;
 								moexPrices.set(ticker, {
 									price,
 									instrumentKind: kind,
-									hasMarketPrice: true
+									hasMarketPrice: true,
+									shareName: ticker // можно потом уточнить
 								});
-								console.log(`[DASHBOARD] Добавлена цена для ${ticker}: ${price} (из T-Invest API)`);
-								// Сохранение FIGI в транзакции, если нужно
-								const hasFigi = transactions.some(t => t.ticker === ticker && t.figi);
-								if (!hasFigi) {
-									const figi = await this.plugin.parserDispatcher.resolveTBankFigi(
-										this.plugin.settings.tbankApiToken,
-										id
-									);
-									if (figi) {
-										// ... существующий код сохранения FIGI
-									}
-								}
-							} else {
-								console.warn(`[DASHBOARD] T-Invest API не вернул цену для ${ticker} (id: ${id})`);
 							}
 						}
 					} catch (error) {
-						console.error('[DASHBOARD] Ошибка при запросе цен через T-Invest API:', error);
+						console.error('[DASHBOARD] Ошибка запроса цен через T-Invest API (ISIN).', error);
 					}
-				} else {
-					console.log('[DASHBOARD] Нет идентификаторов для fallback (idByTicker пуст).');
 				}
 			} else {
 				if (missingTickers.length === 0) {

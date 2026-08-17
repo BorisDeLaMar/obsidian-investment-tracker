@@ -1,66 +1,105 @@
-[InvestmentDashboardView] Синхронизация: from="2026-01-01T00:00:00Z", to="2026-08-04T00:00:00.000Z" (now="2026-08-07T10:51:18.175Z").
-plugin:obsidian-investment-tracker:143 [TBankApi] Запрошенный период (2026-01-01T00:00:00Z - 2026-08-04T00:00:00.000Z) превышает 30 дней и будет разбит на 8 последовательных запросов к GetBrokerReport.
-plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-01-01T00:00:00Z - 2026-01-31T23:59:59Z
-plugin:obsidian-investment-tracker:143 [TBankApi] Нет данных за период 2026-01-01T00:00:00Z - 2026-01-31T23:59:59Z (пропущено).
+[TBankApi] Нет данных за период 2026-01-01T00:00:00Z - 2026-01-31T23:59:59Z (пропущено).
 plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-01-31T00:00:00Z - 2026-03-02T23:59:59Z
 2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ-ПД254" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-03-02T00:00:00Z - 2026-04-01T23:59:59Z
 2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "Полипласт обб2П015" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-04-01T00:00:00Z - 2026-05-01T23:59:59Z
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "РЖД оббП51" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГТЛК 1P-22" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МЕТАЛЛОИНВЕСТ обб2П02" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "Полипласт обб2П015" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "РЖД оббП51" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГЛОРАКС оббП05" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "РЖД оббП51" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГЛОРАКС оббП05" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-05-01T00:00:00Z - 2026-05-31T23:59:59Z
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МКПАО ОК РУСАЛ оббП15" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-05-31T00:00:00Z - 2026-06-30T23:59:59Z
 plugin:obsidian-investment-tracker:143 [TBankApi] Получен ответ 429 (Too Many Requests) для /tinkoff.public.invest.api.contract.v1.OperationsService/GetBrokerReport. Повторная попытка 1/5 через 5000 мс.
 executeWithRetry @ plugin:obsidian-investment-tracker:143
+await in executeWithRetry
+eval @ plugin:obsidian-investment-tracker:143
+eval @ plugin:obsidian-investment-tracker:143
+Promise.then
+enqueue @ plugin:obsidian-investment-tracker:143
+callMethod @ plugin:obsidian-investment-tracker:143
+requestReportGeneration @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Получен ответ 429 (Too Many Requests) для /tinkoff.public.invest.api.contract.v1.OperationsService/GetBrokerReport. Повторная попытка 2/5 через 10000 мс.
 executeWithRetry @ plugin:obsidian-investment-tracker:143
+await in executeWithRetry
+eval @ plugin:obsidian-investment-tracker:143
+eval @ plugin:obsidian-investment-tracker:143
+Promise.then
+enqueue @ plugin:obsidian-investment-tracker:143
+callMethod @ plugin:obsidian-investment-tracker:143
+requestReportGeneration @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Получен ответ 429 (Too Many Requests) для /tinkoff.public.invest.api.contract.v1.OperationsService/GetBrokerReport. Повторная попытка 3/5 через 20000 мс.
 executeWithRetry @ plugin:obsidian-investment-tracker:143
 2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГЛОРАКС оббП05" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ-ПД254" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МКПАО ОК РУСАЛ оббП15" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МЕТАЛЛОИНВЕСТ обб2П02" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-06-30T00:00:00Z - 2026-07-30T23:59:59Z
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МКПАО ОК РУСАЛ оббП15" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "МЕТАЛЛОИНВЕСТ обб2П02" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 2plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "Полипласт обб2П015" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ 26248" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 3plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "РЖД оббП51" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ 26248" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "Полипласт обб2П015" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ГТЛК 1P-22" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
 mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
-plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-07-30T00:00:00Z - 2026-08-04T23:59:59Z
+fetchTrades @ plugin:obsidian-investment-tracker:143
+plugin:obsidian-investment-tracker:143 [TBankApi] Обрабатывается чанк: 2026-07-30T00:00:00Z - 2026-08-10T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Сделка по "ОФЗ 26247" — цена указана в процентах от номинала (облигация). Поле price в Transaction содержит это процентное значение, а не рублёвую цену за единицу.
+mapTradeRowsToTransactions @ plugin:obsidian-investment-tracker:143
+fetchTrades @ plugin:obsidian-investment-tracker:143
 plugin:obsidian-investment-tracker:143 [TBankApi] Получено 0 операций из GetOperations за чанк 2026-01-01T00:00:00Z - 2026-01-31T23:59:59Z
 plugin:obsidian-investment-tracker:143 [TBankApi] Получено 16 операций из GetOperations за чанк 2026-01-31T00:00:00Z - 2026-03-02T23:59:59Z
 plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
@@ -3216,7 +3255,7 @@ plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
   "instrumentUid": "e6123145-9665-43e0-8413-cd61b8aa9b13"
 }
 plugin:obsidian-investment-tracker:143 [TBankApi] Создана транзакция BUY: SBER, сумма=308.24, количество=1
-plugin:obsidian-investment-tracker:143 [TBankApi] Получено 14 операций из GetOperations за чанк 2026-07-30T00:00:00Z - 2026-08-04T23:59:59Z
+plugin:obsidian-investment-tracker:143 [TBankApi] Получено 14 операций из GetOperations за чанк 2026-07-30T00:00:00Z - 2026-08-10T23:59:59Z
 plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
   "id": "16371950436",
   "date": "2026-08-04T18:41:47.345Z",
@@ -3487,15 +3526,208 @@ plugin:obsidian-investment-tracker:143 [TBankApi] Операция: {
   "figi": "BBG004S683W7",
   "instrumentUid": "1c69e020-f3b1-455c-affa-45f8b8049234"
 }
-plugin:obsidian-investment-tracker:143 [TBankApi] fetchBrokerReport возвращает 97 сделок и 176 операций
-plugin:obsidian-investment-tracker:143 [TBankApi] Удалено 22 дублирующихся транзакций. Пример: (3) ['{"id":"14011224000","date":"2026-03-31","time":"08…B","figi":"TCS20A10B0G9","tradeId":"14011224000"}', '{"id":"16208256710","date":"2026-04-20","time":"16…B","figi":"TCS00A10EAM5","tradeId":"16208256710"}', '{"id":"14263757620","date":"2026-04-22","time":"07…B","figi":"TCS20A10B0G9","tradeId":"14263757620"}']
-plugin:obsidian-investment-tracker:155 [Dashboard] Сохраняем транзакции, количество: 251
-plugin:obsidian-investment-tracker:143 [DataStore] saveTransactions вызван. Количество транзакций: 251
-plugin:obsidian-investment-tracker:143 [DataStore] writeFile вызывается, количество транзакций: 251
-plugin:obsidian-investment-tracker:143 [DataStore] writeFile завершён успешно.
-plugin:obsidian-investment-tracker:143 [DataStore] Импорт завершён. Всего в базе: 251.
-plugin:obsidian-investment-tracker:143 [MOEX] Курс USD от ЦБ РФ (дата 07.08.2026): 81.4077
-plugin:obsidian-investment-tracker:143 [MOEX] Курс CNY от ЦБ РФ (дата 07.08.2026): 12.0637
+plugin:obsidian-investment-tracker:143 [TBankApi] fetchBrokerReport: получено 100 сделок и 176 операций
+plugin:obsidian-investment-tracker:143 [TBankApi] fetchBrokerReport возвращает 193 транзакций после фильтрации и дедупликации
+plugin:obsidian-investment-tracker:155 [Dashboard] Сохраняем транзакции, количество: 193
+plugin:obsidian-investment-tracker:143 [DataStore] saveTransactions вызван. Количество: 193, replace=false
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-24|SU26254RMFS1|100091.28, тип=BUY, сумма=100091.28
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-24|SMLT|1728.4, тип=BUY, сумма=1728.4
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-24|SBERP|1583.4, тип=BUY, сумма=1583.4
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-24|TRND@|73.36, тип=BUY, сумма=73.36
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-24|TITR@|5.86, тип=BUY, сумма=5.86
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-24|TRND@|220.08, тип=BUY, сумма=220.08
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-24|104000, тип=CASH_IN, сумма=104000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-24|286.41, тип=FEE, сумма=286.41
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-24|5.19, тип=FEE, сумма=5.19
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-24|4.75, тип=FEE, сумма=4.75
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-26|SU26254RMFS1|17407.62, тип=BUY, сумма=17407.62
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-26|TATN|538.9, тип=BUY, сумма=538.9
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-26|TRND@|136.37, тип=BUY, сумма=136.37
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-02-26|TITR@|5.89, тип=BUY, сумма=5.89
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-26|18140.77, тип=CASH_IN, сумма=18140.77
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-26|49.76, тип=FEE, сумма=49.76
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-26|1.62, тип=FEE, сумма=1.62
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-12|30000, тип=CASH_IN, сумма=30000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-03-13|RU000A10ECX8|23874.28, тип=BUY, сумма=23874.28
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-03-13|RU000A10ECX8|7935.16, тип=BUY, сумма=7935.16
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-03-13|TGLD@|96.6, тип=BUY, сумма=96.6
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-13|1500, тип=CASH_IN, сумма=1500
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-13|71.15, тип=FEE, сумма=71.15
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-13|400, тип=CASH_IN, сумма=400
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-13|100, тип=CASH_IN, сумма=100
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-13|23.65, тип=FEE, сумма=23.65
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-27|339.04, тип=COUPON, сумма=339.04
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-03-30|TATN|674.2, тип=SELL, сумма=674.2
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-03-30|RUAL|812, тип=BUY, сумма=812
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-03-30|TATN|674.2
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-30|2.02, тип=FEE, сумма=2.02
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-30|2.44, тип=FEE, сумма=2.44
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-03-31|TRND@|189.81, тип=BUY, сумма=189.81
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-16|TMON@|64771.2, тип=BUY, сумма=64771.2
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-16|TMON@|155.7, тип=BUY, сумма=155.7
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-16|65000, тип=CASH_IN, сумма=65000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-04-20|TMON@|65014.47, тип=SELL, сумма=65014.47
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-20|RU000A10E8P0|32883.85, тип=BUY, сумма=32883.85
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-20|SMLT|621, тип=BUY, сумма=621
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-20|RU000A10EAM5|15572.73, тип=BUY, сумма=15572.73
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-20|TMON@|65014.47
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-20|98.46, тип=FEE, сумма=98.46
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-20|1.86, тип=FEE, сумма=1.8599999999999999
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-20|93.36, тип=FEE, сумма=93.36
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-21|BTBR|128.22, тип=BUY, сумма=128.22
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-04-21|TITR@|10.64, тип=SELL, сумма=10.64
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-21|BTBR|128.18, тип=BUY, сумма=128.18
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-21|0.38, тип=FEE, сумма=0.38
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-21|TITR@|10.64
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-04-21|0.38
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-04-22|TRND@|60.36, тип=SELL, сумма=60.36
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-04-22|TRND@|30.18, тип=SELL, сумма=30.18
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-04-22|TRND@|20.12, тип=SELL, сумма=20.12
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-04-22|TRND@|402.4, тип=SELL, сумма=402.4
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-22|SGZH|496.25, тип=BUY, сумма=496.25
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-22|RU000A10CSG3|7063.05, тип=BUY, сумма=7063.05
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-22|SMLT|638.4, тип=BUY, сумма=638.4
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-22|SGZH|101.1, тип=BUY, сумма=101.1
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-22|TRUR@|71.89, тип=BUY, сумма=71.89
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-04-22|TRND@|553.3, тип=SELL, сумма=553.3
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-22|1.49, тип=FEE, сумма=1.49
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-22|7843.22, тип=COUPON, сумма=7843.22
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-22|21.17, тип=FEE, сумма=21.17
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-22|1.92, тип=FEE, сумма=1.92
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-22|0.3, тип=FEE, сумма=0.3
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-23|RU000A10ECX8|30233.8, тип=BUY, сумма=30233.8
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-23|30000, тип=CASH_IN, сумма=30000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-23|350, тип=CASH_IN, сумма=350
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-23|89.82, тип=FEE, сумма=89.82
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-28|AFLT|481, тип=BUY, сумма=481
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-28|GLRX|173.79, тип=BUY, сумма=173.79
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-28|628.64, тип=COUPON, сумма=628.64
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-28|1.44, тип=FEE, сумма=1.44
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-28|0.52, тип=FEE, сумма=0.52
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-29|RU000A10E8P0|10977.34, тип=BUY, сумма=10977.34
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-29|GLRX|5760, тип=BUY, сумма=5760
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-29|GMKN|2696, тип=BUY, сумма=2696
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-29|RU000A10E655|4282.08, тип=BUY, сумма=4282.08
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-29|AFLT|956.6, тип=BUY, сумма=956.6
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-29|RU000A10E8P0|10922.83, тип=BUY, сумма=10922.83
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-04-29|RU000A10E655|4252.08, тип=BUY, сумма=4252.08
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|40000, тип=CASH_IN, сумма=40000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|32.81, тип=FEE, сумма=32.81
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|17.28, тип=FEE, сумма=17.28
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|8.09, тип=FEE, сумма=8.09
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|12.83, тип=FEE, сумма=12.83
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|2.87, тип=FEE, сумма=2.87
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|32.65, тип=FEE, сумма=32.65
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|12.74, тип=FEE, сумма=12.74
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-12|342.85, тип=COUPON, сумма=342.85
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-18|228.2, тип=COUPON, сумма=228.2
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-19|38.03, тип=COUPON, сумма=38.03
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-05-20|RU000A10CSD0|41633.04, тип=BUY, сумма=41633.04
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-20|40000, тип=CASH_IN, сумма=40000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-20|1000, тип=CASH_IN, сумма=1000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-20|600, тип=CASH_IN, сумма=600
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-20|124.8, тип=FEE, сумма=124.8
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-05-21|GLRX|307.26, тип=BUY, сумма=307.26
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-05-21|GLRX|665.73, тип=BUY, сумма=665.73
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-05-21|GLRX|563.31, тип=BUY, сумма=563.31
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-05-21|GLRX|2048.4, тип=BUY, сумма=2048.4
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-05-21|GLRX|1843.56, тип=BUY, сумма=1843.56
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-21|5000, тип=CASH_IN, сумма=5000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-21|16.29, тип=FEE, сумма=16.29
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-26|598.16, тип=COUPON, сумма=598.16
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-28|134.8, тип=COUPON, сумма=134.8
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-09|GLRX|2278, тип=BUY, сумма=2278
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-09|GLRX|3463.32, тип=BUY, сумма=3463.32
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-09|5000, тип=CASH_IN, сумма=5000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-09|6.83, тип=FEE, сумма=6.83
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-09|10.39, тип=FEE, сумма=10.39
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-11|330.7, тип=COUPON, сумма=330.7
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-12|RU000A10E655|10779.7, тип=BUY, сумма=10779.7
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-12|RU000A10E655|1077.87, тип=BUY, сумма=1077.87
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-12|SU26254RMFS1|46889, тип=BUY, сумма=46889
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-12|59000, тип=CASH_IN, сумма=59000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-12|35.22, тип=FEE, сумма=35.22
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-12|137.73, тип=FEE, сумма=137.73
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-16|RUAL|662.3, тип=BUY, сумма=662.3
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-16|252.84, тип=COUPON, сумма=252.84
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-16|1.99, тип=FEE, сумма=1.99
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-17|37.67, тип=COUPON, сумма=37.67
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-18|226.04, тип=COUPON, сумма=226.04
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-25|626.8, тип=COUPON, сумма=626.8
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-29|T|531.52, тип=BUY, сумма=531.52
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-06-29|RU000A10CSD0|45424.32, тип=SELL, сумма=45424.32
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-29|T|13385, тип=BUY, сумма=13385
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-29|T|6692.5, тип=BUY, сумма=6692.5
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-29|AFLT|10443.6, тип=BUY, сумма=10443.6
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-29|AFLT|6960.6, тип=BUY, сумма=6960.6
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-29|SBER|7904, тип=BUY, сумма=7904
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-06-29|RU000A10CSG3|7312.77, тип=SELL, сумма=7312.77
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-29|SBER|307.06, тип=BUY, сумма=307.06
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-29|SBER|6755.32, тип=BUY, сумма=6755.32
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-29|1.59, тип=FEE, сумма=1.5899999999999999
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-06-29|RU000A10CSD0|45424.32
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-29|135.89, тип=FEE, сумма=135.89
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-29|60.24, тип=FEE, сумма=60.24
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-29|52.21, тип=FEE, сумма=52.21
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-29|23.71, тип=FEE, сумма=23.71
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-06-29|RU000A10CSG3|7312.77
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-29|21.88, тип=FEE, сумма=21.88
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-29|21.19, тип=FEE, сумма=21.19
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-30|SBER|308.24, тип=BUY, сумма=308.24
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-06-30|RU000A10ECX8|31652.33, тип=SELL, сумма=31652.33
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-06-30|SBER|31491.8, тип=BUY, сумма=31491.8
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-30|0.92, тип=FEE, сумма=0.92
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-06-30|RU000A10ECX8|31652.33
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-30|94.76, тип=FEE, сумма=94.76
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-30|320.15, тип=COUPON, сумма=320.15
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-30|94.48, тип=FEE, сумма=94.48
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-07-01|RU000A10ECX8|16126.67, тип=SELL, сумма=16126.67
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-07-01|SU26248RMFS3|15717.37, тип=BUY, сумма=15717.37
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-07-01|RU000A10E8P0|34737.17, тип=SELL, сумма=34737.17
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-07-01|RU000A10E8P0|11579.07, тип=SELL, сумма=11579.07
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-07-01|RU000A10E8P0|11579.04, тип=SELL, сумма=11579.04
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-07-01|SU26248RMFS3|57906.1, тип=BUY, сумма=57906.1
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-07-01|RUAL|16161.6, тип=BUY, сумма=16161.6
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-07-01|RU000A10ECX8|32253.34, тип=SELL, сумма=32253.34
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-01|46.6, тип=FEE, сумма=46.6
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-07-01|RU000A10E8P0|57895.28, тип=SELL, сумма=57895.28
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-01|172.94, тип=FEE, сумма=172.94
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-01|171.68, тип=FEE, сумма=171.68
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-01|96.54, тип=FEE, сумма=96.54
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-01|48.48, тип=FEE, сумма=48.48
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|SELL|2026-07-02|RU000A10EAM5|31931.49, тип=SELL, сумма=31931.49
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-07-02|SBER|15067, тип=BUY, сумма=15067
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-07-02|SBER|16584.15, тип=BUY, сумма=16584.15
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-07-02|RU000A10EAM5|31931.49
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-02|95.4, тип=FEE, сумма=95.4
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-02|45.2, тип=FEE, сумма=45.2
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-02|49.75, тип=FEE, сумма=49.75
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-15|10.38, тип=DIV, сумма=10.38
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-15|1, тип=TAX, сумма=1
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-07-16|T|237.04, тип=BUY, сумма=237.04
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-16|0.71, тип=FEE, сумма=0.71
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-07-28|SBER|274.18, тип=BUY, сумма=274.18
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-28|320.15, тип=COUPON, сумма=320.15
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-28|0.82, тип=FEE, сумма=0.82
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-31|2539.2, тип=DIV, сумма=2539.2
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-31|328, тип=TAX, сумма=328
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-08-02|RU000A107UL4|2136.8, тип=BUY, сумма=2136.8
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-02|6.41, тип=FEE, сумма=6.41
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-08-04|SU26247RMFS5|7816.32, тип=BUY, сумма=7816.32
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-08-04|SBER|569.36, тип=BUY, сумма=569.36
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|BUY|2026-08-04|T|273.14, тип=BUY, сумма=273.14
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-04|188.2, тип=DIV, сумма=188.2
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-04|25, тип=TAX, сумма=25
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-04|1242, тип=TAX, сумма=1242
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-04|9635.84, тип=DIV, сумма=9635.84
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-04|22.81, тип=FEE, сумма=22.81
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-04|1.71, тип=FEE, сумма=1.71
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-04|0.82, тип=FEE, сумма=0.82
+plugin:obsidian-investment-tracker:143 [DataStore] Запись transactions.json, количество: 185
+plugin:obsidian-investment-tracker:143 [DataStore] transactions.json успешно записан.
+plugin:obsidian-investment-tracker:143 [DataStore] Импорт завершён. Добавлено 185 новых транзакций. Всего в базе: 185.
+plugin:obsidian-investment-tracker:143 [MOEX] Курс USD от ЦБ РФ (дата 13.08.2026): 82.9977
+plugin:obsidian-investment-tracker:143 [MOEX] Курс CNY от ЦБ РФ (дата 13.08.2026): 12.278
 plugin:obsidian-investment-tracker:143 [MoexApi] Не удалось получить цену облигации "RU000A107UL4" ни на TQCB, ни на TQOB.
 fetchBondPrices @ plugin:obsidian-investment-tracker:143
 await in fetchBondPrices
@@ -3506,23 +3738,232 @@ await in updateDashboard
 handleSyncTBank @ plugin:obsidian-investment-tracker:155
 plugin:obsidian-investment-tracker:155 [DASHBOARD] Цены от MOEX: Map(25) {'SMLT' => {…}, 'SBERP' => {…}, 'TRND' => {…}, 'TITR' => {…}, 'TATN' => {…}, …}
 plugin:obsidian-investment-tracker:155 [DASHBOARD] Все уникальные тикеры: (26) ['SU26254RMFS1', 'SMLT', 'SBERP', 'TRND@', 'TITR@', 'TATN', 'RU000A10ECX8', 'TGLD@', 'RUAL', 'TMON@', 'RU000A10E8P0', 'RU000A10EAM5', 'BTBR', 'SGZH', 'RU000A10CSG3', 'TRUR@', 'AFLT', 'GLRX', 'GMKN', 'RU000A10E655', 'RU000A10CSD0', 'T', 'SBER', 'SU26248RMFS3', 'RU000A107UL4', 'SU26247RMFS5']
-plugin:obsidian-investment-tracker:155 [DASHBOARD] Отсутствующие тикеры (не найдены в MOEX): (6) ['TRND@', 'TITR@', 'TGLD@', 'TMON@', 'TRUR@', 'RU000A107UL4']
-plugin:obsidian-investment-tracker:155 [DASHBOARD] Токен T-Invest API присутствует, пробуем fallback...
-plugin:obsidian-investment-tracker:155 [DASHBOARD] Сопоставление тикер -> идентификатор для fallback: Map(6) {'TRND@' => 'TCS20A10B0G9', 'TITR@' => 'TCS30A108BL2', 'TGLD@' => 'TCS80A101X50', 'TMON@' => 'TCS70A106DL2', 'TRUR@' => 'TCS60A1011U5', …}
-plugin:obsidian-investment-tracker:155 [DASHBOARD] Запрос цен через T-Invest API для FIGI/UID: (6) ['TCS20A10B0G9', 'TCS30A108BL2', 'TCS80A101X50', 'TCS70A106DL2', 'TCS60A1011U5', 'TCS01A107UL4']
-plugin:obsidian-investment-tracker:155 [DASHBOARD] Получены цены от T-Invest API: Map(0) {size: 0}
-plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TRND@ (id: TCS20A10B0G9)
+plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TGLD@', hasMarketPrice: true, currentPrice: 14.35, currentTotal: 86.1, profitPercent: -10.869565217391305, …}
+plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TRUR@', hasMarketPrice: true, currentPrice: 10, currentTotal: 70, profitPercent: -2.6290165530671867, …}
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Найдено ISIN для 25 инструментов.
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-02-24, сумма=104000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-02-25, сумма=296.35, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-02-26, сумма=18140.77, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-02-27, сумма=51.38, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-03-12, сумма=30000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-03-13, сумма=1500, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-03-13, сумма=400, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-03-13, сумма=100, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-03-16, сумма=94.8, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-03-27, сумма=339.04, ticker=RU000A10ECX8
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-03-31, сумма=4.46, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-04-16, сумма=65000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-04-21, сумма=193.68, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-04-22, сумма=7843.22, ticker=RU000A10D533
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-04-22, сумма=0.76, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-04-23, сумма=30000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-04-23, сумма=350, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-04-23, сумма=24.88, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-04-24, сумма=89.82, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-04-28, сумма=628.64, ticker=RU000A10ECX8
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-04-29, сумма=40000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-04-29, сумма=1.96, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-04-30, сумма=119.27, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-05-12, сумма=342.85, ticker=RU000A10E8P0
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-05-18, сумма=228.2, ticker=RU000A10EAM5
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-05-19, сумма=38.03, ticker=RU000A10CSG3
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-05-20, сумма=40000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-05-20, сумма=1000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-05-20, сумма=600, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-05-21, сумма=5000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-05-21, сумма=124.8, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-05-22, сумма=16.29, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-05-26, сумма=598.16, ticker=RU000A10ECX8
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-05-28, сумма=134.8, ticker=RU000A10E655
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-06-09, сумма=5000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-06-10, сумма=17.22, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-06-11, сумма=330.7, ticker=RU000A10E8P0
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=CASH_IN, дата=2026-06-15, сумма=59000, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-06-16, сумма=252.84, ticker=RU000A10CSD0
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-06-16, сумма=172.95, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-06-17, сумма=37.67, ticker=RU000A10CSG3
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-06-17, сумма=1.99, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-06-18, сумма=226.04, ticker=RU000A10EAM5
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-06-25, сумма=626.8, ticker=RU000A10ECX8
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-06-30, сумма=320.15, ticker=RU000A10E655
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-06-30, сумма=316.71, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-07-01, сумма=190.16, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-07-02, сумма=536.24, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-07-03, сумма=190.35, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=TAX, дата=2026-07-15, сумма=1, ticker=RU000A104U43
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=DIV, дата=2026-07-15, сумма=10.38, ticker=RU000A104U43
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-07-17, сумма=0.71, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=COUPON, дата=2026-07-28, сумма=320.15, ticker=RU000A10E655
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-07-29, сумма=0.82, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=TAX, дата=2026-07-31, сумма=328, ticker=RU0009062285
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=DIV, дата=2026-07-31, сумма=2539.2, ticker=RU0009062285
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=TAX, дата=2026-08-04, сумма=25, ticker=RU0009029557
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=DIV, дата=2026-08-04, сумма=188.2, ticker=RU0009029557
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=TAX, дата=2026-08-04, сумма=1242, ticker=RU0009029540
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=DIV, дата=2026-08-04, сумма=9635.84, ticker=RU0009029540
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-08-04, сумма=6.41, ticker=RUB
+plugin:obsidian-investment-tracker:143 [TBankXlsxParser] Создана CASH операция: тип=FEE, дата=2026-08-05, сумма=25.34, ticker=RUB
+plugin:obsidian-investment-tracker:143 [DataStore] saveTransactions вызван. Количество: 148, replace=false
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-24|SU26254RMFS1|100091.28
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-24|SMLT|1728.4
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-24|SBERP|1583.4
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-24|TRND@|73.36
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-24|TITR@|5.86
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-24|TRND@|220.08
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-02-24|104000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-25|296.35, тип=FEE, сумма=296.35
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-26|SU26254RMFS1|17407.62
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-26|TATN|538.9
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-26|TRND@|136.37
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-02-26|TITR@|5.89
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-02-26|18140.77
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-02-27|51.38, тип=FEE, сумма=51.38
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-03-12|30000
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-03-13|RU000A10ECX8|23874.28
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-03-13|RU000A10ECX8|7935.16
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-03-13|TGLD@|96.6
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-03-13|1500
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-03-13|400
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-03-13|100
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-16|94.8, тип=FEE, сумма=94.8
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-03-27|339.04
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-03-30|TATN|674.2
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-03-30|RUAL|812
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-03-31|TRND@|189.81
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-03-31|4.46, тип=FEE, сумма=4.46
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-16|TMON@|64771.2
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-16|TMON@|155.7
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-04-16|65000
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-20|TMON@|65014.47
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-20|RU000A10E8P0|32883.85
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-20|SMLT|621
+2plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-20|RU000A10EAM5|15572.73
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-21|BTBR|128.22
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-21|TITR@|10.64
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-21|BTBR|128.18
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-21|193.68, тип=FEE, сумма=193.68
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-22|TRND@|60.36
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-22|TRND@|30.18
+2plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-22|TRND@|20.12
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-22|TRND@|402.4
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-04-22|TRND@|20.12
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-22|SGZH|496.25
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-22|RU000A10CSG3|7063.05
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-22|SMLT|638.4
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-22|SGZH|101.1
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-22|TRUR@|71.89
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-04-22|7843.22
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-22|0.76, тип=FEE, сумма=0.76
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-23|RU000A10ECX8|30233.8
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-04-23|30000
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-04-23|350
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-23|24.88, тип=FEE, сумма=24.88
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-24|89.82, тип=FEE, сумма=89.82
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-28|AFLT|481
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-28|GLRX|173.79
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-04-28|628.64
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-29|RU000A10E8P0|10977.34
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-29|GLRX|5760
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-29|GMKN|2696
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-29|RU000A10E655|4282.08
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-29|AFLT|956.6
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-29|RU000A10E8P0|10922.83
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-04-29|RU000A10E655|4252.08
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-04-29|40000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-29|1.96, тип=FEE, сумма=1.96
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-04-30|119.27, тип=FEE, сумма=119.27
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-12|342.85
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-18|228.2
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-19|38.03
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-05-20|RU000A10CSD0|41633.04
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-20|40000
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-20|1000
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-20|600
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-05-21|GLRX|307.26
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-05-21|GLRX|665.73
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-05-21|GLRX|563.31
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-05-21|GLRX|2048.4
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-05-21|GLRX|1843.56
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-21|5000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-21|124.8, тип=FEE, сумма=124.8
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-05-22|16.29, тип=FEE, сумма=16.29
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-26|598.16
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-05-28|134.8
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-09|GLRX|2278
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-09|GLRX|3463.32
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-06-09|5000
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-10|17.22, тип=FEE, сумма=17.22
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-06-11|330.7
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-12|RU000A10E655|10779.7
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-12|RU000A10E655|1077.87
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-12|SU26254RMFS1|46889
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-15|59000, тип=CASH_IN, сумма=59000
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-16|RUAL|662.3
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-06-16|252.84
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-16|172.95, тип=FEE, сумма=172.95
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-06-17|37.67
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-17|1.99, тип=FEE, сумма=1.99
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-06-18|226.04
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-06-25|626.8
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-29|T|531.52
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-06-29|RU000A10CSD0|45424.32
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-29|T|13385
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-29|T|6692.5
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-29|AFLT|10443.6
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-29|AFLT|6960.6
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-29|SBER|7904
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-06-29|RU000A10CSG3|7312.77
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-29|SBER|307.06
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-29|SBER|6755.32
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-30|SBER|308.24
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-06-30|RU000A10ECX8|31652.33
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-06-30|SBER|31491.8
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-06-30|320.15
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-06-30|316.71, тип=FEE, сумма=316.71
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-07-01|RU000A10ECX8|16126.67
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-07-01|SU26248RMFS3|15717.37
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-07-01|RU000A10E8P0|34737.17
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-07-01|RU000A10E8P0|11579.07
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-07-01|RU000A10E8P0|11579.04
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-07-01|SU26248RMFS3|57906.1
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-07-01|RU000A10ECX8|16126.67
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-07-01|RUAL|16161.6
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-01|190.16, тип=FEE, сумма=190.16
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|SELL|2026-07-02|RU000A10EAM5|31931.49
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-07-02|SBER|15067
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-07-02|SBER|16584.15
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-02|536.24, тип=FEE, сумма=536.24
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-03|190.35, тип=FEE, сумма=190.35
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-07-15|1
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-07-15|10.38
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-07-16|T|237.04
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-17|0.71, тип=FEE, сумма=0.71
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-07-28|SBER|274.18
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-07-28|320.15
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-07-29|0.82, тип=FEE, сумма=0.82
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-07-31|328
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-07-31|2539.2
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|BUY|2026-08-02|RU000A107UL4|2136.8
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-08-04|25
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-08-04|188.2
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-08-04|1242
+plugin:obsidian-investment-tracker:143 [DataStore] Пропущен дубликат: tbank|2026-08-04|9635.84
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-04|6.41, тип=FEE, сумма=6.41
+plugin:obsidian-investment-tracker:143 [DataStore] Добавлена новая транзакция: tbank|2026-08-05|25.34, тип=FEE, сумма=25.34
+plugin:obsidian-investment-tracker:143 [DataStore] Запись transactions.json, количество: 209
+plugin:obsidian-investment-tracker:143 [DataStore] transactions.json успешно записан.
+plugin:obsidian-investment-tracker:143 [DataStore] Импорт завершён. Добавлено 24 новых транзакций. Всего в базе: 209.
+plugin:obsidian-investment-tracker:143 [MoexApi] Не удалось получить цену облигации "RU000A107UL4" ни на TQCB, ни на TQOB.
+fetchBondPrices @ plugin:obsidian-investment-tracker:143
+await in fetchBondPrices
+fetchCurrentPrices @ plugin:obsidian-investment-tracker:143
+await in fetchCurrentPrices
 updateDashboard @ plugin:obsidian-investment-tracker:155
-plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TITR@ (id: TCS30A108BL2)
-updateDashboard @ plugin:obsidian-investment-tracker:155
-plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TGLD@ (id: TCS80A101X50)
-updateDashboard @ plugin:obsidian-investment-tracker:155
-plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TMON@ (id: TCS70A106DL2)
-updateDashboard @ plugin:obsidian-investment-tracker:155
-plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для TRUR@ (id: TCS60A1011U5)
-updateDashboard @ plugin:obsidian-investment-tracker:155
-plugin:obsidian-investment-tracker:155 [DASHBOARD] T-Invest API не вернул цену для RU000A107UL4 (id: TCS01A107UL4)
-updateDashboard @ plugin:obsidian-investment-tracker:155
-plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TGLD@', hasMarketPrice: false, currentPrice: 16.099999999999998, currentTotal: 193.2, profitPercent: 0, …}
-plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TRND@', hasMarketPrice: false, currentPrice: 10.326999999999998, currentTotal: 144.57799999999997, profitPercent: 0, …}
-plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TRUR@', hasMarketPrice: false, currentPrice: 10.27, currentTotal: 143.78, profitPercent: 0, …}
+await in updateDashboard
+handleTBankXlsxImport @ plugin:obsidian-investment-tracker:145
+await in handleTBankXlsxImport
+eval @ plugin:obsidian-investment-tracker:145
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Цены от MOEX: Map(25) {'SMLT' => {…}, 'SBERP' => {…}, 'TRND' => {…}, 'TITR' => {…}, 'TATN' => {…}, …}
+plugin:obsidian-investment-tracker:155 [DASHBOARD] Все уникальные тикеры: (26) ['SU26254RMFS1', 'SMLT', 'SBERP', 'TRND@', 'TITR@', 'TATN', 'RU000A10ECX8', 'TGLD@', 'RUAL', 'TMON@', 'RU000A10E8P0', 'RU000A10EAM5', 'BTBR', 'SGZH', 'RU000A10CSG3', 'TRUR@', 'AFLT', 'GLRX', 'GMKN', 'RU000A10E655', 'RU000A10CSD0', 'T', 'SBER', 'SU26248RMFS3', 'RU000A107UL4', 'SU26247RMFS5']
+plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TGLD@', hasMarketPrice: true, currentPrice: 14.34, currentTotal: 86.03999999999999, profitPercent: -10.931677018633543, …}
+plugin:obsidian-investment-tracker:155 🟡 ДИАГНОСТИКА ФОНДА: {ticker: 'TRUR@', hasMarketPrice: true, currentPrice: 9.99, currentTotal: 69.93, profitPercent: -2.72638753651411, …}
